@@ -1,0 +1,11 @@
+{
+  "name": "cs-notes",
+  "version": "1.0.0",
+  "description": "Chenng's CS Notes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chenng",
+  "license": "ISC"
+}

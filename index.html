@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chenng's CS Notes</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Chenng's CS Notes">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./vue.css">
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+</head>
+
+<body>
+  <div id="app">加载中...</div>
+  <script>
+    window.$docsify = {
+      name: 'Chenng\'s CS Notes',
+      maxLevel: 5,
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true
+    }
+  </script>
+  <script src="./docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      "clientID": "0e72885ae18198731c09",
+      "clientSecret": "7adedadda9bf9a306b8d823d89564f65b426888b",
+      "repo": "gitalk",
+      "owner": "ringcrl",
+      "admin": ["ringcrl"],
+    });
+  </script>
+</body>
+
+</html>
