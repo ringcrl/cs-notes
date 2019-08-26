@@ -64,6 +64,9 @@ cp /usr/share/vim/vimrc ~/.vimrc
 
 vim ~/.vimrc
 
+# vim 中文乱码
+set encoding=utf-8
+
 # 语法高亮
 syntax enable
 syntax on
