@@ -328,6 +328,23 @@ http://www.jianshu.com/p/52ff25407621
 
 http://brew.sh/index_zh-cn.html
 
+```sh
+# mysql
+brew install mysql
+
+# 设置密码
+mysql_secure_installation
+
+# 连接数据库
+mysql -uroot
+
+# 开机自启动
+brew services start mysql
+
+# 非开机自启动
+mysql.server start
+```
+
 ## shadowsocks
 
 https://shadowsocks.se
