@@ -2636,3 +2636,145 @@ ul.addEventListener('click', e => {
   }
 })
 ```
+
+## 本地图片上传
+
+```js
+function handleFileSelect(event) {
+  const { files } = event.target;
+  if (!files.length) {
+    return;
+  }
+
+  const vm = document.createDocumentFragment();
+  const re = /image.*/;
+  let loaded = 0; // 完成加载的图片数量
+  let total = 0; // 总共图片数量
+
+  // 统计image文件数量
+  for (const file of files) {
+    re.test(file.type) && total++;
+  }
+
+  // onloadstart回调
+  const handleLoadStart = (ev, file) =>
+    console.log(`>>> Start load ${file.name}`);
+  // onload回调
+  const handleOnload = (ev, file) => {
+    console.log(`<<< End load ${file.name}`);
+
+    const img = document.createElement('img');
+    img.height = 250;
+    img.width = 250;
+    img.src = ev.target.result;
+    vm.appendChild(img);
+
+    // 完成加载后，将其放入dom元素中
+    if (++loaded === total) {
+      document.querySelector('#images').appendChild(vm);
+    }
+  };
+
+  for (const file of files) {
+    if (!re.test(file.type)) {
+      continue;
+    }
+
+    const reader = new FileReader();
+    reader.onloadstart = (ev) => handleLoadStart(ev, file);
+    reader.onload = (ev) => handleOnload(ev, file);
+    // 读取文件对象
+    reader.readAsDataURL(file);
+  }
+}
+
+document
+    .querySelector('#files')
+    .addEventListener('change', handleFileSelect, false);
+```
+
+## 日期格式化
+
+```js
+const dateFormatter = (formatter, date) => {
+  date = date ? new Date(date) : new Date();
+  const Y = date.getFullYear() + '';
+  const M = date.getMonth() + 1;
+  const D = date.getDate();
+  const H = date.getHours();
+  const m = date.getMinutes();
+  const s = date.getSeconds();
+  return formatter
+      .replace(/YYYY|yyyy/g, Y)
+      .replace(/YY|yy/g, Y.substr(2, 2))
+      .replace(/MM/g, (M < 10 ? '0' : '') + M)
+      .replace(/DD/g, (D < 10 ? '0' : '') + D)
+      .replace(/HH|hh/g, (H < 10 ? '0' : '') + H)
+      .replace(/mm/g, (m < 10 ? '0' : '') + m)
+      .replace(/ss/g, (s < 10 ? '0' : '') + s);
+};
+
+dateFormatter('YYYY-MM-DD HH:mm', '1995/02/15 13:55'); // 1995-02-15 13:55
+```
+
+## 下载视频
+
+```js
+const url =
+  'https://v.weishi.qq.com/v.weishi.qq.com/shg_0_1047_rsueafabs5qbbmcagbagbedvrxzwb6a264n6bibaqaafaiga.f0.mp4?dis_k=bb034e72483b875b70fad5feb12c63f0&dis_t=1563845358&guid=0508AFC000E081E13F01036CF26192E5&fromtag=0&personid=1535252226705971';
+
+const xhr = new XMLHttpRequest();
+xhr.open('GET', url, true);
+xhr.responseType = 'blob';
+
+xhr.onprogress = function(pe) {
+  console.log('progress');
+  if (pe.lengthComputable) {
+    console.log((pe.loaded / pe.total) * 100);
+  }
+};
+
+xhr.onload = function(e) {
+  if (this.status == 200) {
+    window.open(
+        window.URL.createObjectURL(
+            new Blob([this.response], { type: 'application/video' })
+        )
+    );
+  }
+};
+
+xhr.send();
+```
+
+## svg-object 截图
+
+```js
+// https://zhuanlan.zhihu.com/p/84156304
+
+const simpleFO = new SimpleForeignObject({
+  devicePixelRatio: window.devicePixelRatio,
+  ready: function() {
+    const $demo = document.querySelector('#demo');
+    simpleFO.toCanvas($demo, function(canvas) {});
+  },
+});
+```
+
+## PromiseAll 超时
+
+```js
+// https://stackoverflow.com/questions/48577702/setting-a-timeout-for-each-promise-within-a-promise-all
+
+Promise.delay = function(t, val) {
+  return new Promise((resolve) => {
+    setTimeout(resolve.bind(null, val), t);
+  });
+};
+
+Promise.raceAll = function(promises, timeoutTime, timeoutVal) {
+  return Promise.all(promises.map((p) => {
+    return Promise.race([p, Promise.delay(timeoutTime, timeoutVal)]);
+  }));
+};
+```

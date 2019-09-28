@@ -1,34 +1,48 @@
 <!--MySQL-summary-->
 
-MySQL 必知必会。
+MySQL 相关知识总结。
 
 <!--more-->
 
 # 基础知识
 
 - 数据库（database）：保存有组织的数据的容器
-
 - 表（table）：某个特定类型数据的结构化清单
-
 - 模式（schema）：关于数据库和表的布局及特性信息
-
 - 列（column）：表中的一个字段，所有表都是由一个或者多个列组成的
-
 - 数据类型（datatype）：所容许的数据的类型。每个表列都有相应的数据类型，它限制（容许）该列中存储的数据
-
 - 行(row)：行也叫数据库记录（record），表示表中的一个记录
-
 - 主键（primary key）：一列，其值能够唯一区分表中的每个行
-
     - 任何列都可以作为主键
     - 任意两行不具有相同的主键值
     - 每个行都必须具有一个主键值（不允许为 null 值）
-
 
 不区分大小写，SELECT 和 select 是相同的，但是对 SQL 关键词使用大写，对所有的列和表名使用小写，易于代码调试。
 
 # 基本操作
 
+## 安装
+
+### Mac
+
+https://stackoverflow.com/questions/4359131/brew-install-mysql-on-macos
+
+```sh
+brew install mysql@5.7
+
+# 添加密码
+mysql_secure_installation
+
+# If you need to have mysql@5.7 first in your PATH run:
+echo 'export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"' >> ~/.zshrc
+
+# For compilers to find mysql@5.7 you may need to set:
+export LDFLAGS="-L/usr/local/opt/mysql@5.7/lib"
+export CPPFLAGS="-I/usr/local/opt/mysql@5.7/include"
+
+# To have launchd start mysql@5.7 now and restart at login
+brew services start mysql@5.7
+```
 
 ## 登录
 

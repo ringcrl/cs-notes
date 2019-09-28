@@ -1694,6 +1694,29 @@ yarn add minireset.css
 }
 ```
 
+## 图片居中
+
+```css
+.center-image {
+  background: #4a4a4a;
+  width: 100px;
+  height: 200px;
+  border-radius: 4px;
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+```
+
+## flex-right
+
+```css
+.flex-right {
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+```
+
 # CSS 参考
 
 ## CSS-Inspiration

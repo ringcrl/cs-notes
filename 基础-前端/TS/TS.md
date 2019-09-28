@@ -853,6 +853,50 @@ let strings:string[] = pluck(person, ['name']); // ok, string[]
 ```ts
 type Keys = 'option1' | 'option2';
 type Flags = { [K in Keys]: boolean };
+
+// Readonly可以把每个属性都变成只读
+type A01 = { a: number, b: string }
+type A011 = Readonly<A01> // {readonly a: number;readonly b: string;}
+
+// Partial<T>, 让属性都变成可选的
+type A02 = { a: number, b: string }
+type A021 = Partial<A02> // { a?: number; b?: string;}
+
+// Required<T>, 让属性都变成必选
+type A03 = { a?: number, b?: string }
+type A031 = Required<A03> // { a: number; b: string;}
+
+// Pick<T,K>, 只保留自己选择的属性, U代表属性集合
+type A04 = { a: number, b: string }
+type A041 = Pick<A04, 'a'> //  {a:number}
+
+// Omit<T,K> 实现排除已选的属性
+type A05 = { a: number, b: string }
+type A051 = Omit<A05, 'a'> // {b:string}
+
+// Record<K,T>, 创建一个类型,T代表键值的类型, U代表值的类型
+type A06 = Record<string, string> // 等价{[k:string]:string}
+
+// Exclude<T,U>, 过滤T中和U相同(或兼容)的类型
+type A07 = { a: number, b: string }
+type A071 = Exclude<number | string, string | number[]> // number
+type A072 = Exclude<number | string, any | number[]> // never , 因为any兼容number, 所以number被过滤掉
+
+// Extract<T,U>, 提取T中和U相同(或兼容)的类型
+type A08 = { a: number, b: string }
+type A081 = Extract<number | string, string | number[]> // string
+
+// NonNullable, 剔除T中的undefined和null
+type A09 = NonNullable<number | string | null | undefined> // number|string
+
+// ReturnType, 获取T的返回值的类型
+type A10 = ReturnType<() => number> // number
+
+// Parameters 获取函数参数类型
+interface A11 {
+  (a: number, b: string): string[];
+}
+type A1 = Parameters<A11> // [number, string]
 ```
 
 ## 类型保护
