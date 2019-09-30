@@ -50,11 +50,22 @@ ffmpeg -i input.mp4 -ss 00:00:50.0 -codec copy -t 20 output.mp4
 ### mp4 导出 gif
 
 ```sh
-ffmpeg -i input.mp4 -vf sacle=100:-1 -t 5 -r 10 output.gif
+# -ss 00:00:03 表示从第 00 分钟 03 秒开始制作 GIF
+# -t 3 表示把持续 3 秒的视频转换为 GIF
+# -s 640x360 是 GIF 的分辨率
+# -r 15 表示帧率，网上下载的视频帧率通常为 24，设为 15 效果挺好了
+ffmpeg -i /input/01.mp4 -ss 00:00:02 -t 3 -s 360x640 -r 15 /output/foo.gif
 ```
 
-### 每隔一段截一张图
+### 截图
 
 ```sh
-ffmpeg -i input.mp4 -r 0.25 frames_%04d.png
+# 截取单图
+ffmpeg -ss 00:00:05 -i /input/01.mp4 -vframes 1 -q:v 2 /output/01.jpg
+
+# 按帧截图
+ffmpeg -i /input/01.mp4 -r 0.25 /output/prefix_%03d.jpg
+
+# 每隔 1s 截一张图
+ffmpeg -i /input/01.mp4 -y -f image2 -vf fps=fps=1 /output/prefix_%03d.jpeg
 ```
