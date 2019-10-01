@@ -1,8 +1,3 @@
-# go-learning
-
-- [learn-go-with-tests](https://github.com/quii/learn-go-with-tests) 学习笔记
-- [Go 语言从入门到实战](https://time.geekbang.org/course/intro/160) 学习笔记
-
 # 优点
 
 - 编译效率，大型的 C/C++ 项目编译个一两个小时都是常事，而对 Go 而言，标准库的编译时间是 20s 左右
@@ -12,6 +7,25 @@
 - 网络通信、并发、并行编程，Go 十分擅长，它可以更好的利用大量的分布式和多核计算机
 
 # 安装与配置
+
+## 二进制安装
+
+```sh
+# 找到安装包下载地址：https://golang.org/dl/
+wget https://dl.google.com/go/go1.13.1.darwin-amd64.tar.gz
+
+# 设置安装目录
+export GO_INSTALL_DIR=$HOME
+
+# 解压 Go 安装包
+tar -zxvf go1.13.1.darwin-amd64.tar.gz -C $GO_INSTALL_DIR
+
+# 设置环境变量
+export GO_INSTALL_DIR=$HOME
+export GOROOT=$GO_INSTALL_DIR/go
+export GOPATH=$HOME/mygo
+export PATH=$GOPATH/bin:$PATH:$GO_INSTALL_DIR/go/bin
+```
 
 ## gvm 安装
 
@@ -26,18 +40,12 @@ go version
 
 # 查看 Go 环境
 go env
-```
 
-## 导出环境变量
-
-```sh
 # vim .zshrc
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 ```
-
-## 目录结构
 
 - 所有源代码位于 src
 - 包对象位于 pkg
