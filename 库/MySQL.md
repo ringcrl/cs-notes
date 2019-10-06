@@ -6,6 +6,8 @@ MySQL 相关知识总结。
 
 # 基础知识
 
+## 概念
+
 - 数据库（database）：保存有组织的数据的容器
 - 表（table）：某个特定类型数据的结构化清单
 - 模式（schema）：关于数据库和表的布局及特性信息
@@ -17,7 +19,30 @@ MySQL 相关知识总结。
     - 任意两行不具有相同的主键值
     - 每个行都必须具有一个主键值（不允许为 null 值）
 
-不区分大小写，SELECT 和 select 是相同的，但是对 SQL 关键词使用大写，对所有的列和表名使用小写，易于代码调试。
+## 功能划分
+
+- DDL（Data Definition Language）：定义数据库、数据表和列
+- DML（Data Manipulation Language）：增删改数据表
+- DCL（Data Control Language）：定义访问权限与安全级别
+- DQL（Data Qeury Language）：查询数据表数据
+
+## 命名约定
+
+- SELECT、FROM、WHERE 常用的 SQL 保留字大写
+- 表名、数据表字段下划线小写
+
+## 数据表约束
+
+- 主键约束：UNIQUE + NOT NULL，一个表主键只能有一个
+- 外键约束：确保表与表之间完整性，一个表外键对应另一个表主键，例如某个表 `player_score` 设置 `player_id` 为外键，关联到 `player` 表的主键
+- 字段约束：UNIQUE、NOT NULL、DEFAULT、CHECK
+
+## 数据表设计原则
+
+- 数据表个数越少越好
+- 数据表字段个数越少越好
+- 数据表中联合主键字段个数越少越好
+- 使用主键和外键越多越好
 
 # 基本操作
 
@@ -78,7 +103,7 @@ mysql> use mysql;
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'new_password';
 ```
 
-## 数据库与表
+## 数据库和表
 
 ```sql
 -- 查看数据库
@@ -86,6 +111,9 @@ SHOW DATABASES;
 
 -- 创建数据库
 CREATE DATABASE db_name;
+
+-- 删除数据库
+DROP DATABASE db_name;
 
 -- 使用数据库
 USE db_name;
@@ -98,73 +126,105 @@ SHOW TABLES;
 
 -- 查看表结构
 DESC table_name
+
+-- 创建表
+DROP TABLE IF EXISTS `player`;
+CREATE TABLE `player`  (
+  `player_id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL,
+  -- utf8 字符编码
+  -- utf8_general_ci 大小写不敏感
+  -- utf8_bin 大小写敏感
+  `player_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `height` float(3, 2) NULL DEFAULT 0.00,
+  PRIMARY KEY (`player_id`) USING BTREE,
+  UNIQUE INDEX `player_name`(`player_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- 添加表字段
+ALTER TABLE player ADD (
+	age int(11)
+);
+
+-- 删除表字段
+ALTER TABLE player DROP COLUMN age;
+
+-- 修改表字段
+ALTER TABLE player MODIFY age float(3,1);
 ```
 
-## Sequel Pro 登录
+## 配置
 
 ```sql
--- 修改加密规则 
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'password' PASSWORD EXPIRE NEVER;
+-- 查看查询性能开关情况
+select @@profiling;
 
--- 更新用户密码 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
-
--- 刷新权限
-FLUSH PRIVILEGES;
+-- 打开查询性能
+set profiling=1;
 ```
 
 # 应用
 
+数据：
+https://github.com/cystanford/sql_heros_data
+https://github.com/cystanford/sql_nba_data
+
 ## 检索数据
 
-### 检索单个列
+### 子句顺序
+
+- SELECT：要返回的列
+- FROM：检索数据的表
+- WHERE：行级过滤
+- GROUP BY：分组说明
+- HAVING：组级过滤
+- ORDER BY：输出排序顺序
+- LIMIT：要检索的行数
+
+### 检索列
 
 ```sql
-SELECT title
-FROM fk_post;
+-- 单列
+SELECT name FROM heros;
+
+-- 多列
+SELECT name, hp_max, mp_max, attack_max, defense_max FROM heros;
 ```
 
-### 检索多个列
+### 虚构字段
 
 ```sql
-SELECT title,update_time
-FROM fk_post;
+SELECT '王者荣耀' as platform, name FROM heros;
 ```
 
-### 返回不重复的行
+### 返回不重复
 
 ```sql
-SELECT DISTINCT type
-FROM fk_post;
+SELECT DISTINCT attack_range FROM heros;
 ```
 
-### 限制返回数量/返回区间
+### 限制返回
 
 ```sql
-SELECT title
-FROM fk_post
-LIMIT 10;
+SELECT name, hp_max FROM heros ORDER BY hp_max DESC LIMIT 5;
 
-SELECT title
-FROM fk_post
-LIMIT 5,5;
+SELECT name, hp_max FROM heros ORDER BY hp_max DESC LIMIT 5,5;
 ```
 
-### 升降排序检索
+### 升降序排序
 
 ```sql
-/* 升序 */
-SELECT title, update_time
-FROM fk_post
-ORDER BY update_time, title;
+-- 升序
+SELECT name, hp_max FROM heros ORDER BY hp_max DESC;
 
-/* 降序 */
-SELECT title, update_time
-FROM fk_post
-ORDER BY update_time DESC, title;
+-- 降序
+SELECT name, hp_max FROM heros ORDER BY hp_max DESC;
+
+-- 多条件排序
+SELECT name, mp_max, hp_max FROM heros ORDER BY mp_max DESC, hp_max DESC;
 ```
 
-### 过滤数据(WHERE)
+### 过滤数据
 
 | 符号      | 含义           |
 | :-------: | :------------: |
@@ -185,140 +245,157 @@ ORDER BY update_time DESC, title;
 | REGEXP    | 正则表达式     |
 
 ```sql
-/* 同时使用 WHERE 和 ORDER BY，ORDER BY 应该在后面 */
-SELECT title, update_time
-FROM fk_post
-WHERE update_time BETWEEN '2018-10-1' AND '2018-11-1'
-ORDER BY update_time, title;
+-- 区间过滤
+SELECT name, hp_max FROM heros WHERE hp_max > 6000;
+SELECT name, hp_max FROM heros WHERE hp_max BETWEEN 5399 AND 6811;
 
-/* 空值检查 */
-SELECT *
-FROM fk_user
-WHERE display_name IS NULL;
+-- 空值检查
+SELECT name, role_assist FROM heros WHERE role_assist IS NULL;
 
-/* 或操作 */
-SELECT title, update_time
-FROM fk_post
-WHERE (update_time BETWEEN '2018-5-1' AND '2018-6-1')
-OR (update_time BETWEEN '2018-10-1' AND '2018-11-1');
+-- 与操作
+SELECT name, hp_max, mp_max FROM heros 
+WHERE hp_max > 6000 AND mp_max > 1700
+ORDER BY (hp_max+mp_max) DESC;
 
-/* 通配符 */
-SELECT title, update_time
-FROM fk_post
-WHERE title LIKE '%react%';
+-- 通配符
+-- %：0 个或多个字符
+-- _：1 个字符
+SELECT name FROM heros WHERE name LIKE '%太%';
 
-/* 正则表达式 */
-SELECT title, update_time
-FROM fk_post
-WHERE title REGEXP 'react';
+-- 正则表达式
+SELECT name FROM heros WHERE name REGEXP '^东';
+
+-- 综合过滤
+SELECT name, role_main, role_assist, hp_max, mp_max, birthdate
+FROM heros 
+WHERE (role_main IN ('法师', '射手') OR role_assist IN ('法师', '射手')) 
+AND DATE(birthdate) NOT BETWEEN '2016-01-01' AND '2017-01-01'
+ORDER BY (hp_max + mp_max) DESC;
 ```
 
-### 数据处理函数
+### SQL 函数
 
-TODO:
-
-### 数据汇总
-
-| 函数    | 说明             |
-| :-----: | :--------------: |
-| AVG()   | 返回某列的平均值 |
-| COUNT() | 返回某列的行数   |
-| MAX()   | 返回某列的最大值 |
-| MIN()   | 返回某列的最小值 |
-| SUM()   | 返回某列值之和   |
+- 算数函数
+    - ABS()：取绝对值
+    - MOD()：取余
+    - ROUND()：四舍五入到指定小数位，`SELECT ROUND(37.25, 1)`
+- 字符串函数
+    - CONCAT()：多个字符串拼接，`SELECT CONCAT('abc', 123)`
+    - LENGTH()：字段长度，汉字算三个字符、数组和字母算一个字符
+    - CHAR_LENGTH()：字段长度，汉字、数字、字母算一个字符
+    - LOWER()：转化为小写，`SELECT LOWER('ABC')`
+    - UPPER()：转化为大写
+    - REPLACE()：替换字符
+    - SUBSTRING()：截取字符串
+- 日期函数
+    - CURRENT_DATE()：系统当前日期，2019-10-05
+    - CURRENT_TIME()：系统当前时间，12:15:22
+    - CURRENT_TIMESTAMP()：日期+时间，2019-10-05 12:16:01
+    - EXTRACT()：抽取具体的年月日，`EXTRACT(YEAR FROM birthdate)`
+    - DATE()：返回时间的日期部分
+- 聚集函数
+    - COUNT()：总行数
+    - MAX()：最大值
+    - MIN()：最小值
+    - SUM()：求和
+    - AVG()：平均值
 
 ```sql
-/* 返回总数 */
-SELECT COUNT(*) AS post_num
-FROM fk_post;
+-- 数据处理
+SELECT name, ROUND(attack_growth,1) FROM heros;
 
-/* 带有限制范围的总数 */
-SELECT COUNT(*) AS post_num
-FROM fk_post
-WHERE update_time BETWEEN '2018-10-1' AND '2018-11-1';
+-- 取最大值
+SELECT MAX(hp_max) FROM heros;
+
+-- 获取最大值的信息，需要分两步
+SELECT name, hp_max FROM heros
+WHERE hp_max = (SELECT MAX(hp_max) FROM heros)
+
+-- 抽取年份
+SELECT name, EXTRACT(YEAR FROM birthdate) AS birthdate
+FROM heros WHERE birthdate is NOT NULL
+ORDER BY birthdate DESC;
+
+-- 使用 DATE 格式化数据
+SELECT * FROM heros WHERE DATE(birthdate)>'2016-10-01'
+
+-- 算数函数
+SELECT AVG(hp_max), AVG(mp_max), MAX(attack_max) FROM heros
+WHERE DATE(birthdate)>'2016-10-01'
+
+-- 计算总数
+SELECT COUNT(*) FROM heros WHERE hp_max > 6000;
+
+-- 分组统计
+SELECT COUNT(*), role_main FROM heros GROUP BY role_main;
 ```
 
-### 分组数据
-
-```sql
-SELECT type, COUNT(*) as post_count
-FROM fk_post
-GROUP BY type;
-```
+### 过滤分组
 
 - 如果分组中具有 NULL 值，NULL 作为一个分组返回
 - GROUP BY 必须出现在 WHERE 子句之后，ORDER BY 子句之前
-
-#### 过滤分组
-
-过滤分组使用 HAVING 子句，HAVING 语法和 WHERE 一样，唯一的差别是 WHERE 过滤行，HAVING 过滤分组。
-
-WHERE 在分组前进行过滤，HAVING 在分组后进行过滤。
+- 过滤分组使用 HAVING 子句，HAVING 语法和 WHERE 一样
+- WHERE 过滤行，HAVING 过滤分组
+- WHERE 在分组前进行过滤，HAVING 在分组后进行过滤
 
 ```sql
-SELECT cust_id, COUNT(*) AS orders
-FROM orders
-GROUP BY cust_id
-HAVING COUNT(*) >= 2;
+SELECT COUNT(*) as num, role_main, role_assist FROM heros
+GROUP BY role_main, role_assist
+HAVING num > 5 ORDER BY num DESC;
 ```
-
-### SELECT 子句顺序
-
-| 子句     | 说明         | 是否必须                 |
-| :------: | :----------: | :----------------------: |
-| SELECT   | 要返回的列   | 是                       |
-| FROM     | 检索数据的表 | 仅在从表中选择数据时使用 |
-| WHERE    | 行级过滤     | 否                       |
-| GROUP BY | 分组说明     | 仅在按组计算时使用       |
-| HAVING   | 组级过滤     | 否                       |
-| ORDER BY | 输出排序顺序 | 否                       |
-| LIMIT    | 要检索的行数 | 否                       |
 
 ### 子查询
 
+- 有时候无法从数据表中得到查询结果，需要从查询结果集中再次查询
+- 子查询更容易理解查询的过程
+- 子查询不依赖外部表，输出作为输入叫做非关联子查询
+- 子查询依赖外部表，每执行一次外部查询就要重新计算一次，称为关联子查询
+
 ```sql
-SELECT cust_id
-FROM orders
-WHERE order_num IN (
-  SELECT order_num
-  FROM orderitems
-  WHERE prood_id = 'TNT2'
-);
+SELECT player_name, height, team_id FROM player AS a
+WHERE height > (SELECT avg(height) FROM player AS b
+WHERE a.team_id = b.team_id)
+
 ```
 
-### 联结表
+### 集合比较子查询
 
-- 外键（foreign key）：外键作为某个表中的一列，它包含另一个表的主键值，定义了两个表的关系
-
-- 可伸缩性（scale）：能够适应不断增加的工作量而不失败
+- IN：判断是否在集合中
+- ANY：需要与比较操作符一起使用，与子查询返回的任何值作比较
+- ALL：需要与比较操作符一起使用，与子查询返回的所有值作比较
 
 ```sql
-/* prod_name, prod_price 在一个表中，vend_name 在另一个表中 */
-SELECT vend_name, prod_name, prod_price
-FROM vendors, products
-WHERE vendors.vend_id = products.vend_id
-ORDER BY vend_name, prod_name;
-
-SELECT prod_name, vend_name, prod_price, quantity
-FROM orderitems, products, vendors
-WHERE products.vend_id = vendors.vend_id
-  AND orderitems.prod_id = products.prod_id
-  AND order_num = 20005;
+SELECT player_id, player_name, height FROM player
+WHERE height > ALL (SELECT height FROM player WHERE team_id = 1002)
 ```
 
-**应该保证所有的联结都有 WHERE 子句，否则 MySQL 将返回比想要多得多的数据（笛卡尔积）**
+### 表连接
 
-### 组合查询
+- 笛卡尔积：表1有X数据，表2有Y数据，同时查询两表就有X*Y个数据
+- 等值连接：两张表都存在的列进行连接
+- 非等值连接：多个表的连接条件不是等号的连接
+- 自连接：可以对多表操作，也可以对同一个表操作
 
 ```sql
-/* 这里可能使用 WHERE 更简单，但是多个表的时候 UNION 还是有应用场景的 */
-SELECT vend_id, prod_id, prod_price
-FROM products
-WHERE (prod_price <= 5)
-UNION
-SELECT vend_id, prod_id, prod_price
-FROM products
-WHERE vend_id IN ('FNG01', 'DLL01');
+-- 笛卡尔积
+SELECT * FROM player, team
+
+-- 等值连接
+SELECT player_id, player.team_id, player_name, height, team_name
+FROM player, team
+WHERE player.team_id = team.team_id;
+
+-- 非等值连接
+SELECT p.player_name, p.height, h.height_level
+FROM player AS p, height_grades AS h
+WHERE p.height BETWEEN h.height_lowest AND h.height_highest
+
+-- 自连接
+SELECT b.player_name, b.height FROM player as a , player as b
+WHERE a.player_name = '布雷克-格里芬' and a.height < b.height
+-- 不用自连接需要进行两次 SQL 查询
+SELECT height FROM player WHERE player_name = '布雷克-格里芬'
+SELECT player_name, height FROM player WHERE height > 2.08
 ```
 
 ## 插入数据

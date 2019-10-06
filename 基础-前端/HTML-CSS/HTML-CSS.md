@@ -185,8 +185,8 @@ iphone6 plus / iphone 7 plus
 
 - html 静态 `<script>` 引入，JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情
 - js 动态插入 `<script>`
-- `<script defer>`: 异步加载，元素解析完成后执行
-- `<script async>`: 异步加载，但执行时会阻塞元素渲染
+- `<script defer>`: 异步加载，需要在 DOMContentLoaded 事件之前执行
+- `<script async>`: 异步加载，脚本文件一旦加载完成，会立即执行，执行时会阻塞元素渲染
 
 ### crossOrigin
 
