@@ -1983,6 +1983,63 @@ export async function downloadZip(url) {
 }
 ```
 
+## WebSQL
+
+### 检测支持性
+
+```js
+if (!window.openDatabase) {
+  alert('浏览器不支持 WebSQL')
+}
+```
+
+### 打开数据库：openDatabase
+
+```js
+/**
+ * dbname 数据库名
+ * version 版本号
+ * dbdesc 描述
+ * dbsize 数据库大小
+ * cb 创建回调
+ */
+var db = window.openDatabase(
+  dbname,
+  version,
+  dbdesc,
+  dbsize,
+  function cb() {}
+);
+```
+
+### 事务操作：transaction
+
+```js
+/** 
+ * callback 处理事务的回调函数，在回调函数中可以执行 SQL 语句
+ * errorCallback 失败回调
+ * successCallback 成功回调
+*/
+transaction(callback, errorCallback, successCallback);
+
+db.transaction(function (tx) {
+    tx.executeSql('CREATE TABLE IF NOT EXISTS heros (id unique, name, hp_max, mp_max, role_main)');
+    tx.executeSql('INSERT INTO heros (id, name, hp_max, mp_max, role_main) VALUES (10000, " 夏侯惇 ", 7350, 1746, " 坦克 ")');
+});
+```
+
+### SQL 执行：executeSql
+
+```js
+/**
+ * sql 要执行的语句
+ * SQL 语句中 ? 占位符对应的参数
+ * callback 成功回调
+ * errorCallback 失败回调
+*/
+tx.executeSql(sql, [], callback, errorCallback);
+```
+
 # 底层
 
 ## var 重复声明原理

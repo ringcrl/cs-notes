@@ -1,0 +1,19 @@
+# Logs
+.DS_Store
+.cache
+yarn-error.log
+
+# Compiled binary addons
+publish/
+dist/
+
+# Dependency directories
+node_modules/
+
+# Output of 'npm pack'
+*.tgz
+
+# Custom
+_test/*
+!_test/.gitkeep
+**/password.js
