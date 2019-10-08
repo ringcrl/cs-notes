@@ -101,6 +101,7 @@ gometalinter --install
 ## 测试程序
 
 - 源码文件以 _test 结尾：xxx_test.go
+- `go test -v -cover`
 
 ### 普通测试
 
@@ -128,10 +129,9 @@ func BenchmarkRepeat(b *testing.B) {
 	}
 }
 ```
+# 语法
 
-## 基本语法
-
-### 声明变量
+## 声明变量
 
 ```go
 sum := 0
@@ -141,7 +141,7 @@ var repeated string
 const hello = "Hello"
 ```
 
-### 条件判断
+## 条件判断
 
 ```go
 if name == "" {
@@ -149,7 +149,7 @@ if name == "" {
 }
 ```
 
-### switch
+## switch
 
 ```go
 switch language {
@@ -160,7 +160,7 @@ case spanish:
 }
 ```
 
-### 迭代
+## 迭代
 
 Go 语言没有 `while`、`do`、`until` 这几个关键字，只能使用 `for`
 
@@ -170,23 +170,30 @@ for i := 0; i < 5; i++ {
 }
 ```
 
-### 数组
+## 数组
 
-#### 初始化
+### 初始化
 
 - 两种方式初始化数组
 - 打印数组的时候使用 使用 %v（默认输出格式）占位符来打印输入
 - 数组大小也属于类型的一部分，将 `[4]int` 作为 `[5]int` 类型的参数传入函数，是不能通过编译的
 
 ```go
-// [N]type{val1, val2, ..., valN}
-numbers := [5]int{1, 2, 3, 4, 5}
+// 声明时制定数组长度为 5
+a := [5]int{1, 2, 3, 4, 5}
 
-// [...]type{val1, val2, ..., valN}
-numbers := [...]int{1, 2, 3, 4, 5}
+// [...] 根据初始化的值来自动判断数组长度
+b := [...]int{1, 2, 3, 4, 5}
+
+// 声明二维数组
+c := [2][2]int{{1, 2}, {3, 4}}
+
+// 数组截取
+arr3 := [...]int{1, 2, 3, 4, 5}
+arr3_sec := arr3[:3] // {1, 2, 3}
 ```
 
-#### 迭代数组
+### 迭代数组
 
 ```go
 // Sum 返回数组之和
@@ -201,7 +208,7 @@ func Sum(numbers [5]int) int {
 }
 ```
 
-#### 切片
+### 切片
 
 - 不能对切片使用等号运算符，可以写一个函数迭代每个元素来检查它们的值
 - 比较简单的办法是使用 reflect.DeepEqual，它在判断两个变量是否相等时十分有用
@@ -210,19 +217,127 @@ func Sum(numbers [5]int) int {
 - 使用 len 获取数组和切片的长度
 
 ```go
-func TestSumAll(t *testing.T) {
-	got := SumAll([]int{1, 2}, []int{0, 9})
-  want := []int{3, 9}
-  
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %v want %v", got, want)
-	}
+func TestSliceInit(t *testing.T) {
+	var s0 []int
+	t.Log(len(s0), cap(s0)) // 0 0
+	s0 = append(s0, 1)
+	t.Log(len(s0), cap(s0)) // 1 1
+
+	s1 := []int{1, 2, 3, 4}
+	t.Log(len(s1), cap(s1)) // 4 4
 }
 ```
 
-### 结构体、方法和接口
+## map
 
-#### 结构体
+- 它以 map 关键字开头，需要两种类型。第一个是键的类型，写在 [] 中，第二个是值的类型，跟在 [] 之后
+- `map[string]string{"test": "this is just a test"}`
+- 键的类型只能是一个可比较的类型，如果不能判断两个键是否相等，就无法确保我们得到的是正确的值
+- 值的类型可以是任意类型，可以是另一个 map
+- 永远不应该初始化一个空的 map 变量，会导致 nil 指针异常
+
+```go
+m := map[string]int{"one": 1, "two": 2, "three": 3}
+m1 := map[string]int{}
+m1["one"] = 1
+```
+
+- map 查找可以返回两个值，第二个值是一个布尔值，表示是否成功找到 key
+- `definition, ok := d[word]`
+- map 是引用类型，不使用指针传递就可以修改它们，无论 map 有多大，都只会有一个副本
+- 添加的值已经存在 map 不会抛出错误，将继续并使用新提供的值覆盖该值
+
+```go
+// 空值判断
+m1 := map[int]int{}
+m1[2] = 0
+if v, ok := m1[3]; ok {
+	// m1[3] 存在
+} else {
+	// m1[3] 不存在
+}
+```
+
+```go
+// map 遍历
+m1 := map[int]int{1: 1, 2: 4, 3: 9}
+for k, v := range m1 {
+	// 操作
+}
+```
+
+```go
+// map 的 value 可以是函数
+m := map[int]func(op int) int{}
+m[1] = func(op int) int { return op }
+m[2] = func(op int) int { return op * op }
+m[3] = func(op int) int { return op * op * op }
+t.Log(m[1](2), m[2](2), m[3](2))
+```
+
+## 字符串
+
+```go
+// 字符串分割
+s:="A,B,C"
+parts := strings.Split(s, ",")
+for _, part := range parts {
+	t.Log(part)
+}
+
+// 字符串连接
+t.Log(strings.Join(parts, "-"))
+```
+
+## 函数
+
+### 一等公民
+
+```go
+func timeSpent(inner func (op int) int) func (op int) int {
+	return func(n int) {
+		start := time.Now()
+		ret := inner(n)
+
+		fmt.PrintLn ("time spent:", time.Since(start).Seconds())
+	}
+}
+
+func slowFunc(op int) int {
+	time.Sleep(time.Second * 1)
+	return op
+}
+```
+
+### 可变参数
+
+```go
+func Sum(ops ...int) int {
+	ret:=0
+	for _, op := range ops {
+		ret += op
+	}
+	return ret
+}
+```
+
+### defer 函数
+
+```go
+func Clear() {
+	fmt.PrintLn("Clear resources.")
+}
+
+func TestDefer(t *testing.T) {
+	defer Clear()
+
+	panic("err") // 就算报错，defer 的 Clear 函数还是会执行
+}
+```
+
+## 接口
+
+### 结构体
 
 - 使用保留字 struct 来定义自己的类型
 
@@ -233,7 +348,7 @@ type Rectangle struct {
 }
 ```
 
-#### 方法
+### 方法
 
 - 方法和函数很相似但是方法是通过一个特定类型的实例调用的
 - 函数可以随时被调用，比如 Area(rectangle)，不像方法需要在某个事物上调用
@@ -261,10 +376,11 @@ func (c Circle) Area() float64 {
 }
 ```
 
-#### 接口
+### 接口
 
-- 像创建 Rectangle 和 Circle 一样创建了一个新类型，不过这次是 interface 而不是 struct
-- Go 语言中 interface resolution 是隐式的。如果传入的类型匹配接口需要的，则编译正确
+- 倾向于使用小的接口定义，很多接口只包含一个方法
+- 较大的接口定义，可以由多个小接口定义组合而成
+- 只依赖于必要功能的最小接口
 
 ```go
 // Shape 方法
@@ -281,7 +397,7 @@ checkArea := func(t *testing.T, shape Shape, want float64) {
 }
 ```
 
-### 指针与错误
+## 指针
 
 - 指针
     - 如果一个符号（例如变量、类型、函数等）是以小写符号开头，那么它在【定义它的包之外】就是私有的
@@ -293,9 +409,6 @@ checkArea := func(t *testing.T, shape Shape, want float64) {
     - 指针可以是 nil
     - 当函数返回一个指针，需要确保检查过它是否为 nil，否则可能有执行异常，编译器不能帮你
     - nil 非常适合描述一个可能丢失的值
-- 错误
-    - 错误是在调用函数或者方法时表示失败的
-    - 检查字符串会导致测试不稳定
 
 
 ```go
@@ -320,89 +433,60 @@ func (w *Wallet) Deposit(amount int) {
 }
 ```
 
-### Maps
+## 错误
 
-#### 声明 Map
-
-- 它以 map 关键字开头，需要两种类型。第一个是键的类型，写在 [] 中，第二个是值的类型，跟在 [] 之后
-- `map[string]string{"test": "this is just a test"}`
-- 键的类型只能是一个可比较的类型，如果不能判断两个键是否相等，就无法确保我们得到的是正确的值
-- 值的类型可以是任意类型，可以是另一个 map
-- 永远不应该初始化一个空的 map 变量，会导致 nil 指针异常
+- 没有异常机制
+- error 类型实现了 error 接口
+- 可以通过 errors.New 来快速创建错误实例
 
 ```go
-// 错误，会导致 nil 指针异常
-var m map[string]string
+func GetFibonacci(n int) ([]int, error) {
+	if n < 2 || n > 100 {
+		return nil, errors.New("n should be in [2, 100]")
+	}
 
-// 证明方法一：
-dictionary = map[string]string{}
+	fibList := []int{1, 1}
 
-// 声明方法二：
-dictionary = make(map[string]string)
-```
+	for i := 2; i < n; i++ {
+		fibList = append(fibList, fibList[i - 2] + fibList[i - 1])
+	}
+	return fibList
+}
 
-#### Map 特性
-
-- map 查找可以返回两个值，第二个值是一个布尔值，表示是否成功找到 key
-- `definition, ok := d[word]`
-- map 是引用类型，不使用指针传递就可以修改它们，无论 map 有多大，都只会有一个副本
-- 添加的值已经存在 map 不会抛出错误，将继续并使用新提供的值覆盖该值
-
-### DI
-
-#### 概念
-
-- 测试代码。如果你不能很轻松地测试函数，这通常是因为有依赖硬链接到了函数或全局状态。例如，如果某个服务层使用了全局的数据库连接池，这通常难以测试，并且运行速度会很慢。DI 提倡你注入一个数据库依赖（通过接口），然后就可以在测试中控制你的模拟数据了。
-- 关注点分离，解耦了数据到达的地方和如何产生数据。如果你感觉一个方法 / 函数负责太多功能了（生成数据并且写入一个数据库？处理 HTTP 请求并且处理业务级别的逻辑），那么你可能就需要 DI 这个工具了。
-- 在不同环境下重用代码。我们的代码所处的第一个「新」环境就是在内部进行测试。但是随后，如果其他人想要用你的代码尝试点新东西，他们只要注入他们自己的依赖就可以了。
-
-#### 打印的例子
-
-以打印到标准输出为例，测试框架捕获它非常困难
-
-- 注入（这只是一个等同于「传入」的好听的词）打印的依赖
-- 我们的函数不需要关心在哪里打印，以及如何打印，所以我们应该接收一个接口，而非一个具体的类型
-- `io.Writer` 是一个很好的通用接口，用于「将数据放在某个地方」
-
-```go
-// di_test.go
-
-func TestGreet(t *testing.T) {
-	// bytes 包中的 buffer 类型实现了 Writer 接口
-	// 我们可以在测试中，用它来作为我们的 Writer
-	// 接着调用了 Greet 后，我们可以用它来检查写入了什么
-	buffer := bytes.Buffer{}
-	Greet(&buffer, "Chris")
-
-	got := buffer.String()
-	want := "Hello, Chris"
-
-	if got != want {
-		t.Errorf("got '%s' want '%s'", got, want)
+func TestGetFibonacci(t *testing.T) {
+	if v, err := GetFibonacci(-10); err !== nil {
+		t.Error(err)
 	}
 }
 ```
 
+# 包管理
+
+## 本地包
+
+- 导出的方法必须首字母大写
+
 ```go
-// di.go
+// 导出包
+package series
 
-// Greet sends a personalised greeting to writer
-// io.Writer 比 *bytes.Buffer 更为通用
-// os.Stdout 和 bytes.Buffer 都实现了它
-func Greet(writer io.Writer, name string) {
-	// fmt.Fprintf 和 fmt.Printf 一样
-	// fmt.Fprintf 会接收一个 Writer 参数，用于把字符串传递过去
-	// fmt.Printf 默认是标准输出
-	fmt.Fprintf(writer, "Hello, %s", name)
-}
-
-func main() {
-	Greet(os.Stdout, "Elodie")
+func Square(n int) int {
+	return n * n
 }
 ```
 
-### Mocking
+```go
+// 使用包
+import (
+	"dir/series"
+	"testing"
+)
 
-- 没有对代码中重要的区域进行 mock 将会导致难以测试。在我们的例子中，我们不能测试我们的代码在每个打印之间暂停，但是还有无数其他的例子。调用一个 可能 失败的服务？想要在一个特定的状态测试您的系统？在不使用 mocking 的情况下测试这些场景是非常困难的。
-- 如果没有 mock，你可能需要设置数据库和其他第三方的东西来测试简单的业务规则。你可能会进行缓慢的测试，从而导致 **缓慢的反馈循环**。
-- 当不得不启用一个数据库或者 webservice 去测试某个功能时，由于这种服务的不可靠性，你将会得到的是一个 **脆弱的测试**。
+func TestPackage(t *testing.T) {
+	t.Log(series.Square(5))
+}
+```
+
+## 远程包
+
+https://github.com/Masterminds/glide
