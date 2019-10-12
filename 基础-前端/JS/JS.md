@@ -2540,27 +2540,6 @@ Promise.all([p1, p2]).then(() => {
 });
 ```
 
-## 无需渲染计算文字宽度
-
-```js
-/**
- * Measure some text using a canvas in-memory.
- * Does not exist in Blockly, but needed in scratch-blocks
- * @param {string} fontSize E.g., '10pt'
- * @param {string} fontFamily E.g., 'Arial'
- * @param {string} fontWeight E.g., '600'
- * @param {string} text The actual text to measure
- * @return {number} Width of the text in px.
- * @package
- */
-function measureText(fontSize, fontFamily, fontWeight, text) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  context.font = fontWeight + ' ' + fontSize + ' ' + fontFamily;
-  return context.measureText(text).width;
-}
-```
-
 ## 路由跳转原理
 
 ### hash

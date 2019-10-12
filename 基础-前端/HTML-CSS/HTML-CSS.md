@@ -1397,7 +1397,7 @@ user-select: none;
 }
 ```
 
-## 移动端像素线
+## 移动端1px像素线
 
 ```scss
 .mod_grid_bottom {
