@@ -1029,14 +1029,16 @@ https://segmentfault.com/q/1010000007962353/a-1020000007986863
   height: 70px;
   overflow-y: scroll;
 }
-/* To style the document scrollbar, remove `.custom-scrollbar` */
+/* 整个滚动条 */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
+/* 滚动条的轨道 */
 .custom-scrollbar::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
+/* 滚动条的滑块 */
 .custom-scrollbar::-webkit-scrollbar-thumb {
   border-radius: 10px;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
@@ -1217,6 +1219,23 @@ transform: rotateX(60deg) rotateY(60deg);
 - backface-visibility：背面是否可见
 
 # CSS 小抄
+
+## 光标颜色
+
+```css
+input{
+  color:  #fff;
+  caret-color: red;
+}
+```
+
+## 让 HTML 识别 string 里的 '\n' 并换行
+
+```css
+body {
+  white-space: pre-line;
+}
+```
 
 ## 改变鼠标样式
 
@@ -1611,6 +1630,19 @@ div:hover:after {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+```
+
+## 多行文字超出省略号
+
+```scss
+.wrap {
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;   // 将对象作为弹性伸缩盒子模型显示  *必须结合的属性*
+  -webkit-box-orient: vertical;   // 设置伸缩盒对象的子元素的排列方式  *必须结合的属性*
+  -webkit-line-clamp: 3;   // 用来限制在一个块元素中显示的文本的行数
+  word-break: break-all;   // 让浏览器实现在任意位置的换行 *break-all为允许在单词内换行*
 }
 ```
 
