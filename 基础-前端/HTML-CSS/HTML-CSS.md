@@ -1218,6 +1218,43 @@ transform: rotateX(60deg) rotateY(60deg);
     - 该属性的默认值是 （50%，50%），在舞台 DOM 的中心位置
 - backface-visibility：背面是否可见
 
+## 径向渐变
+
+### 容器宽高椭圆渐变
+
+```css
+.radial-gradient {
+  width: 400px; height: 200px;
+  background: radial-gradient(yellow, red);
+}
+```
+
+### 圆形渐变
+
+```css
+/* 圆心是渐变起点，按照中心点到最远边角作为渐变半径 */
+.radial-gradient {
+  width: 400px; height: 200px;
+  background: radial-gradient(circle, yellow, red);
+}
+
+/* 指定渐变圆心 */
+.radial-gradient {
+  width: 400px; height: 200px;
+  background: radial-gradient(circle at 12.5% 25%, yellow, red);
+}
+
+/* 指定渐变终止点位置 */
+/* closest-side	渐变中心距离容器最近的边作为终止位置。 */
+/* closest-corner	渐变中心距离容器最近的角作为终止位置。 */
+/* farthest-side	渐变中心距离容器最远的边作为终止位置。 */
+/* farthest-corner	渐变中心距离容器最远的角作为终止位置。默认 */
+.radial-gradient {
+  width: 400px; height: 200px;
+  background: radial-gradient(closest-side circle at 50px 50px, yellow, red);
+}
+```
+
 # CSS 小抄
 
 ## 光标颜色
