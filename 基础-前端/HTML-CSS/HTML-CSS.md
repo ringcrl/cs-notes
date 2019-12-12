@@ -1803,6 +1803,136 @@ https://segmentfault.com/a/1190000010640099
 
 # 综合应用
 
+## SVG 文字动效
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>SVG</title>
+</head>
+
+<body>
+    <svg version="1.1" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="text">
+            <text x="10%" y="60%" class="text">腾讯学院</text>
+        </symbol>
+        <g>
+            <use xlink:href="#text" class="use-text"></use>
+            <use xlink:href="#text" class="use-text"></use>
+            <use xlink:href="#text" class="use-text"></use>
+            <use xlink:href="#text" class="use-text"></use>
+            <use xlink:href="#text" class="use-text"></use>
+        </g>
+    </svg>
+</body>
+
+</html>
+```
+
+```css
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.text {
+  font-size: 200px;
+  font-family: cursive;
+}
+
+svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+.use-text {
+  fill: none;
+  stroke: white;
+  stroke-dashoffset: 35%;
+  stroke-dasharray: 0 87.5%;
+
+  stroke-width: 2px;
+}
+
+.use-text:nth-child(1) {
+  stroke: #360745;
+  animation: animation1 8s infinite ease-in-out forwards;
+}
+.use-text:nth-child(2) {
+  stroke: #d61c59;
+  animation: animation2 8s infinite ease-in-out forwards;
+}
+.use-text:nth-child(3) {
+  stroke: #e7d84b;
+  animation: animation3 8s infinite ease-in-out forwards;
+}
+.use-text:nth-child(4) {
+  stroke: #efeac5;
+  animation: animation4 8s infinite ease-in-out forwards;
+}
+.use-text:nth-child(5) {
+  stroke: #1b8798;
+  animation: animation5 8s infinite ease-in-out forwards;
+}
+
+@keyframes animation1 {
+  50% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 7%;
+  }
+  70% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 7%;
+  }
+}
+@keyframes animation2 {
+  50% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 14%;
+  }
+  70% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 14%;
+  }
+}
+@keyframes animation3 {
+  50% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 21%;
+  }
+  70% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 21%;
+  }
+}
+@keyframes animation4 {
+  50% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 28%;
+  }
+  70% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 28%;
+  }
+}
+@keyframes animation5 {
+  50% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 35%;
+  }
+  70% {
+    stroke-dasharray: 7% 28%;
+    stroke-dashoffset: 35%;
+  }
+}
+```
+
 ## 浮层设计
 
 需求：
