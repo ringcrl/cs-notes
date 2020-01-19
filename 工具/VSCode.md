@@ -24,4 +24,24 @@ option + delete
 
 # 选中词
 
-Option + Shift + 右键头 / 左键头
+option + Shift + 右键头 / 左键头
+
+# 切换自动换行
+
+option + z
+
+# 转到下一个错误
+
+F8
+
+# 选中所有匹配项
+
+cmd + F2
+
+# 查看定义
+
+option + F12
+
+# 在资源管理器显示文件
+
+cmd + K R
