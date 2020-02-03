@@ -1257,6 +1257,11 @@ transform: rotateX(60deg) rotateY(60deg);
 
 # CSS 小抄
 
+## 视频全屏播放
+
+- 一般来 H5 视频内容比例是 16：9 那么针对其他比例的手机,就需要根据屏幕宽度高度计算，以最大边撑满，然后再另一方向上居中
+- 使用 Html5 video 标签 css 样式 `object-fit:cover` 也可以做到按视频比例撑满全屏幕的效果
+
 ## 光标颜色
 
 ```css
