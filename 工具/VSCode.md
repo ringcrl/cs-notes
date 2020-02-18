@@ -30,6 +30,10 @@ option + Shift + 右键头 / 左键头
 
 option + z
 
+# 跳转到匹配括号
+
+cmd + shift + \
+
 # 转到下一个错误
 
 F8
