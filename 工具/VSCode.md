@@ -49,3 +49,9 @@ option + F12
 # 在资源管理器显示文件
 
 cmd + K R
+
+# 搜索过滤多个文件夹
+
+files to exclude
+
+{dist, browser}
