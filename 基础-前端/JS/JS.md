@@ -2900,3 +2900,58 @@ window.addEventListener('load', function () {
   updateTiming()
 });
 ```
+
+## video 自动播放
+
+### Chrome 策略
+
+- 静音播放永远支持
+- 有用户的行为事件（click、tap）
+- 根据 `chrome://media-engagement` 评分
+- top frames 可以把有声音的自动播放的权限委托给他们的 iframes
+
+### 不能正常播放的异常捕获
+
+```js
+var promise = document.querySelector('video').play();
+
+if (promise !== undefined) {  
+    promise.catch(error => {
+        // Auto-play was prevented
+        // Show a UI element to let the user manually start playback
+    }).then(() => {
+        // Auto-play started
+    });
+}
+```
+
+### 客户端配置
+
+```js
+// Android
+webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+
+// iOS
+var mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes
+```
+
+### 微信、QQ、QQ 浏览器
+
+- 加载 jsbridge
+- 调用 jsbridge 的回调中调用 video 的 play（一般是用查询网络环境的接口）
+
+```js
+  lib.wx.initWXConf().done(() => {
+    if (typeof window.WeixinJSBridge === 'undefined') {
+      console.log('no WeixinJSBridge');
+      if (document.addEventListener) {
+        document.addEventListener('WeixinJSBridgeReady', wxReadyFunc, false);
+      } else if (document.attachEvent) {
+        document.attachEvent('WeixinJSBridgeReady', wxReadyFunc);
+        document.attachEvent('onWeixinJSBridgeReady', wxReadyFunc);
+      }
+    } else {
+      window.WeixinJSBridge.invoke('getNetworkType', {}, wxReadyFunc);
+    }
+  });
+```
