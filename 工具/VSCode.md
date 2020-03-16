@@ -55,3 +55,7 @@ cmd + K R
 files to exclude
 
 {dist, browser}
+
+# 查看方法调用关系
+
+option + shift + H

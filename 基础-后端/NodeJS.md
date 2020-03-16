@@ -129,6 +129,13 @@ const homeDir =  require('os').homedir();
 
 ## process
 
+### env 环境变量
+
+```js
+// PORT=3000 node 01-server.js
+process.env.PORT === 3000
+```
+
 ### 查看 PATH
 
 ```js
