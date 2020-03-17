@@ -2122,6 +2122,24 @@ setTimeout(function () {
 
 # 实践
 
+## 注入 JS
+
+```js
+export function insertJs(src) {
+  return new Promise(resolve => {
+    // eslint-disable-next-line no-var
+    var tag = document.createElement('script'); // 此处打包没有改成ES5-语法，手动替换下
+
+    tag.type = 'text/javascript';
+    tag.src = src;
+    const s = document.getElementsByTagName('head')[0];
+
+    s.appendChild(tag);
+    tag.addEventListener('load', resolve);
+  });
+}
+```
+
 ## URL Query 字符串格式化
 
 ```js
