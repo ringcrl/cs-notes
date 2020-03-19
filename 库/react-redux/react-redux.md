@@ -1,5 +1,20 @@
 # React
 
+## 生命周期
+
+- componentWillMount：在渲染前调用，在客户端也在服务端
+- componentDidMount：在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，可以通过 this.getDOMNode()来进行访问
+- componentWillReceiveProps：在组件接收到一个新的 prop (更新后)时被调用，这个方法在初始化 render 时不会被调用
+- shouldComponentUpdate：返回一个布尔值，在组件接收到新的 props 或者 state 时被调用。在初始化时或者使用 forceUpdate 时不被调用，可以在你确认不需要更新组件时使用
+- componentWillUpdate：在组件接收到新的 props 或者 state 但还没有render时被调用。在初始化时不会被调用
+- componentDidUpdate：在组件完成更新后立即调用。在初始化时不会被调用
+- componentWillUnmount：在组件从 DOM 中移除之前立刻被调用
+
+## setState 时机
+
+- 可以执行：componentDidMount，但会导致渲染两次
+- 报错：componentDidMount、componentDidUpdate、componentWillMount、componentWillUnmount、shouldComponentUpdate、componentWillUpdate
+
 ## 核心流程
 
 - reconciliation (调度算法）

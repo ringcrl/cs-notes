@@ -1704,7 +1704,19 @@ const tuple = Object.entries(obj); // [['x', 42], ['y', 50]]
 const reObj = Object.fromEntries(tuple); // { x: 42, y: 50 }
 ```
 
-# 先进 API
+# API
+
+## typeof 原理
+
+JS 底层存储变量，会在变量机器码低位 1-3 位存储类型信息
+
+- 000 对象
+- 010 浮点数
+- 100 字符串
+- 110 布尔
+- 1 整数
+- 0 null
+- -2^30 undefined
 
 ## MutationObserver
 

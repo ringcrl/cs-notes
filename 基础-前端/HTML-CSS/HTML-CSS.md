@@ -286,6 +286,25 @@ iphone6 plus / iphone 7 plus
 
 # CSS
 
+## position
+
+### sticky
+
+- 当元素在屏幕内，表现为 relative，就要滚出显示器屏幕的时候，表现为 fixed
+- 特别适合导航的跟随定位效果
+- sticky 元素效果完全受制于父级元素们
+    - 父级元素不能有任何 `overflow:visible` 以外的 `overflow` 设置，否则没有粘滞效果
+    - 父级元素设置和粘性定位元素等高的固定的 height 高度值，或者高度计算值和粘性定位元素高度一样，也没有粘滞效果
+- sticky 定位，不仅可以设置 top，基于滚动容器上边缘定位；还可以设置 bottom，也就是相对底部粘滞。如果是水平滚动，也可以设置 left 和 right 值
+
+```css
+nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+```
+
 ## 选择器
 
 - 拿到 DOM 构造好的元素，去检查它匹配到了哪些规则，再根据规则的优先级，做覆盖和调整
