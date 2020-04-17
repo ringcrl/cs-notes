@@ -4,6 +4,7 @@
     * [JS](基础-前端/JS/JS.md)
     * [SVG](基础-前端/SVG/SVG.md)
     * [TS](基础-前端/TS/TS.md)
+    * [Video](基础-前端/Video/Video.md)
 * 基础-后端
     * [GO](基础-后端/Go.md)
     * [NodeJS](基础-后端/NodeJS.md)

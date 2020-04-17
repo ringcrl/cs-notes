@@ -307,6 +307,46 @@ COPY 与 ADD 指令的定义方式完全一样，需要注意的仅是当我们�
 docker build -t webapp:latest .
 ```
 
+### 发布镜像
+
+```sh
+docker tag node_rss_bot ringcrl/node_rss_bot
+
+docker push ringcrl/node_rss_bot:tagname
+```
+
+### 服务端启动镜像
+
+```sh
+docker pull ringcrl/node_rss_bot
+docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
+```
+
+### 服务端更新镜像
+
+```sh
+# 查看镜像
+docker images
+
+# 拉取最新镜像
+docker pull ringcrl/node_rss_bot
+
+# 停止并且删除当前运行容器
+docker ps
+
+# 找到当初容器的启动参数
+docker inspect 8992319a1585
+
+# 停止容器
+docker kill 8992319a1585
+
+# 删除容器
+docker rm 8992319a1585
+
+# 重新创建容器
+docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
+```
+
 ### 实用技巧
 
 #### 构建时变量
