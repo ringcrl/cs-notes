@@ -63,3 +63,18 @@ function measureText(fontSize, fontFamily, fontWeight, text) {
   return context.measureText(text).width;
 }
 ```
+
+## 生成 Canvas 指纹
+
+由于 Cookie 被禁用，所以需要通过一些方法来获取浏览器指纹，来标识唯一用户
+
+```js
+function getCanvasFinger() {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  ctx.font = '18pt Arial'
+  ctx.textBaseline = 'top'
+  ctx.fillText('canvas-fingerprint', 2, 2)
+  return canvas.toDataURL('image/jpeg')
+}
+```
