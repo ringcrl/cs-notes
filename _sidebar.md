@@ -26,6 +26,7 @@
     * [Gulp](工具/Gulp.md)
     * [js-libs](工具/js-libs.md)
     * [Linux](工具/Linux.md)
+    * [mermaid](工具/mermaid.md)
     * [Mongodb](工具/Mongodb.md)
     * [MySQL](工具/MySQL.md)
     * [Nginx](工具/Nginx.md)
