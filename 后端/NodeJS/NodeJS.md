@@ -2184,6 +2184,10 @@ app.post('/process', parseForm, csrfProtection, function(req, res) {
 
 # 综合应用
 
+## Node.js REST API
+
+https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&mid=2247494260&idx=2&sn=a83f24b29a038ac6ed1fa4da672cceb1&chksm=f9525f37ce25d621c149b30a36a90af504f3f3d57505636b2b691c8c536735e55e7b7949dca1&scene=27
+
 ## watch 服务
 
 ```js
