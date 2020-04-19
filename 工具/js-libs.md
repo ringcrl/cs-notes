@@ -1,6 +1,49 @@
-# 常用
+# localForage
 
-## koa && koa-router
+https://github.com/localForage/localForage
+
+- 类似于 localStorage，但提供异步 API、存储多种类型不只是字符串
+- 优雅降级策略，若浏览器不支持 IndexedDB 或 WebSQL，则使用 localStorage
+
+```js
+// Set
+localforage.setItem('key', 'value').then(doSomethingElse);
+// localForage 同样支持回调函数
+localforage.setItem('key', 'value', doSomethingElse);
+
+// Get
+localforage.getItem('somekey').then(function(value) {
+    // 当离线仓库中的值被载入时，此处代码运行
+    console.log(value);
+}).catch(function(err) {
+    // 当出错时，此处代码运行
+    console.log(err);
+});
+// 回调版本：
+localforage.getItem('somekey', function(err, value) {
+    // 当离线仓库中的值被载入时，此处代码运行
+    console.log(value);
+});
+```
+
+# clientjs
+
+https://github.com/jackspirou/clientjs
+
+获取浏览器唯一指纹
+
+```js
+// Create a new ClientJS object
+var client = new ClientJS();
+
+// Get the client's fingerprint id
+var fingerprint = client.getFingerprint();
+
+// Print the 32bit hash id to the console
+console.log(fingerprint);
+```
+
+# koa && koa-router
 
 - https://github.com/koajs/koa
 - https://github.com/ZijianHe/koa-router
@@ -23,7 +66,7 @@ app
 app.listen(5555);
 ```
 
-## jsdom
+# jsdom
 
 https://github.com/jsdom/jsdom
 
@@ -36,7 +79,7 @@ const { JSDOM } = jsdom;
 const { document } = (new JSDOM(htmlStr)).window;
 ```
 
-## ejs
+# ejs
 
 https://github.com/mde/ejs
 
@@ -55,7 +98,7 @@ const template = ejs.compile(
 const html = template(HtmlData);
 ```
 
-## nodemailer
+# nodemailer
 
 https://github.com/nodemailer/nodemailer
 
@@ -104,7 +147,7 @@ async function main(){
 main().catch(console.error);
 ```
 
-## chalk
+# chalk
 
 https://github.com/chalk/chalk
 
@@ -116,7 +159,7 @@ const chalk = require('chalk');
 console.log(chalk.blue('Hello world!'));
 ```
 
-## yargs
+# yargs
 
 https://github.com/yargs/yargs
 
@@ -132,7 +175,7 @@ if (argv.ships > 3 && argv.distance < 53.5) {
 }
 ```
 
-## concurrently
+# concurrently
 
 https://github.com/kimmobrunfeldt/concurrently
 
@@ -146,7 +189,7 @@ https://github.com/kimmobrunfeldt/concurrently
 }
 ```
 
-## prompts
+# prompts
 
 https://github.com/terkelg/prompts
 
@@ -179,7 +222,7 @@ let response = await prompts(questions);
 // => response => { username, age, about }
 ```
 
-## eslint
+# eslint
 
 https://cn.eslint.org/
 
@@ -189,9 +232,7 @@ https://cn.eslint.org/
 npm install -g eslint eslint-plugin-react
 ```
 
-# 不常用
-
-## images
+# images
 
 https://github.com/zhangyuanwei/node-images
 
@@ -215,7 +256,7 @@ images("input.jpg")                     //Load image from file
   });
 ```
 
-## tesseract.js
+# tesseract.js
 
 https://github.com/naptha/tesseract.js
 
@@ -230,7 +271,7 @@ Tesseract.recognize(myImage)
 })
 ```
 
-## socks5-http-client
+# socks5-http-client
 
 https://github.com/mattcg/socks5-http-client
 
@@ -250,5 +291,3 @@ request({
   console.log(err || res.body);
 });
 ```
-
-
