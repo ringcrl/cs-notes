@@ -331,17 +331,14 @@ docker images
 # 拉取最新镜像
 docker pull ringcrl/node_rss_bot
 
-# 停止并且删除当前运行容器
+# 查找容器
 docker ps
 
-# 找到当初容器的启动参数
-docker inspect 8992319a1585
-
 # 停止容器
-docker kill 8992319a1585
+docker kill 26cd26b1a5d5
 
 # 删除容器
-docker rm 8992319a1585
+docker rm 26cd26b1a5d5
 
 # 重新创建容器
 docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
