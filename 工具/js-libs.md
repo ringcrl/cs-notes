@@ -295,3 +295,9 @@ request({
 # 产品步骤引导库
 
 https://juejin.im/post/5e972664518825736b74a24d
+
+# wavesurfer.js
+
+使用 Web Audio 和 Canvas 的交互式可导航音频可视化
+
+https://github.com/katspaugh/wavesurfer.js
