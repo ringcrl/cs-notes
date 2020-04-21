@@ -28,9 +28,10 @@ localforage.getItem('somekey', function(err, value) {
 
 # clientjs
 
-https://github.com/jackspirou/clientjs
+获取浏览器唯一指纹：
 
-获取浏览器唯一指纹
+- https://github.com/jackspirou/clientjs
+- https://github.com/Valve/fingerprintjs2
 
 ```js
 // Create a new ClientJS object
