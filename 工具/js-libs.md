@@ -302,3 +302,7 @@ https://juejin.im/post/5e972664518825736b74a24d
 使用 Web Audio 和 Canvas 的交互式可导航音频可视化
 
 https://github.com/katspaugh/wavesurfer.js
+
+# JavaScript解释器
+
+https://github.com/bplok20010/eval5
