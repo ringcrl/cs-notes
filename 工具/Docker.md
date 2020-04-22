@@ -33,6 +33,11 @@ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/dock
 sudo yum install docker-ce
 sudo systemctl enable docker
 sudo systemctl start docker
+
+# Linux 脚本安装
+wget -qO- https://get.docker.com/ | sh
+# 非 root 用户使用 docker
+sudo usermod -aG docker <your-user>
 ```
 
 ## portainer
