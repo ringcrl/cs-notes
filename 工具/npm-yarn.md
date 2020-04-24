@@ -38,6 +38,13 @@
 - 修改 package.json 的 `name`、`repository`、`homepage` ，例如 `@kitten-team/react-native-sound`
 - `npm publish --access public` 推送到 npm
 
+## owner 权限
+
+```sh
+# 添加用户权限
+npm owner add xxx
+```
+
 ## Git 私有包
 
 - Git tag
