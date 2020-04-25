@@ -31,6 +31,54 @@ sudo usermod -aG docker <your-user>
 
 # 镜像
 
+## 构建镜像
+
+- docker build 可以接收一个参数，需要特别注意的是，这个参数为一个目录路径 (本地路径或 URL 路径)，而并非 Dockerfile 文件的路径
+- 在 docker build 里，这个我们给出的目录会作为构建的环境目录，我们很多的操作都是基于这个目录进行的。例如，在我们使用 COPY 或是 ADD 拷贝文件到构建的新镜像时，会以这个目录作为基础目录
+- 在默认情况下，docker build 也会从这个目录下寻找名为 Dockerfile 的文件，将它作为 Dockerfile 内容的来源
+- 在构建时我们最好总是携带上 -t 选项，用它来指定新生成镜像的名称
+
+```sh
+docker build -t webapp:latest .
+```
+
+## 发布镜像
+
+```sh
+docker tag node_rss_bot ringcrl/node_rss_bot
+
+docker push ringcrl/node_rss_bot:tagname
+```
+
+## 镜像启动
+
+```sh
+docker pull ringcrl/node_rss_bot
+docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
+```
+
+## 更新镜像
+
+```sh
+# 查看镜像
+docker images
+
+# 拉取最新镜像
+docker pull ringcrl/node_rss_bot
+
+# 查找容器
+docker ps
+
+# 停止容器
+docker kill 26cd26b1a5d5
+
+# 删除容器
+docker rm 26cd26b1a5d5
+
+# 重新创建容器
+docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
+```
+
 ## 拉取镜像
 
 latest 是一个非强制标签，不保证指向仓库中的最新镜像
@@ -86,8 +134,8 @@ docker start nginx
 
 # run 同时创建和启动，-d 是在后台运行
 docker run \
-  --name nginx \ 
-  -d \
+  -d \ # 后台运行
+  --name nginx \ # 为容器命名
   nginx:1.12
 ```
 
@@ -108,6 +156,9 @@ docker container rm -f <CONTAINER ID>
 
 # 查看容器状态
 docker inspect <NAME>
+
+# 快速清理所有容器
+docker container rm $(docker container ls -aq) -f
 ```
 
 ## 进入容器
@@ -146,7 +197,7 @@ docker run -d -p 80:80 -p 443:443 nginx
 - 沙盒文件系统是跟随容器生命周期所创建和移除的，数据无法直接被持久化存储
 - 由于容器隔离，我们很难从容器外部获得或操作容器内部文件中的数据
 
-## 暂停容器数据不会移除
+## 容器数据
 
 ```sh
 # 启动容器
@@ -165,7 +216,7 @@ docker container stop percy
 # 重新开始容器
 docker container start percy
 
-# 进入容器
+# 进入容器，容器内数据还存在
 docker container exec -it percy bash
 ```
 
@@ -173,25 +224,36 @@ docker container exec -it percy bash
 
 ```sh
 # -v <host-path>:<container-path> 读写挂载
-docker run --name nginx -d -p 80:80 -v ~/static/:/usr/share/nginx/html nginx
+docker run --name nginx \
+ -d -p 80:80 \
+ -v ~/static/:/usr/share/nginx/html \
+ nginx
 
 # -v <host-path>:<container-path>:ro 以只读挂载
-docker run --name nginx -d -p 80:80 -v ~/static/:/usr/share/nginx/html:ro nginx
+docker run --name nginx \
+  -d -p 80:80 \
+  -v ~/static/:/usr/share/nginx/html:ro \
+  nginx
 ```
 
 ## Volume
 
 数据卷的本质其实依然是宿主操作系统上的一个目录，只不过这个目录存放在 Docker 内部，接受 Docker 的管理。
 
-### 使用数据卷
+### 创建与使用
 
 ```sh
 # 创建数据卷
-docker volume create appdata
+docker volume create myVol
+
+# 查看数据卷
+docker volume inspect myVol
 
 # 使用数据卷
-docker run -d --name webapp -v appdata webapp:latest
-docker run -d --name nginx -v appdata nginx
+docker run -d \
+  --name webapp \
+  -v myVol \
+  webapp:latest
 
 # 删除没有被容器引用的数据卷
 docker volume prune -f
@@ -316,54 +378,6 @@ COPY 与 ADD 指令的定义方式完全一样，需要注意的仅是当我们�
 对比 COPY 与 ADD，两者的区别主要在于 ADD 能够支持使用网络端的 URL 地址作为 src 源，并且在源文件被识别为压缩包时，自动进行解压，而 COPY 没有这两个能力。
 
 虽然看上去 COPY 能力稍弱，但对于那些不希望源文件被解压或没有网络请求的场景，COPY 指令是个不错的选择。
-
-## 构建镜像
-
-- docker build 可以接收一个参数，需要特别注意的是，这个参数为一个目录路径 (本地路径或 URL 路径)，而并非 Dockerfile 文件的路径。
-- 在 docker build 里，这个我们给出的目录会作为构建的环境目录，我们很多的操作都是基于这个目录进行的。例如，在我们使用 COPY 或是 ADD 拷贝文件到构建的新镜像时，会以这个目录作为基础目录。
-- 在默认情况下，docker build 也会从这个目录下寻找名为 Dockerfile 的文件，将它作为 Dockerfile 内容的来源。
-- 在构建时我们最好总是携带上 -t 选项，用它来指定新生成镜像的名称。
-
-```sh
-docker build -t webapp:latest .
-```
-
-## 发布镜像
-
-```sh
-docker tag node_rss_bot ringcrl/node_rss_bot
-
-docker push ringcrl/node_rss_bot:tagname
-```
-
-## 服务端启动镜像
-
-```sh
-docker pull ringcrl/node_rss_bot
-docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
-```
-
-## 服务端更新镜像
-
-```sh
-# 查看镜像
-docker images
-
-# 拉取最新镜像
-docker pull ringcrl/node_rss_bot
-
-# 查找容器
-docker ps
-
-# 停止容器
-docker kill 26cd26b1a5d5
-
-# 删除容器
-docker rm 26cd26b1a5d5
-
-# 重新创建容器
-docker run --name node_rss_bot -d -v /var/data:/app/data/ -e RSSBOT_TOKEN=<TG_TOKEN> ringcrl/node_rss_bot
-```
 
 ## 实用技巧
 
@@ -561,8 +575,9 @@ volumes:
 docker pull ringcrl/node_rss_bot
 
 docker run \
+  -d
   --name node_rss_bot \
-  -d -v /var/data:/app/data/ \
+  -v /var/data:/app/data/ \
   -e RSSBOT_TOKEN=<TG_TOKEN> \
   ringcrl/node_rss_bot
 ```
