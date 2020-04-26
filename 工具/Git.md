@@ -333,11 +333,19 @@ git pull --allow-unrelated-histories
 ## 修改上一个 commit
 
 ```sh
+# 已提交一个 commit 并且推到了远端
+
+# 编辑上一个 commit，pick 改为 edit
 git rebase -i HEAD^
 
+# 编辑文件
+gaa
+
+# rebase
 git rebase --continue
 
-git add 
+# 重写远端记录
+gp -f
 ```
 
 # git cherry pick
