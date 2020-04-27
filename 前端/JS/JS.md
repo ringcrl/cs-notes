@@ -1145,6 +1145,69 @@ const xml_dom = parser
   .firstElementChild;
 ```
 
+## 限制键盘输入
+
+```js
+const ele = document.getElementById('input');
+
+ele.addEventListener('keypress', function(e) {
+    // Get the code of pressed key
+    const key = e.which || e.keyCode;
+
+    // 0, 1, ..., 9 have key code of 48, 49, ..., 57, respectively
+    // Space has key code of 32
+    if (key != 32 && (key < 48 || key > 57)) {
+        // Prevent the default action
+        e.preventDefault();
+    }
+});
+
+// Track the current cursor's position
+const selection = {};
+
+ele.addEventListener('keydown', function(e) {
+    const target = e.target;
+    selection = {
+        selectionStart: target.selectionStart,
+        selectionEnd: target.selectionEnd,
+    };
+});
+
+ele.addEventListener('input', function(e) {
+    const target = e.target;
+
+    if (/^[0-9s]*$/.test(target.value)) {
+        currentValue = target.value;
+    } else {
+        // Users enter the not supported characters
+        // Restore the value and selection
+        target.value = currentValue;
+        target.setSelectionRange(
+            selection.selectionStart,
+            selection.selectionEnd
+        );
+    }
+});
+```
+
+## 元素是否可滚动
+
+```js
+const isScrollable = function(ele) {
+    // Compare the height to see if the element has scrollable content
+    const hasScrollableContent = ele.scrollHeight > ele.clientHeight;
+
+    // It's not enough because the element's `overflow-y` style can be set as
+    // * `hidden`
+    // * `hidden !important`
+    // In those cases, the scrollbar isn't shown
+    const overflowYStyle = window.getComputedStyle(ele).overflowY;
+    const isOverflowHidden = overflowYStyle.indexOf('hidden') !== -1;
+
+    return hasScrollableContent && !isOverflowHidden;
+};
+```
+
 # Pormise
 
 ## 解决的问题
