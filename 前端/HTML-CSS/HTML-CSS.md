@@ -42,18 +42,6 @@ br hr link meta
 - img、video、audio 替换型媒体标签
 - style 标签并非替换型元素，不能使用 src 属性，这样，我们用 link 标签引入 CSS 文件，就是用 href 属性
 
-### iframe
-
-- 这个标签能够嵌入一个完整的网页
-- 在移动端，iframe 受到了相当多的限制，它无法指定大小，里面的内容会被完全平铺到父级页面上
-- 很多网页也会通过 http 协议头禁止自己被放入 iframe 中
-- 在新标准中，为 iframe 加入了 sandbox 模式和 srcdoc 属性，给 iframe 带来了一定的新场景
-
-```html
-
-<iframe sandbox srcdoc="<p>Yeah, you can see it <a href="/gallery?mode=cover&amp;amp;page=1">in my gallery</a>."></iframe>
-```
-
 ## 渲染机制
 
 ### DOCTYPE

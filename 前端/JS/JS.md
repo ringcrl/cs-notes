@@ -682,6 +682,141 @@ let signUp = function(Db, Email, attrs) {
 
 # DOM
 
+## 键盘密码可见于不可见切换
+
+```html
+<input type="password" id="password" />
+
+<button id="toggle">Toggle</button>
+```
+
+```js
+// Query the elements
+const passwordEle = document.getElementById('password');
+const toggleEle = document.getElementById('toggle');
+
+toggleEle.addEventListener('click', function() {
+    const type = passwordEle.getAttribute('type');
+    
+    passwordEle.setAttribute(
+        'type',
+        // Switch it to a text field if it's a password field
+        // currently, and vice versa
+        type === 'password' ? 'text' : 'password'
+    );
+});
+```
+
+## 聚焦后全选
+
+```js
+ele.addEventListener('focus', function(e) {
+    // Select the text
+    e.target.select();
+});
+```
+
+## 滚动到某个元素
+
+```js
+ele.scrollIntoView({ behavior: 'smooth' });
+```
+
+## 从剪切板粘贴图片
+
+```js
+// Handle the `paste` event
+document.addEventListener('paste', function(evt) {
+    // Get the data of clipboard
+    const clipboardItems = evt.clipboardData.items;
+    const items = [].slice
+        .call(clipboardItems)
+        .filter(function(item) {
+            // Filter the image items only
+            return item.type.indexOf('image') !== -1;
+        });
+    if (items.length === 0) {
+        return;
+    }
+
+    const item = items[0];
+    // Get the blob of image
+    const blob = item.getAsFile();
+
+    // Assume that we have an `img` element
+    // <img id="preview" />
+
+    const imageEle = document.getElementById('preview');
+    imageEle.src = URL.createObjectURL(blob);
+
+    // 粘贴后上传服务器
+    // Create a new FormData
+    const formData = new FormData();
+    formData.append('image', blob, 'filename');
+
+    // Create new Ajax request
+    const req = new XMLHttpRequest();
+    req.open('POST', '/path/to/back-end', true);
+
+    // Handle the events
+    req.onload = function() {
+        if (req.status >= 200 && req.status < 400) {
+            const res = req.responseText;
+            // Do something with the response
+            // ...
+        }
+    };
+
+    // Send it
+    req.send(formData);
+});
+```
+
+## 计算图片宽高
+
+```js
+const calculateSize = function(url) {
+    return new Promise(function(resolve, reject) {
+        const image = document.createElement('img');
+        image.addEventListener('load', function(e) {
+            resolve({
+                width: e.target.width,
+                height: e.target.height,
+            });
+        });
+
+        image.addEventListener('error', function() {
+            reject();
+        });
+
+        image.src = url;
+    });
+};
+
+calculateSize('/path/to/image.png').then(function(data) {
+    const width = data.width;
+    const height = data.height;
+});
+```
+
+## 获取 document 宽高
+
+```js
+// Full height, including the scroll part
+const fullHeight = Math.max(
+    document.body.scrollHeight, document.documentElement.scrollHeight,
+    document.body.offsetHeight, document.documentElement.offsetHeight,
+    document.body.clientHeight, document.documentElement.clientHeight
+);
+
+// Full width, including the scroll part
+const fullWidth = Math.max(
+    document.body.scrollWidth, document.documentElement.scrollWidth,
+    document.body.offsetWidth, document.documentElement.offsetWidth,
+    document.body.clientWidth, document.documentElement.clientWidth
+);
+```
+
 ## JQ To Native
 
 ### Query Selector
@@ -1274,44 +1409,57 @@ const 准备午餐 = 买菜()
 
 # iFrame
 
-## 通信方式
+- 这个标签能够嵌入一个完整的网页
+- 在移动端，iframe 受到了相当多的限制，它无法指定大小，里面的内容会被完全平铺到父级页面上
+- 很多网页也会通过 http 协议头禁止自己被放入 iframe 中
+- 在新标准中，为 iframe 加入了 sandbox 模式和 srcdoc 属性，给 iframe 带来了一定的新场景
 
-- 父页面：iframe.contentWindow.postMessage
-- 子页面：window.top.postMessage
+## 发送信息
 
-```html
-<body>
-  <iframe id="iframe" src="http://localhost:5001"></iframe>
-  <div>5000</div>
-  <button id="button">test</button>
-  <script>
-    window.addEventListener('message', (e) => {
-      console.log('5000 收到', e);
-    })
-
-    document.querySelector('#button').addEventListener('click', () => {
-      document.querySelector('#iframe').contentWindow.postMessage('5000 发送', '*');
-    });
-  </script>
-</body>
+```js
+// Called from the iframe
+const message = JSON.stringify({
+    message: 'Hello from iframe',
+    date: Date.now(),
+});
+window.parent.postMessage(message, '*');
 ```
 
-```html
-<body>
-  <div>5001</div>
-  <button id="button">test</button>
-  <script>
-    window.addEventListener('message', (e) => {
-      console.log('5001 收到', e);
-    })
+```js
+// Called from the page
+frameEle.contentWindow.postMessage(message, '*');
+```
 
-    document.querySelector('#button').addEventListener('click', () => {
-      // 多层嵌套不能用 parent，不是顶层
-      // window.parent.postMessage('5001 发送', '*');
-      window.top.postMessage('5001 发送', '*');
-    });
-  </script>
-</body>
+## 接收信息
+
+```js
+window.addEventListener('message', function(e) {
+    // Get the sent data
+    const data = e.data;
+    
+    // If you encode the message in JSON before sending them, 
+    // then decode here
+    // const decoded = JSON.parse(data);
+});
+```
+
+## 多个 iframe 通信
+
+```js
+// From a child iframe
+const message = JSON.stringify({
+  channel: 'FROM_FRAME_A',
+  ...
+});
+window.parent.postMessage(message, '*');
+```
+
+```js
+window.addEventListener('message', function(e) {
+  const data = JSON.parse(e.data);
+  // Where does the message come from
+  const channel = data.channel;
+});
 ```
 
 # 事件
@@ -2113,6 +2261,84 @@ db.transaction(function (tx) {
  * errorCallback 失败回调
 */
 tx.executeSql(sql, [], callback, errorCallback);
+```
+
+## 复制文本到剪切板
+
+```js
+// Create a fake textarea
+const textAreaEle = document.createElement('textarea');
+
+// Reset styles
+textAreaEle.style.border = '0';
+textAreaEle.style.padding = '0';
+textAreaEle.style.margin = '0';
+
+// Set the absolute position
+// User won't see the element
+textAreaEle.style.position = 'absolute';
+textAreaEle.style.left = '-9999px';
+textAreaEle.style.top = `0px`;
+
+// Set the value
+textAreaEle.value = text;
+
+// Append the textarea to body
+document.body.appendChild(textAreaEle);
+
+// Focus and select the text
+textAreaEle.focus();
+textAreaEle.select();
+
+// Execute the "copy" command
+try {
+    document.execCommand('copy');
+} catch (err) {
+    // Unable to copy
+} finally {
+    // Remove the textarea
+    document.body.removeChild(textAreaEle);
+}
+```
+
+## 鼠标点击
+
+```js
+ele.addEventListener('mousedown', function(e) {
+    // e.button === 0: the left button is clicked
+    // e.button === 1: the middle button is clicked
+    // e.button === 2: the right button is clicked
+    // e.button === 3: the `Browser Back` button is clicked
+    // e.button === 4: the `Browser Forward` button is clicked
+});
+```
+
+## 下载动态数据
+
+```js
+const data = JSON.stringify({ 'message': 'Hello Word' });
+
+const blob = new Blob([data], { type: 'application/json' });
+
+// Create new URL
+const url = window.URL.createObjectURL(blob);
+
+// Create a new link
+const link = document.createElement('a');
+link.download = 'file name';
+link.href = '/path/to/file';
+
+// Append to the document
+document.body.appendChild(link);
+
+// Trigger the click event
+link.click();
+
+// Remove the element
+document.body.removeChild(link);
+
+// Free the URL created above
+window.URL.revokeObjectURL(url);
 ```
 
 # 底层
