@@ -682,6 +682,59 @@ let signUp = function(Db, Email, attrs) {
 
 # DOM
 
+## 跨域通信
+
+### document.domain+iframe
+
+```html
+<!-- A页面 http://a.qq.com/a.html -->
+<iframe id="iframe" src="http://b.qq.com/b.html"></iframe>
+<script>
+    document.domain = "qq.com";
+    var windowB = document.getElementById("iframe").contentWindow;
+    alert("B页面的user变量：" + windowB.user);
+</script>
+```
+
+```html
+<!-- B页面 http://b.qq.com/b.html -->
+<script>
+    document.domain = "qq.com";
+    var user = "saramliu";
+</script>
+```
+
+### postMessage
+
+```html
+<!-- A页面 http://a.qq.com/a.html -->
+<iframe id="iframe" src="http://b.qq1.com/b.html"></iframe>
+<script>
+    var iframe = document.getElementById('iframe');
+    iframe.onload = function() {
+        var data = {meesage: "这里是A页面发的消息"}; 
+        var url = "http://b.qq1.com/b.html";
+        // 向B页面发送消息
+        iframe.contentWindow.postMessage(JSON.stringify(data), url);
+    };
+    window.addEventListener("message", function(e) {
+        alert("B页面发来消息：" + JSON.parse(e.data));
+    });
+</script>
+```
+
+```html
+<!-- B页面 http://b.qq1.com/b.html -->
+<script>
+    window.addEventListener("message", function(e) {
+        alert("A页面发来消息：" + JSON.parse(e.data));
+        var data = {meesage: "这里是B页面发的消息"}; 
+        var url = "http://a.qq.com/a.html";
+        window.parent.postMessage(JSON.stringify(data), url);
+    }, false);
+</script>
+```
+
 ## 键盘密码可见于不可见切换
 
 ```html
@@ -1376,35 +1429,75 @@ new Promise(请求1)
 - Promise.prototype.catch(fn)
     - fn 的参数为 err，之前回调抛出的异常信息
 
-## 例子
+## promise.all 异常处理
 
 ```js
-function 买菜() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(['西红柿', '鸡蛋', '油菜']);
-    }, 2000);
-  });
-}
-function 做饭(买好的菜) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(买好的菜.join('+'));
-    }, 2000);
-  });
-}
-
-const 准备午餐 = 买菜()
-  .then((买好的菜) => {
-    return 做饭(买好的菜);
+function getBannerList() {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      // 假设这里 reject 一个异常
+      reject(new Error('error'))
+    }, 300)
   })
-  .then((做好的饭) => {
-    return 做好的饭;
-  });
+}
 
-准备午餐.then((午餐) => {
-  console.log(午餐);
-});
+function getStoreList() {
+  // ...
+}
+
+function getCategoryList() {
+  // ...
+}
+
+function initLoad() {
+  Promise.all([
+    getBannerList().catch(err => err),
+    getStoreList().catch(err => err),
+    getCategoryList().catch(err => err)
+  ]).then(res => {
+
+    if (res[0] instanceof Error) {
+      // 处理异常
+    } else {
+      // 渲染数据
+    }
+
+    if (res[1] instanceof Error) {
+      // 处理异常
+    } else {
+      // 渲染数据
+    }
+
+    if (res[2] instanceof Error) {
+      // 处理异常
+    } else {
+      // 渲染数据
+    }
+  })
+}
+
+initLoad()
+```
+
+## Promise.raceAll
+
+设置 Promise.all 的超时
+
+```ts
+function overridePromise() {
+  ;(Promise as any).delay = function(t: number, val: any) {
+    return new Promise((resolve) => {
+      setTimeout(resolve.bind(null, val), t)
+    })
+  }
+  ;(Promise as any).raceAll = function(promises: any[], timeoutTime: number, timeoutVal: any) {
+    return Promise.all(
+      promises.map((p) => {
+        return Promise.race([p, (Promise as any).delay(timeoutTime, timeoutVal)])
+      })
+    )
+  }
+}
 ```
 
 # iFrame
