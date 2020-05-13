@@ -60,7 +60,7 @@ https://help.github.com/en/articles/changing-author-info
 git filter-branch --env-filter '
 
 OLD_EMAIL="sagacheng@tencent.com"
-CORRECT_NAME="Chenng"
+CORRECT_NAME="ringcrl"
 CORRECT_EMAIL="ringcrl@foxmail.com"
 
 if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
