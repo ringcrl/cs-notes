@@ -330,6 +330,14 @@ git pull --allow-unrelated-histories
 - git rebase 把我们本地的提交“挪动”了位置，整个提交历史就成了一条直线
 - 本地的修改不再是基于之前迁出，而是相当于拉完最新代码再提交
 
+## 合并多个本地 commit
+
+```sh
+git rebase -i
+
+# 将不想留下的 commit 信息，pick 改成 s
+```
+
 ## 修改上一个 commit
 
 ```sh
