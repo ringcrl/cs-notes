@@ -682,6 +682,25 @@ let signUp = function(Db, Email, attrs) {
 
 # DOM
 
+## First-Contentful-Paint
+
+[以用户为中心的性能指标](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics?hl=zh-cn)
+
+```js
+const getPerformanceTimingByName = (performance, name) => {
+  if (!performance || !name || !performance.getEntriesByName) {
+    return false;
+  }
+  const timeItems = performance.getEntriesByName(name);
+  if (timeItems && timeItems[0] && timeItems[0].startTime) {
+    return Math.round(timeItems[0].startTime);
+  }
+  return false;
+};
+
+getPerformanceTimingByName(performance, 'first-contentful-paint')
+```
+
 ## 跨域通信
 
 ### document.domain+iframe
