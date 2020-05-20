@@ -10,6 +10,7 @@
 * 后端
     * [GO](后端/Go.md)
     * [NodeJS](后端/NodeJS/NodeJS.md)
+    * [Python](后端/Python.md)
     * [Serverless](后端/Serverless.md)
 * 计算机
     * [安全基础](计算机/安全基础/安全基础.md)
