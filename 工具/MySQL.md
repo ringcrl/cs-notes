@@ -155,7 +155,7 @@ mysql> use mysql;
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'new_password';
 ```
 
-## 数据库和表
+## 库操作
 
 ```sql
 -- 查看数据库
@@ -172,27 +172,35 @@ USE db_name;
 
 -- 查看当前使用的数据库
 SELECT DATABASE();
+```
 
+## 表操作
+
+### 查看表
+
+```sql
 -- 查看所有数据库表
 SHOW TABLES;
 
 -- 查看表结构
 DESC table_name
+```
 
--- 创建表
-DROP TABLE IF EXISTS `player`;
-CREATE TABLE `player`  (
-  `player_id` int(11) NOT NULL AUTO_INCREMENT,
-  `team_id` int(11) NOT NULL,
-  -- utf8 字符编码
-  -- utf8_general_ci 大小写不敏感
-  -- utf8_bin 大小写敏感
-  `player_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `height` float(3, 2) NULL DEFAULT 0.00,
-  PRIMARY KEY (`player_id`) USING BTREE,
-  UNIQUE INDEX `player_name`(`player_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+### 创建表
 
+```sql
+-- 建表语句
+CREATE TABLE cb_table(
+  cb_id int NOT NULL AUTO_INCREMENT,
+  cb_data CHAR(255) NOT NULL,
+  cb_time timestamp NOT NULL,
+  PRIMARY KEY (cb_id)
+) ENGINE=InnoDB;
+```
+
+### 更新表
+
+```sql
 -- 添加表字段
 ALTER TABLE player ADD (
 	age int(11)
@@ -203,6 +211,18 @@ ALTER TABLE player DROP COLUMN age;
 
 -- 修改表字段
 ALTER TABLE player MODIFY age float(3,1);
+```
+
+### 删除表
+
+```sql
+DROP TABLE cb_table;
+```
+
+### 重命名表
+
+```sql
+RENAME TABLE cb_table TO cb_table_new;
 ```
 
 ## 配置
@@ -458,6 +478,7 @@ INSERT 操作可以忽略的列
 - 在表定义中给出了默认值
 
 ```sql
+-- 插入单条
 INSERT INTO cb_table(
   cb_data,
   cb_time
@@ -466,6 +487,15 @@ VALUES(
   '剪切板内容',
   '2018/11/24 13:53:29'
 );
+
+-- 插入多条
+INSERT INTO cb_table(
+  cb_data,
+  cb_time
+)
+VALUES
+  ('内容一', '2018/11/24 13:53:29'),
+  ('内容二', '2018/11/24 13:54:29');
 ```
 
 ## 更新数据
@@ -503,52 +533,6 @@ WHERE cb_id = 1;
 
 ```sql
 TRUNCATE TABLE cb_table;
-```
-
-## 数据库操作
-
-```sql
--- 创建数据库
-DROP DATABASE IF EXISTS clipboard;
-CREATE DATABASE clipboard DEFAULT CHARSET utf8;
-/* USE clipboard; */
-```
-
-## 表操作
-
-### 创建表
-
-```sql
-CREATE TABLE cb_table(
-  cb_id int NOT NULL AUTO_INCREMENT,
-  cb_data CHAR(255) NOT NULL,
-  cb_time timestamp NOT NULL,
-  PRIMARY KEY (cb_id)
-) ENGINE=InnoDB;
-```
-
-### 更新表
-
-```sql
-/* 添加列 */
-ALTER TABLE cb_table
-ADD text_cloumn CHAR(20);
-
-/* 删除列 */
-ALTER TABLE cb_table
-DROP COLUMN text_cloumn;
-```
-
-### 删除表
-
-```sql
-DROP TABLE cb_table;
-```
-
-### 重命名表
-
-```sql
-RENAME TABLE cb_table TO cb_table_new;
 ```
 
 ## 事务管理
