@@ -1,3 +1,16 @@
+# 快捷键
+
+```sh
+# 切换 devtools 位置
+cmd + shift + d
+
+# 快速隐藏 DOM 元素
+选中元素后按 h
+
+# 打开控制台
+cmd + shift + P
+```
+
 # 常用操作
 
 ## 审查元素加伪元素
@@ -14,7 +27,7 @@ https://www.google.com/chrome/canary/
 
 ## DOM 全局变量
 
-在 DOM 元素上面右键，`Store DOM nodes as global variables`，可以把 DOM 存储为全局变量。
+在 DOM 元素上面右键，`Store as global variables`，可以把 DOM 存储为全局变量。
 
 ## monitorEvents
 
@@ -31,31 +44,6 @@ unmonitorEvents(el);
 monitorEvents(el, ['mouse', 'focus']);
 ```
 
-## monitor
-
-监听对象
-
-```js
-class Person {
-  constructor(name, role) {
-    this.name = name;
-    this.role = role;
-  }
-
-  greet() {
-    return this.getMessage('greeting');
-  }
-  getMessage(type) {
-    if (type === 'greeting') {
-      return `Hello, I'm ${this.name}!`;
-    }
-  }
-}
-
-john = new Person('John');
-monitor(john.getMessage);
-```
-
 ## copy
 
 在 console 通过 `copy(var)` 复制对象
@@ -69,18 +57,10 @@ monitor(john.getMessage);
 - `$` 代码 document.querySelector
 - `$$` 代表 document.QuerySelectorAll，返回的是数组不是 Node List
 
-## $i
-
-https://chrome.google.com/webstore/detail/console-importer/hgajpakhafplebkdljleajgbpdmplhie/related
+## console 直接使用 await
 
 ```js
-$i('lodash')
-```
-
-## promise 处理
-
-```js
-console.log(await navigator.getBattery()) // 直接打印出 promise 结果
+await navigator.getBattery()
 ```
 
 ## JSON.stringify 格式化
@@ -140,19 +120,29 @@ box-shadow CSS 属性前面的按钮可以直接调整
 
 同上，点击图标即可调整贝塞尔曲线
 
-# 快捷键
+## $_ 获取 console 上次的返回值
 
-- `cmd + shift + d` 切换 devtools 位置
-- `cmd + [` 或 `cmd + ]` 切换 devtools 标签
-- `h` 快速隐藏 DOM 元素
+`$_` 可以在控制台获取上次操作返回值
+
+## 页面截图
+
+cmd + shift + P 选择 `Screenshot Capture full size screenshot`
+
+## 重新发送 xhr
+
+Network 面板选择 `Replay XHR` 可以重新发送请求
+
+## 编辑页面任意文本
+
+`document.body.contentEditable="true"`
+
+## 动画监听
+
+DevTools => More tools => Animations 监听动画，查看哪些属性正在被改变
+
+
 
 # Debug
-
-## 参考地址
-
-https://juejin.im/post/5c6b6d3be51d454cff27982b
-https://juejin.im/post/5c6b6dcfe51d45529d331ab4
-https://juejin.im/post/5c6b6defe51d45798b51e4b2
 
 ## 事件 Debug
 

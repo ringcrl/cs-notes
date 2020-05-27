@@ -196,6 +196,17 @@ CREATE TABLE cb_table(
   cb_time timestamp NOT NULL,
   PRIMARY KEY (cb_id)
 ) ENGINE=InnoDB;
+
+-- 联合主键
+CREATE TABLE t_wsfe_data_monitor (
+  imp_date date NOT NULL,
+  ftask_id varchar(64) NOT NULL,
+  fkey varchar(128) NOT NULL,
+  fvalue varchar(128) NOT NULL,
+  etl_stamp varchar(200) NOT NULL,
+  
+  PRIMARY KEY (imp_date, fkey)
+) ENGINE=InnoDB;
 ```
 
 ### 更新表

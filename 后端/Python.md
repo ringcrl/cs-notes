@@ -116,3 +116,42 @@ from package_runoob import runoob2
 runoob1.runoob1()
 runoob2.runoob2()
 ```
+
+# 实践
+
+## 连接 mysql 类型转换
+
+```py
+def get_db_info(): 
+    with codecs.open('config/password.json', 'r', 'utf-8') as f:
+        return json.loads(f.read())
+
+def connect_mdb():
+    db_info = get_db_info()
+    mysql = db_info['mysql']
+
+    return pymysql.connect(
+      host = mysql['host'],
+      port = int(mysql['port']), # 数据类型转换
+      user = mysql['user'],
+      password = mysql['password'],
+      database = mysql['database'],
+      charset = 'utf8',
+    )
+```
+
+## unicode 转中文
+
+```py
+def unicode_to_chinese(text):
+    return text.encode('utf-8')
+```
+
+## mysql 查询结果返回字典
+
+```py
+from pymysql.cursors import DictCursor
+
+db = connect_mdb()
+cur = db.cursor(DictCursor) # 默认返回元组，加入 DictCursor 后返回字典
+```
