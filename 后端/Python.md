@@ -14,6 +14,54 @@ pyenv global 2.7.16
 
 # 语法
 
+## 时间函数
+
+```py
+import time
+
+now = time.time()
+
+# float: 1590752612.65
+print time.time()
+
+# str: 2020-05-29
+print time.strftime('%Y-%m-%d')
+
+# str: Fri May 29 19:42:23 2020
+print time.ctime() 
+
+# time.struct_time: time.struct_time(tm_year=2020, tm_mon=5, tm_mday=29, tm_hour=19, tm_min=45, tm_sec=6, tm_wday=4, tm_yday=150, tm_isdst=0)
+print time.localtime()
+print time.localtime(now)
+
+# time.struct_time: time.struct_time(tm_year=2020, tm_mon=5, tm_mday=29, tm_hour=19, tm_min=45, tm_sec=6, tm_wday=4, tm_yday=150, tm_isdst=0)
+print time.strptime('2020-05-29 19:48:00', '%Y-%m-%d %H:%M:%S')
+
+# float: 1590752880.0
+print time.mktime(time.strptime('2020-05-29 19:48:00', "%Y-%m-%d %H:%M:%S"))
+
+import datetime
+
+# datetime.datetime: 2020-05-29 19:54:07.696653
+print datetime.datetime.now()
+
+# datetime.datetime: 2020-05-29 00:00:00
+print datetime.datetime(2020, 05, 29)
+
+# datetime.date: 2020-05-29
+print datetime.date.today()
+
+# str: 2020-05-29 00:00:00
+print datetime.date.today().strftime("%Y-%m-%d %H:%S:%M")
+
+# datetime.datetime: 2020-05-29 00:00:00
+print datetime.datetime.strptime(str(datetime.date(2020, 05, 29)), '%Y-%m-%d')
+
+# 根据 2020-05-29 获取前一天日期 2020-05-29
+# datetime.datetime: 2020-05-28 00:00:00
+print datetime.datetime.strptime('2020-05-29', '%Y-%m-%d') + datetime.timedelta(days=-1)
+```
+
 ## 模块
 
 ### 引入模块
