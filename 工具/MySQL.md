@@ -507,23 +507,31 @@ INSERT INTO cb_table(
 VALUES
   ('内容一', '2018/11/24 13:53:29'),
   ('内容二', '2018/11/24 13:54:29');
+
+-- 没有则插入，有则替换
+REPLACE into t_table (
+  ftask_id,
+  fkey,
+  fvalue
+)
+values ('ftask_id', 'fkey', 'fvalue')
 ```
 
 ## 更新数据
 
 ```sql
-/* 更新单个内容 */
+-- 更新单个内容
 UPDATE cb_table
 SET cb_data = '新的剪切板内容'
 WHERE cb_id = 1;
 
-/* 更新多个内容 */
+-- 更新多个内容
 UPDATE cb_table
 SET cb_data = '新的剪切板内容',
     cb_time = '2018/11/24 14:00:00'
 WHERE cb_id = 1;
 
-/* 删除某列的值 */
+-- 删除某列的值
 UPDATE cb_table
 SET cb_data = NULL
 WHERE cb_id = 1;

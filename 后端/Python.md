@@ -203,3 +203,26 @@ from pymysql.cursors import DictCursor
 db = connect_mdb()
 cur = db.cursor(DictCursor) # 默认返回元组，加入 DictCursor 后返回字典
 ```
+
+## 启动服务脚本
+
+```py
+# nohup 不会随着 shell 关闭而关闭
+# -u 使得 python 不启用缓冲，log 可以立即输出
+# 1是标准输出（STDOUT）的文件描述符，2是标准错误（STDERR）的文件描述符，2>&1 表示把标准错误重定向到标准输出
+nohup python -u app.py > out.log 2>&1 &
+```
+
+## 批量插入处理
+
+```py
+def insert_batch(connect,sql):
+    cursor = connect.cursor()
+    try:
+        cursor.execute(sql)
+        connect.commit()
+        return "success"
+    except Exception as e:
+        connect.rollback()
+        return e
+```
