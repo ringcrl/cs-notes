@@ -1,6 +1,6 @@
-<!--configuration-linux-mac-->
+<!--linux-cheat-sheet-->
 
-配置一个新的 Mac/Linux 环境。
+Linux & Shell 小抄
 
 <!--more-->
 
@@ -96,12 +96,12 @@ https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
 
 https://github.com/creationix/nvm#git-install
 
-### node
-
+```sh
 nvm install
 nvm alias default
+```
 
-#### 删除 pkg 安装包
+#### 删除 node pkg 安装包
 
 ```sh
 sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*/node.*}
@@ -148,24 +148,6 @@ https://segmentfault.com/a/1190000002963355
 #### incluce 配置
 
 http://blog.51cto.com/zhouxinyu1991/1827474
-
-### mysql
-
-#### Center OS
-
-https://blog.csdn.net/xyang81/article/details/51759200
-
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'your_passwork' WITH GRANT OPTION;
-
-#### Mac OS
-
-https://blog.csdn.net/w605283073/article/details/80417866
-
-mysql> ALTER USER 'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';
-
-#### 数据备份
-
-TablePlus 备份与还原
 
 ## 命令行工具
 
@@ -245,31 +227,287 @@ https://httpie.org/doc
 
 https://github.com/antonmedv/fx
 
-## NodeJS 全局模块
+# Linux
+
+## 常用命令
+
+### rm
 
 ```sh
-npm install -g \
-eslint \
-babel-eslint \
-eslint-plugin-react \
-jest \
-typescript \
-tslint \
-ts-node \
-@types/node
+## 删除多个文件，排除部分文件
+rm -rf `ls __codes__/* __tests__/*|egrep -v '(.gitkeep)'`
 ```
 
-## firekylin 博客
+### tail
 
-### 安装
+```sh
+# 实时追踪一个或多个文档的所有更新
+tail -f /var/log/mail.log /var/log/apache/error_log
+```
 
-https://github.com/firekylin/firekylin/wiki/%E5%AE%89%E8%A3%85
+### du
 
-注意：操作一定要使用 npm，用 yarn 会导致 bug。
+```sh
+# 查看文件大小
+du -sh vue.css
+```
 
-### https
+### tar
 
-https://cloud.tencent.com/document/product/400/4143
+```sh
+# 打包
+tar -zcvf dist_file source_dir
+
+# 解包
+tar -zxvf sourcefile
+```
+
+- -z 表示使用 gzip 压缩工具
+- -c 压缩打包，-x 表示解压解包
+- -v 表示可视化
+- -f 后面跟文件名，表示压缩后的文件名为 filename，或当期需要解压文件 filename
+
+### find
+
+```sh
+# 找命令
+which mv
+
+# 全局寻找文件，需要先安装 mlocate 并执行 updatedb 生成索引
+locate nginx.conf
+
+# 文件查找
+find root_path -name '*.md'
+```
+
+### nohup
+
+```sh
+# 后台运行
+nohup python app.py > log_app.log 2>&1 &
+```
+
+## systemd 服务管理
+
+Systemd 是 Linux 的系统工具，用来启动守护进程
+
+### 服务列表
+
+```sh
+systemctl list-units --all --type=service
+
+# UNIT                                   LOAD      ACTIVE   SUB     DESCRIPTION
+# acpid.service                          loaded    active   running ACPI Event Daemon
+# atd.service                            loaded    active   running Job spooling tools
+# auditd.service                         loaded    inactive dead    Security Auditing Service
+```
+
+这些服务对应的启动脚本文件保存在 `/usr/lib/systemd/system`
+
+### 常用命令
+
+```sh
+# 让某个服务开机自启(.service可以省略)
+systemctl enable crond.service
+
+# 不让开机自启
+systemctl disable crond
+
+# 查看服务状态
+systemctl status crond
+
+# 启动某个服务
+systemctl start crond 
+
+# 停止某个服务
+systemctl stop crond
+
+# 重启某个服务
+systemctl restart crond
+
+# 重新加载服务配置文件
+systemctl reload * 
+
+# 查询服务是否开机启动
+systemctl is-enabled crond
+```
+
+## 用户与用户组管理
+
+### 更改文件或目录的权限
+
+```sh
+# 增加一个用户组
+groupadd
+
+# 更改所属组
+chgrp
+
+# 更改所属主，除了可以更改所属用户外，还可更改所属组
+chown
+
+# 改变用户对文件的读写执行权限，如744
+chmod
+```
+
+## 安装源码包
+
+
+```sh
+# 定制软件安装的功能/配置，生成 Makefile 文件
+./configure
+
+# 编译
+make
+
+# 安装
+make install
+```
+
+## 系统状态
+
+```sh
+# 进程所占的系统资源
+top
+
+# 内存使用
+free -h
+
+# 网络情况
+netstat -lnp
+```
+
+## SSH
+
+### 密码登录
+
+```sh
+ssh root@192.168.80.128
+```
+
+### 密钥认证登录
+
+```sh
+## 本地本用户账号生成一个密钥对
+ssh-keygen
+
+## 查看秘钥
+cat ~/.ssh/id_rsa.pub
+
+## 服务器配置，加入公钥内容
+vim ~/.ssh/authorized_keys
+## 打开公钥认证配置
+vim /etc/ssh/sshd_config
+PubkeyAuthentication yes
+## 重启 ssh
+service sshd reload
+```
+
+## centos 防火墙
+
+https://blog.csdn.net/ViJayThresh/article/details/81284007
+
+或者在各平台控制台【安全策略】中设置
+
+## 安全配置
+
+```bash
+# 更改安全项配置
+vim /etc/ssh/sshd_config
+
+# 一些安全配置项
+Port 23333 # 更改默认登录端口
+PermitRootLogin no # 禁止 root 账户登陆
+PasswordAuthentication no # 禁止密码认证
+PermitEmptyPasswords no # 禁止空密码
+AllowUsers common # 只允许 common 登陆
+
+# 修改之后重启
+service sshd restart
+```
+
+## 切换英文
+
+```
+vim ~/.zshrc
+
+LANG=en_US.UTF-8
+```
+
+## 用户与用户组
+
+```bash
+# 创建一个用户组(可以带上 -g 888 来在创建组的时候增加编号)
+groupadd chenng
+cat /etc/group
+chenng:x:500:
+
+# 修改组名称
+groupmod -n newchenng chenng
+
+# 修改组编号
+groupmod -g 668 newchenng
+
+# 删除用户组(必须先删除组里面的用户才能删除组)
+groupdel newchenng
+
+# 设置组密码
+gpasswd chenng
+
+# 创建一个用户
+useradd -g sexy sdf
+useradd -d /home/chenng chenng(没有指定用户组，会创建一个与用户名相同的用户组)
+usermod -c dgdzmx sdf(增加注释)
+
+# 修改一个用户所属用户组
+usermod -g sexy chenng
+
+# 删除用户
+userdel jzmb(不会删除个人文件夹文件)
+userdel -r jzmb(会删除个人文件夹文件)
+
+# 设置用户密码
+passwd chenng
+```
+
+## 文件与文件夹
+
+```bash
+# 文件夹归属与组归属
+sudo chown -R gmftp:gmftp universal/
+
+# 变更文件权限
+owner = rwx = 4+2+1 = 7
+group = rwx = 4+2+1 = 7
+others= --- = 0+0+0 = 0
+chmod [-R] xyz 文件或目录
+```
+
+## 查看端口占用
+
+```
+lsof -i tcp:8080
+```
+
+
+## 查看内存信息
+
+```bash
+top
+```
+
+## 正在使用的端口
+
+```bash
+netstat -tlunp
+```
+
+## 配置 cc
+
+```bash
+yum -y install gcc automake autoconf libtool make ncurses-devel ncurses
+```
+
 
 # Mac
 
@@ -511,162 +749,100 @@ https://support.apple.com/zh-cn/HT204904
 
 https://support.apple.com/zh-cn/HT201065
 
-# Linux
 
-## centos 防火墙
+# Shell
 
-https://blog.csdn.net/ViJayThresh/article/details/81284007
-
-或者在各平台控制台【安全策略】中设置
-
-## 安全配置
-
-```bash
-# 更改安全项配置
-vim /etc/ssh/sshd_config
-
-# 一些安全配置项
-Port 23333 # 更改默认登录端口
-PermitRootLogin no # 禁止 root 账户登陆
-PasswordAuthentication no # 禁止密码认证
-PermitEmptyPasswords no # 禁止空密码
-AllowUsers common # 只允许 common 登陆
-
-# 修改之后重启
-service sshd restart
-```
-
-## 切换英文
-
-```
-vim ~/.zshrc
-
-LANG=en_US.UTF-8
-```
-
-## 用户与用户组
-
-```bash
-# 创建一个用户组(可以带上 -g 888 来在创建组的时候增加编号)
-groupadd chenng
-cat /etc/group
-chenng:x:500:
-
-# 修改组名称
-groupmod -n newchenng chenng
-
-# 修改组编号
-groupmod -g 668 newchenng
-
-# 删除用户组(必须先删除组里面的用户才能删除组)
-groupdel newchenng
-
-# 设置组密码
-gpasswd chenng
-
-# 创建一个用户
-useradd -g sexy sdf
-useradd -d /home/chenng chenng(没有指定用户组，会创建一个与用户名相同的用户组)
-usermod -c dgdzmx sdf(增加注释)
-
-# 修改一个用户所属用户组
-usermod -g sexy chenng
-
-# 删除用户
-userdel jzmb(不会删除个人文件夹文件)
-userdel -r jzmb(会删除个人文件夹文件)
-
-# 设置用户密码
-passwd chenng
-```
-
-## 文件与文件夹
-
-```bash
-# 文件夹归属与组归属
-sudo chown -R gmftp:gmftp universal/
-
-# 变更文件权限
-owner = rwx = 4+2+1 = 7
-group = rwx = 4+2+1 = 7
-others= --- = 0+0+0 = 0
-chmod [-R] xyz 文件或目录
-```
-
-## 查看端口占用
-
-```
-lsof -i tcp:8080
-```
-
-
-## 查看内存信息
-
-```bash
-top
-```
-
-## 正在使用的端口
-
-```bash
-netstat -tlunp
-```
-
-## 配置 cc
-
-```bash
-yum -y install gcc automake autoconf libtool make ncurses-devel ncurses
-```
-
-# Ubuntu
-
-## shadowsocks
-
-https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation
-
-### 设置 shadowsocks
-
-- 本地端口 1080
-- 本地服务器类型 HTTP
-
-### 设置网络
-
-代理 127.0.0.1 1080
-
-## ssh-key
-
-ssh-keygen
-
-## git
-
-sudo apt install git
-
-## 盒盖无法唤醒
+## git lint
 
 ```sh
-# 检查是否安装 laptop-mode-tools 工具包
-dpkg -l | grep laptop-mode-tools
+branch="$(git rev-parse --abbrev-ref HEAD)"
 
-# 安装 laptop-mode
-sudo apt-get install laptop-mode-tools
+if [ "$branch" = "master" ]; then
+    echo "不允许直接提交代码到 master。" 
+    exit 1
+fi
 
-# 检查是否启动 laptop-mode 模式，非 0 表示启动了
-cat /proc/sys/vm/laptop_mode
+npm run tsccheck
 
-# 修改配置文件
-vi /etc/default/acpi-support # 看最后一行
-vi /etc/laptop-mode/laptop-mode.conf
+if [ "$?" == 0 ]; then
+    echo "tsc check 通过。"
+else
+    exit 1
+fi
 
-ENABLE_LAPTOP_MODE_ON_BATTERY=1
-ENABLE_LAPTOP_MODE_ON_AC=1
-ENABLE_LAPTOP_MODE_WHEN_LID_CLOSED=1
+npm run lint
 
-# 启动 laptop_mode
-sudo laptop_mode start
+if [ "$?" == 0 ]; then
+    echo "lint 通过。"
+else
+    exit 1
+fi
 ```
 
-# iOS
+# Vim
 
-## 常用软件
+```sh
+# 上下左右
+hjkl
 
-- Imaging Edge Mobile（索尼照片快传）
+# 前翻半页 || 后翻半页
+ctrl + u || ctrl + d
+
+# 前翻一页 || 后翻一页
+ctrl + f || ctrl + b
+
+# 到首行
+gg
+
+# 到尾行
+G
+
+# 到 n 行
+nG
+
+# 到行首 || 到行位
+^ || $
+
+# 复制光标所在行
+yy
+
+# 剪切光标所在行
+dd
+
+# 粘贴
+p
+
+# 高亮选择，按 y 复制，按 d 剪切
+v
+
+# 撤销 || 重做
+u || ctrl + r
+
+# 当前光标插入 || 下一行插入 || 上一行插入
+i || o || O
+
+# 查找字符，n 查看下一个结果，N 查看上一个结果
+/word
+
+# 保存及退出
+:w # 保存文本
+:q # 退出vim。
+:w! #强制保存，在 root 用户下，即使文本只读也可以完成保存。
+:q! # 强制退出，所有改动不生效
+:wq # 保存并退出
+
+# 删除一个字符
+x
+
+# 到下一个单词头
+w
+
+# 到上一个单词头
+b
+
+# 删除一个单词
+dw
+
+# 显示当前文件信息
+ctrl + g
+```
