@@ -287,7 +287,24 @@ find root_path -name '*.md'
 nohup python app.py > log_app.log 2>&1 &
 ```
 
-## systemd 服务管理
+### mkdir
+
+```sh
+# 递归创建目录
+mkdir -p test1/test2
+```
+
+### cat & less
+
+```sh
+# 显示行号
+cat -b index.html
+
+# 交互式查看文件
+less index.html
+```
+
+## 服务管理
 
 Systemd 是 Linux 的系统工具，用来启动守护进程
 
@@ -332,22 +349,57 @@ systemctl reload *
 systemctl is-enabled crond
 ```
 
-## 用户与用户组管理
+## 文件与权限
 
-### 更改文件或目录的权限
+属主权限-属组权限-其他用户权限
 
 ```sh
-# 增加一个用户组
-groupadd
+# 更改文件属组，-R 递归更改目录所有文件属组
+chgrp [-R] 属组名 文件名
 
-# 更改所属组
-chgrp
+# 更改所属主，可以同时更改文件属组
+chown [-R] 属主名:属组名 文件名
 
-# 更改所属主，除了可以更改所属用户外，还可更改所属组
-chown
+# 更改文件9个属性，r=4、w=2、x=1
+chmod [-R] 770 文件或目录
+chmod +x 文件或目录
+chmod -x 文件或目录
+```
 
-# 改变用户对文件的读写执行权限，如744
-chmod
+## 用户与用户组
+
+```bash
+# 创建一个用户组(可以带上 -g 888 来在创建组的时候增加编号)
+groupadd chenng
+cat /etc/group
+chenng:x:500:
+
+# 修改组名称
+groupmod -n newchenng chenng
+
+# 修改组编号
+groupmod -g 668 newchenng
+
+# 删除用户组(必须先删除组里面的用户才能删除组)
+groupdel newchenng
+
+# 设置组密码
+gpasswd chenng
+
+# 创建一个用户
+useradd -g sexy sdf
+useradd -d /home/chenng chenng(没有指定用户组，会创建一个与用户名相同的用户组)
+usermod -c dgdzmx sdf(增加注释)
+
+# 修改一个用户所属用户组
+usermod -g sexy chenng
+
+# 删除用户
+userdel jzmb(不会删除个人文件夹文件)
+userdel -r jzmb(会删除个人文件夹文件)
+
+# 设置用户密码
+passwd chenng
 ```
 
 ## 安装源码包
@@ -434,55 +486,6 @@ vim ~/.zshrc
 LANG=en_US.UTF-8
 ```
 
-## 用户与用户组
-
-```bash
-# 创建一个用户组(可以带上 -g 888 来在创建组的时候增加编号)
-groupadd chenng
-cat /etc/group
-chenng:x:500:
-
-# 修改组名称
-groupmod -n newchenng chenng
-
-# 修改组编号
-groupmod -g 668 newchenng
-
-# 删除用户组(必须先删除组里面的用户才能删除组)
-groupdel newchenng
-
-# 设置组密码
-gpasswd chenng
-
-# 创建一个用户
-useradd -g sexy sdf
-useradd -d /home/chenng chenng(没有指定用户组，会创建一个与用户名相同的用户组)
-usermod -c dgdzmx sdf(增加注释)
-
-# 修改一个用户所属用户组
-usermod -g sexy chenng
-
-# 删除用户
-userdel jzmb(不会删除个人文件夹文件)
-userdel -r jzmb(会删除个人文件夹文件)
-
-# 设置用户密码
-passwd chenng
-```
-
-## 文件与文件夹
-
-```bash
-# 文件夹归属与组归属
-sudo chown -R gmftp:gmftp universal/
-
-# 变更文件权限
-owner = rwx = 4+2+1 = 7
-group = rwx = 4+2+1 = 7
-others= --- = 0+0+0 = 0
-chmod [-R] xyz 文件或目录
-```
-
 ## 查看端口占用
 
 ```
@@ -507,7 +510,6 @@ netstat -tlunp
 ```bash
 yum -y install gcc automake autoconf libtool make ncurses-devel ncurses
 ```
-
 
 # Mac
 
