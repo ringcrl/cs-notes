@@ -165,6 +165,21 @@ runoob1.runoob1()
 runoob2.runoob2()
 ```
 
+## 列表
+
+### 遍历
+
+```py
+# 不需要 index
+for item in data_list:
+    # ...
+
+# 需要 index
+for index in range(len(data_list)):
+    item = data_list[index]
+    # ...
+```
+
 # 实践
 
 ## 连接 mysql 类型转换
