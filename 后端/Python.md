@@ -241,3 +241,182 @@ def insert_batch(connect,sql):
         connect.rollback()
         return e
 ```
+
+# 编码规范
+
+## .pylintrc
+
+```
+[MASTER]
+# Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
+# number of processors available to use.
+jobs=1
+[MESSAGES CONTROL]
+# Disable the message, report, category or checker with the given id(s).
+disable=all
+# Enable the message, report, category or checker with the given id(s).
+enable=c-extension-no-member,
+       bad-indentation,
+       bad-whitespace,
+       bare-except,
+       broad-except,
+       dangerous-default-value,
+       function-redefined,
+       len-as-condition,
+       line-too-long,
+       misplaced-future,
+       missing-final-newline,
+       mixed-indentation,
+       mixed-line-endings,
+       multiple-imports,
+       multiple-statements,
+       singleton-comparison,
+       trailing-comma-tuple,
+       trailing-newlines,
+       trailing-whitespace,
+       unexpected-line-ending-format,
+       unused-import,
+       unused-variable,
+       wildcard-import,
+       wrong-import-order
+[FORMAT]
+# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
+expected-line-ending-format=LF
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines=^\s*(# )?<?https?://\S+>?$
+# Maximum number of characters on a single line.
+max-line-length=120
+# Maximum number of lines in a module.
+max-module-lines=2000
+[EXCEPTIONS]
+# Exceptions that will emit a warning when being caught. Defaults to
+# "BaseException, Exception".
+overgeneral-exceptions=BaseException,
+                       Exception
+```
+
+## 源文件编码
+
+需要添加到每一个 python 文件的头部
+
+```py
+# -*- coding: utf-8 -*-
+```
+
+## 缩进
+
+4个空格
+
+```py
+# 换行并增加4个额外的空格（一级缩进）
+def long_function_name(
+        var_one, var_two, var_three,
+        var_four):
+    print(var_one)
+
+# 悬挂需要增加一级缩进
+foo = long_function_name(
+    var_one, var_two,
+    var_three, var_four)
+
+yes = ('y', 'Y', 'yes', 'TRUE', 'True', 'true', 'On', 'on', '1')  # 基本不再改变
+
+kwlist = [
+    'False',
+    'None',
+    'True',
+    'and',
+    'as',
+    'assert',
+    ...
+    'yield',  # 最后一个元素也增加一个逗号 ，方便以后diff不显示此行
+]
+
+person = {
+    'name': 'bob',
+    'age': 12,      # 可能经常增加字段
+}
+```
+
+## 操作符
+
+```py
+# 将运算符与操作数匹配，可读性高
+income = (gross_wages
+          + taxable_interest
+          + (dividends - qualified_dividends)
+          - ira_deduction
+          - student_loan_interest)
+```
+
+## 字符串替换
+
+```py
+# 变量替换
+name = "chenng"
+n = 100
+
+print 'name: %(name)s; score: %(n)d' % {
+    "name": name,
+    "n": n,
+}
+
+print 'name: {name}; score: {n}'.format(
+    name=name,
+    n=n
+)
+
+print 'name: %s; score: %d' % (name, n)
+```
+
+```py
+# 检查前缀后缀
+if foo.startswith('bar'):
+    pass
+```
+
+## 三目运算符
+
+```py
+x = a if a >= b else b
+```
+
+## None 判断
+
+```py
+if foo is not None:
+    pass
+```
+
+## 列表推导式
+
+```py
+number_list = [1, 2, 3, 10, 20, 55]
+odd = [i for i in number_list if i % 2 == 1]
+```
+
+## 函数
+
+```py
+# 函数参数中，不允许出现可变类型变量作为默认值
+def f(x=0, y=None, z=None):
+    if y is None:
+        y = []
+    if z is None:
+        z = {}
+```
+
+
+## 变量
+
+使用双下划线 `__` 来标识不需要的变量
+
+```py
+import os
+
+path = '/tmp/python/foobar.txt'
+dir_name, __, xxx = os.path.split(path)
+
+print dir_name # /tmp/python
+print __ # foobar.txt
+```
