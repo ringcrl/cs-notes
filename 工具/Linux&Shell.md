@@ -754,7 +754,353 @@ https://support.apple.com/zh-cn/HT201065
 
 # Shell
 
-## git lint
+```sh
+#!/bin/bash
+```
+
+## 变量
+
+```sh
+# 声明 = 两边不能有空格
+# 双引号可以有变量、可以出现转义字符；单引号不可以
+name="chenng"
+
+# 最好加 {}，直接写 $name 嵌入字符串会出问题
+echo ${name} 
+
+# 删除变量
+unset name
+
+# 获取字符串长度
+string="abcd"
+echo ${#string} # 4
+
+# 提取子字符串
+string="runoob is a great site"
+echo ${string:1:4} # unoo
+```
+
+## 循环
+
+```sh
+# 遍历单词
+for skill in Ada Coffe Action Java; do
+    echo "I am good at ${skill}Script"
+done
+
+# 遍历文件
+for file in `ls /etc`
+do
+  echo ${file}
+done
+
+# 写成一行
+for file in `ls /etc`; do echo ${file}; done;
+```
+
+## 数组
+
+```sh
+array_name=("value0" "value1" "value2" "value3")
+echo ${array_name[0]} # value0
+echo ${array_name[@]} # "value0" "value1" "value2" "value3"
+echo ${#array_name[@]} # 4
+```
+
+## 传参
+
+```sh
+# ./test.sh 1 2 3
+echo "Shell 传递参数实例！";
+echo "执行的文件名：${0}"; # ./test.sh
+echo "第一个参数为：${1}"; # 1
+echo "第二个参数为：${2}"; # 2
+echo "第三个参数为：${3}"; # 3
+echo "参数个数为：${#}" # 3
+```
+
+## 运算符
+
+### 算数运算符
+
+```sh
+a=10
+b=20
+
+# 完整的表达式要被 ` ` 包含，表达式与运算符之间要有空格
+val=`expr $a + $b`
+echo "a + b : $val" # a + b : 30
+
+val=`expr $a - $b`
+echo "a - b : $val" # a - b : -10
+
+val=`expr $a \* $b`
+echo "a * b : $val" # a * b : 200
+
+val=`expr $b / $a`
+echo "b / a : $val" # b / a : 2
+
+val=`expr $b % $a`
+echo "b % a : $val" # b % a : 0
+
+if [ $a == $b ]
+then
+   echo "a 等于 b"
+fi
+
+if [ $a != $b ]
+then
+   echo "a 不等于 b"
+fi
+```
+
+### 关系运算符
+
+```sh
+a=10
+b=20
+
+if [ $a -eq $b ] # 数字相等
+then
+   echo "$a -eq $b : a 等于 b"
+else
+   echo "$a -eq $b: a 不等于 b"
+fi
+
+if [ $a -ne $b ] # 数字不相等
+then
+   echo "$a -ne $b: a 不等于 b"
+else
+   echo "$a -ne $b : a 等于 b"
+fi
+
+if [ $a -gt $b ] # 数字大于
+then
+   echo "$a -gt $b: a 大于 b"
+else
+   echo "$a -gt $b: a 不大于 b"
+fi
+
+if [ $a -lt $b ] # 数字小于
+then
+   echo "$a -lt $b: a 小于 b"
+else
+   echo "$a -lt $b: a 不小于 b"
+fi
+
+if [ $a -ge $b ] # 数字大于等于
+then
+   echo "$a -ge $b: a 大于或等于 b"
+else
+   echo "$a -ge $b: a 小于 b"
+fi
+
+if [ $a -le $b ] # 数字小于等于
+then
+   echo "$a -le $b: a 小于或等于 b"
+else
+   echo "$a -le $b: a 大于 b"
+fi
+```
+
+### 布尔运算符
+
+```sh
+a=10
+b=20
+
+if [ $a != $b ]
+then
+   echo "$a != $b : a 不等于 b"
+else
+   echo "$a == $b: a 等于 b"
+fi
+
+if [ $a -lt 100 -a $b -gt 15 ] # -a 与运算
+then
+   echo "$a 小于 100 且 $b 大于 15 : 返回 true"
+else
+   echo "$a 小于 100 且 $b 大于 15 : 返回 false"
+fi
+
+if [ $a -lt 100 -o $b -gt 100 ] # -o 或运算
+then
+   echo "$a 小于 100 或 $b 大于 100 : 返回 true"
+else
+   echo "$a 小于 100 或 $b 大于 100 : 返回 false"
+fi
+
+if [ $a -lt 5 -o $b -gt 100 ] # -o 或运算
+then
+   echo "$a 小于 5 或 $b 大于 100 : 返回 true"
+else
+   echo "$a 小于 5 或 $b 大于 100 : 返回 false"
+fi
+```
+
+### 逻辑运算符
+
+```sh
+a=10
+b=20
+
+if [[ $a -lt 100 && $b -gt 100 ]] # 逻辑与
+then
+   echo "返回 true"
+else
+   echo "返回 false"
+fi
+
+if [[ $a -lt 100 || $b -gt 100 ]] # 逻辑或
+then
+   echo "返回 true"
+else
+   echo "返回 false"
+fi
+```
+
+### 字符串运算符
+
+```sh
+a="abc"
+b="efg"
+
+if [ $a = $b ] # 字符串相等
+then
+   echo "$a = $b : a 等于 b"
+else
+   echo "$a = $b: a 不等于 b"
+fi
+
+if [ $a != $b ] # 字符串不相等
+then
+   echo "$a != $b : a 不等于 b"
+else
+   echo "$a != $b: a 等于 b"
+fi
+
+if [ -z $a ] # 字符串长度为0
+then
+   echo "-z $a : 字符串长度为 0"
+else
+   echo "-z $a : 字符串长度不为 0"
+fi
+
+if [ -n "$a" ] # 字符串长度不为0
+then
+   echo "-n $a : 字符串长度不为 0"
+else
+   echo "-n $a : 字符串长度为 0"
+fi
+
+if [ $a ] # 字符串不为空
+then
+   echo "$a : 字符串不为空"
+else
+   echo "$a : 字符串为空"
+fi
+```
+
+## echo
+
+```sh
+# -e 开启转义
+echo -e "OK! \n"
+echo "It is a test"
+
+# 结果定向到文件
+echo "It is a test" > myfile
+
+# 显示命令执行结果
+echo `date`
+```
+
+## 函数
+
+```sh
+# 不带 return 语句
+demoFun(){
+    echo "这是我的第一个 shell 函数!"
+}
+echo "-----函数开始执行-----"
+demoFun
+echo "-----函数执行完毕-----"
+```
+
+```sh
+# 带有 return 语句
+funWithReturn(){
+    echo "这个函数会对输入的两个数字进行相加运算..."
+    echo "输入第一个数字: "
+    read aNum
+    echo "输入第二个数字: "
+    read anotherNum
+    echo "两个数字分别为 $aNum 和 $anotherNum"
+    return `expr $aNum + $anotherNum`
+}
+funWithReturn
+echo "输入的两个数字之和为 $?"
+```
+
+```sh
+# 带参数调用
+funWithParam(){
+    echo "第一个参数为 $1 !"
+    echo "第二个参数为 $2 !"
+    echo "第十个参数为 $10 !" # 大于10之后需要通过 ${n} 来取
+    echo "第十个参数为 ${10} !"
+    echo "第十一个参数为 ${11} !"
+    echo "参数总数有 $# 个!"
+    echo "作为一个字符串输出所有参数 $* !"
+}
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+```
+
+## 流程控制
+
+```sh
+# 写成一行
+if [ $(ps -ef | grep -c "ssh") -gt 1 ]; then echo "true"; fi
+
+a=10
+b=20
+if [ $a == $b ]
+then
+   echo "a 等于 b"
+elif [ $a -gt $b ]
+then
+   echo "a 大于 b"
+elif [ $a -lt $b ]
+then
+   echo "a 小于 b" # 输出
+else
+   echo "没有符合的条件"
+fi
+```
+
+## 输出重定向
+
+```sh
+# 将输出重定向到 file
+command > file
+
+# 将输出以追加的方式重定向到 file
+command >> file
+
+# 文件描述符 0 通常是标准输入（STDIN）
+# 文件描述符 1 是标准输出（STDOUT）
+# 文件描述符 2 是标准错误输出（STDERR）
+
+# 输出错误到文件
+command 2 >> file
+
+# 将标准输出和标准错误合并输出到文件 2>&1
+command >> file 2>&1
+```
+
+## 实践
+
+### git lint
 
 ```sh
 branch="$(git rev-parse --abbrev-ref HEAD)"
