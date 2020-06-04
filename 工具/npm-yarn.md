@@ -6,6 +6,14 @@
 - 下载压缩包，存放在根目录下的 .npm 目录里
 - 解压压缩包到当前项目的 node_modules 目录
 
+## .npmrc
+
+```
+init-author-name=chenng
+init-author-email=ringcrl@foxmail.com
+init-license=MIT
+```
+
 ## publish
 
 ### 登录到 npm

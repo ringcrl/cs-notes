@@ -1,3 +1,33 @@
+# 安装
+
+## CentOS
+
+```sh
+yum -y install nginx
+
+# 启动 nginx 服务
+systemctl start nginx
+
+# 设置开机自启
+systemctl enable nginx
+
+# 停止 nginx 服务
+nginx -s stop 
+# 重启 nginx 服务
+nginx -s reload 
+
+# 设置为 root 用户
+vim /etc/nginx/nginx.conf
+```
+
+## Mac
+
+https://segmentfault.com/a/1190000002963355
+
+## incluce 配置
+
+http://blog.51cto.com/zhouxinyu1991/1827474
+
 # 模板
 
 - MacOS 路径 `/usr/local/etc/nginx/include`
