@@ -307,6 +307,44 @@ https://support.apple.com/zh-cn/HT201065
 
 # shell 常用命令
 
+## grep
+
+```sh
+ls | grep '^doc' # 以 doc 开头
+ls | grep 'js$' # 以 js 结尾
+ls | grep 'REA.ME' # 匹配一个非换行符的字符
+ls | grep '.*' # 匹配任意字符
+ls | grep '[vd]ue' # 匹配 vue 或 due
+ls | grep '[^d]ue' # 匹配除了 due 外所有的 "x"ue
+ls | grep '\w' # 等价于 [A-Za-z0-9]
+ls -a | grep 'l\{2\}' # 包含 ll
+ls | grep '^[^x]' # 非 x 开头
+ps -ef | grep '(cron|syslog)' # 包含 cron 或 syslog 的进程
+```
+
+## sed 字符串操作
+
+![](./imgs/01.png)
+
+```sh
+# 1、5部分可以省略
+
+# 界定符 / 可以换成任意符如 : |
+
+# flat
+g # 全文替换
+p # 当使用了 -n，p 将仅输出匹配行内容
+i # 忽略大小写
+```
+
+```sh
+# 列出文件绝对路径，不包含隐藏文件
+ls | sed "s:^:`pwd`/:"
+
+# & 获取匹配结果，文件每一行添加引号
+sed 's/.*/"&"/' file
+```
+
 ## SSH 登录
 
 ### 密码登录
@@ -474,6 +512,9 @@ tail -f /var/log/mail.log /var/log/apache/error_log
 ```sh
 # 查看文件大小
 du -sh vue.css
+
+# 查看文件夹内容大小，-s 显示统计
+du -h 工具
 ```
 
 ## tar 打包解包
@@ -528,6 +569,12 @@ cat -b index.html
 less index.html
 ```
 
+## cp 复制文件
+
+```sh
+# 复制目录及目录内所有项目
+cp -r source_dir dist_dir
+```
 
 # Shell 脚本
 
@@ -1004,10 +1051,9 @@ https://github.com/maxogden/torrent
 
 https://httpie.org/doc
 
-## fx
+## fx json 解析器
 
 https://github.com/antonmedv/fx
-
 
 # Vim
 
