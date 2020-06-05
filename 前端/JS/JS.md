@@ -3386,3 +3386,8 @@ var mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes
     }
   });
 ```
+
+# Blob
+
+Binary Large Object 二进制大对象，JS 中 Blob 对象表示不可变的类似文件的原始数据
+
