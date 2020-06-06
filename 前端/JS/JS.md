@@ -2467,7 +2467,7 @@ window.URL.revokeObjectURL(url);
         - 若不存在则让作用域声明一个变量 a 并赋值为 2
         - `a = 2` 中 `a` 会被声明为全局变量其中涉及到 `LHS` 查询方式
 - 作用域负责维护所有标识符（变量）
-- JS 中的 LHS 查询和 RHS 查询
+- JS 中的 LHS 查���和 RHS 查询
 
 ## ES6模块 和 CommonJS
 
@@ -3391,3 +3391,235 @@ var mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes
 
 Binary Large Object 二进制大对象，JS 中 Blob 对象表示不可变的类似文件的原始数据
 
+```ts
+const newBlob = new Blob(
+  // ArrayBuffer、DOMString 等组成的数组
+  ['string'],
+  // type 默认 ''，MIME 类型
+  // endings 默认 'transparent'，保持 blob 中默认结束符
+  {
+    type: 'text/plain',
+    endings: 'transparent'
+  },
+);
+```
+
+```ts
+// blob 对象包含两个属性
+interface IBlob {
+  size: number;
+  type: 'text/plain'
+}
+```
+
+## blob 实例
+
+```js
+(async function () {
+  const blob = new Blob([new Uint8Array([72, 101, 108, 108, 111]), ' ', 'Chenng'], {
+    type: 'text/plain',
+  });
+
+  // stream() 返回一个能读取 blob 内容的 ReadableStream
+  console.log(blob.stream());
+
+  // 返回一个 Promise 对象且包含 blob 所有内容的二进制格式的 ArrayBuffer
+  console.log(await blob.arrayBuffer());
+
+  // text() 返回一个 Promise 对象且包含 blob 所有内容
+  console.log(await blob.text()); // Hello Chenng
+
+  // slice([start, [, end]]) 返回一个新的 Blob 对象
+  console.log(await blob.slice(0, 5).text()); // Hello
+}());
+```
+
+## 分片上传
+
+```js
+const file = new File(['a'.repeat(1000000)], 'test.txt');
+
+const chunkSize = 40000;
+
+async function chunkedUpload() {
+  console.log(file.size); // 1000000
+  for (let start = 0; start < file.size; start += chunkSize) {
+    const chunk = file.slice(start, start + chunkSize + 1);
+    const fd = new FormData();
+    fd.append('data', chunk);
+
+    // 上传方法
+    console.log(chunk); // blob { size: 40001, type: '' }
+  }
+}
+
+chunkedUpload();
+```
+
+## Blob URL
+
+### URL.createObjectURL
+
+Blob URL 是一种伪协议，通过 `URL.createObjectURL` 来创建 Blob URL。
+
+浏览器内部存储了 `blob:https://xxx.com/40a5` 到 Blob 的映射
+
+### Blob 文件下载
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blob 文件下载示例</title>
+  </head>
+
+  <body>
+    <button id="downloadBtn">文件下载</button>
+    <script src="index.js"></script>
+  </body>
+</html>
+```
+
+```js
+const download = (fileName, blob) => {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+};
+
+const downloadBtn = document.querySelector('#downloadBtn');
+downloadBtn.addEventListener('click', (event) => {
+  const fileName = 'blob.txt';
+  const myBlob = new Blob(['blob.txt 内的文本内容'], { type: 'text/plain' });
+  download(fileName, myBlob);
+});
+```
+
+## Blob 转 base64
+
+```sh
+# base64 格式
+# <mediatype> 省略默认为 text/plain;charset=US-ASCII
+# ;base64 在非文本时添加
+data:[<mediatype>][;base64],<data>
+```
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blob 预览图片示例</title>
+  </head>
+
+  <body>
+    <input type="file" accept="image/*" onchange="loadFile(event)">
+    <img id="output"/>
+    
+    <script>
+      const loadFile = function(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+          const output = document.querySelector('#output');
+          output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      };
+    </script>
+  </body>
+</html>
+```
+
+## 本地图片压缩
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>本地图片压缩</title>
+  </head>
+  <body>
+    <input type="file" accept="image/*" onchange="loadFile(event)" />
+    <script src="./index.js"></script>
+  </body>
+</html>
+```
+
+```js
+// 图片压缩返回 base64
+function compress(base64, quality, mimeType) {
+  const MAX_WIDTH = 800; // 图片最大宽度
+  const canvas = document.createElement('canvas');
+  const img = document.createElement('img');
+  img.crossOrigin = 'anonymous';
+  return new Promise((resolve) => {
+    img.src = base64;
+    img.onload = () => {
+      let targetWidth; let
+        targetHeight;
+      if (img.width > MAX_WIDTH) {
+        targetWidth = MAX_WIDTH;
+        targetHeight = (img.height * MAX_WIDTH) / img.width;
+      } else {
+        targetWidth = img.width;
+        targetHeight = img.height;
+      }
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, targetWidth, targetHeight); // 清除画布
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL(mimeType, quality / 100);
+      resolve(imageData);
+    };
+  });
+}
+
+// 对于返回的 Data URL 格式的图片数据，为了进一步减少传输的数据量，把它转换为 Blob
+function dataUrlToBlob(base64, mimeType) {
+  const bytes = window.atob(base64.split(',')[1]);
+  const ab = new ArrayBuffer(bytes.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < bytes.length; i += 1) {
+    ia[i] = bytes.charCodeAt(i);
+  }
+  return new Blob([ab], { type: mimeType });
+}
+
+// 压缩后的图片对应的 Blob 对象封装在 FormData 对象中，然后再通过 AJAX 提交到服务器上
+function uploadFile(url, blob) {
+  const formData = new FormData();
+  const request = new XMLHttpRequest();
+  formData.append('image', blob);
+  request.open('POST', url, true);
+  request.send(formData);
+}
+
+
+function loadFile(event) {
+  const reader = new FileReader();
+  reader.onload = async function () {
+    const compressedDataURL = await compress(
+      reader.result,
+      90,
+      'image/jpeg',
+    );
+    const compressedImageBlob = dataUrlToBlob(compressedDataURL);
+    uploadFile('https://xxx.com/post', compressedImageBlob);
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+```
+
+## Blob 与 ArrayBuffer 
+
+- Blob 对象是不可变的，而 ArrayBuffer 是可以通过 TypedArrays 或 DataView 来操作
+- ArrayBuffer 是存在内存中的，可以直接操作。而 Blob 可以位于磁盘、高速缓存内存和其他不可用的位置
+- 使用 FileReader 的 readAsArrayBuffer() 方法，可以把 Blob 对象转换为 ArrayBuffer 对象
+- 使用 Blob 构造函数，如 new Blob([new Uint8Array(data]);，可以把 ArrayBuffer 对象转换为 Blob 对象
