@@ -180,6 +180,41 @@ for index in range(len(data_list)):
     # ...
 ```
 
+## 读文件
+
+```py
+import json
+import codecs
+
+with codecs.open(file_path, 'r', 'utf-8') as f:
+    print json.loads(f.read())
+```
+
+## 运行时参数
+
+```py
+# python read_path.py json_path
+import sys
+
+# sys.argv[0] == 'read_path.py'
+JSON_PATH = sys.argv[1]
+```
+
+## 下载文件
+
+```py
+import requests
+import codecs
+
+def download_file(url, file_path):
+    r = requests.get(url, allow_redirects=True)
+    with codecs.open(file_path, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=255):
+            if chunk:
+                f.write(chunk)
+        f.close()
+```
+
 # 实践
 
 ## 连接 mysql 类型转换
@@ -208,6 +243,22 @@ def connect_mdb():
 ```py
 def unicode_to_chinese(text):
     return text.encode('utf-8')
+```
+
+## 写文件 unicode 转成中文
+
+```py
+def json_data_2_file(json_data, file_path):
+    with codecs.open(file_path, 'w', 'utf-8') as f:
+        json_data_str = json.dumps(json_data)
+        f.write(json_data_str.decode('unicode-escape')) # str.decode('unicode-escape')
+        f.close()
+```
+
+## 写 json 文件时候格式化
+
+```py
+json_data_str = json.dumps(json_data, indent=2)
 ```
 
 ## mysql 查询结果返回字典
