@@ -12,7 +12,7 @@ https_proxy=127.0.0.1:1081 pyenv install 2.7.16
 pyenv global 2.7.16
 ```
 
-# 语法
+# 语法和包
 
 ## 时间函数
 
@@ -215,6 +215,46 @@ def download_file(url, file_path):
         f.close()
 ```
 
+## yield
+
+```py
+def parse_result(items):
+    for item in items:
+        yield {
+            'range': item[0],
+            'iamge': item[1],
+            'title': item[2],
+            'recommend': item[3],
+            'author': item[4],
+            'times': item[5],
+            'price': item[6]
+        }
+
+new_items = parse_result(items)
+```
+
+## Beautiful Soup
+
+https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/
+
+```sh
+pip install BeautifulSoup
+pip install lxml
+```
+
+```py
+from bs4 import BeautifulSoup
+import requests
+
+
+html_doc = requests.get(
+    'http://bang.dangdang.com/books/fivestars/01.00.00.00.00.00-recent30-0-0-1-1').text
+
+soup = BeautifulSoup(html_doc, 'html.parser')
+
+print(soup.select('.bang_list_mode > li'))
+```
+
 # 实践
 
 ## 连接 mysql 类型转换
@@ -293,9 +333,141 @@ def insert_batch(connect,sql):
         return e
 ```
 
+## 当当top500写到txt
+
+```py
+# -*- coding: utf-8 -*-
+
+import requests
+import re
+import json
+
+def main(page):
+    url = 'http://bang.dangdang.com/books/fivestars/01.00.00.00.00.00-recent30-0-0-1-' + \
+        str(page)
+    html = request_dandan(url)
+    items = parse_result(html)  # 解析过滤我们想要的信息
+
+    for item in items:
+        write_item_to_file(item)
+
+
+def request_dandan(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+    except requests.RequestException:
+        return None
+
+
+def parse_result(html):
+    pattern = re.compile('<li>.*?list_num.*?(\d+).</div>.*?<img src="(.*?)".*?class="name".*?title="(.*?)">.*?class="star">.*?class="tuijian">(.*?)</span>.*?class="publisher_info">.*?target="_blank">(.*?)</a>.*?class="biaosheng">.*?<span>(.*?)</span></div>.*?<p><span\sclass="price_n">&yen;(.*?)</span>.*?</li>', re.S)
+    items = re.findall(pattern, html)
+    for item in items:
+        yield {
+            'range': item[0],
+            'iamge': item[1],
+            'title': item[2],
+            'recommend': item[3],
+            'author': item[4],
+            'times': item[5],
+            'price': item[6]
+        }
+
+def write_item_to_file(item):
+   print('开始写入数据 ====> ' + str(item))
+   with open('book.txt', 'a', encoding='UTF-8') as f:
+       f.write(json.dumps(item, ensure_ascii=False) + '\n')
+       f.close()
+
+if __name__ == '__main__':
+    for i in range(16):
+        main(i)
+```
+
+## 豆瓣top250写到xlsx
+
+```py
+# -*- coding: utf-8 -*
+
+import requests
+from bs4 import BeautifulSoup
+import xlwt
+
+book = xlwt.Workbook(encoding='utf-8', style_compression=0)
+
+sheet = book.add_sheet('豆瓣电影Top250', cell_overwrite_ok=True)
+sheet.write(0, 0, '名称')
+sheet.write(0, 1, '图片')
+sheet.write(0, 2, '排名')
+sheet.write(0, 3, '评分')
+sheet.write(0, 4, '作者')
+sheet.write(0, 5, '简介')
+
+n = 1
+
+
+def main(page):
+    url = 'https://movie.douban.com/top250?start=' + str(page*25)+'&filter='
+    html = request_douban(url)
+    soup = BeautifulSoup(html, 'lxml')
+    save_to_excel(soup)
+
+
+def request_douban(url):
+    headers = {
+        'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)',
+        'host': 'movie.douban.com'
+    }
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.text
+    except requests.RequestException:
+        return None
+
+
+def save_to_excel(soup):
+    list = soup.find(class_='grid_view').find_all('li')
+
+    for item in list:
+        item_name = item.find(class_='title').string
+        item_img = item.find('a').find('img').get('src')
+        item_index = item.find(class_='').string
+        item_score = item.find(class_='rating_num').string
+        item_author = item.find('p').text
+        item_intr = (item.find(class_='inq') and item.find(class_='inq').string) or ''
+
+        print('爬取电影：' + item_index + ' | ' + item_name +
+              ' | ' + item_score + ' | ' + item_intr)
+
+        global n
+
+        sheet.write(n, 0, item_name)
+        sheet.write(n, 1, item_img)
+        sheet.write(n, 2, item_index)
+        sheet.write(n, 3, item_score)
+        sheet.write(n, 4, item_author)
+        sheet.write(n, 5, item_intr)
+
+        n = n + 1
+
+
+if __name__ == '__main__':
+    for i in range(0, 10):
+        main(i)
+
+    book.save(u'豆瓣最受欢迎的250部电影.xlsx')
+```
+
 # 编码规范
 
 ## .pylintrc
+
+```sh
+pip install pylint
+```
 
 ```
 [MASTER]

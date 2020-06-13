@@ -2502,6 +2502,46 @@ window.addEventListener('storage', function (event) {
 
 # 实践
 
+## 版本比较
+
+```js
+/**
+ * @description 比较传入的两个版本号的大小
+ * @param v1 版本号1
+ * @param v2 要比较的另一个版本号2
+ * @returns 比较结果
+ * 如果版本号1比版本号2大，返回1
+ * 如果版本号1比版本号2小，返回-1
+ * 否则返回0
+ */
+export function verCompare(v1: string, v2: string) {
+  if (v1 === v2) return 0;
+  const a1 = String(v1).split('.');
+  const a2 = String(v2).split('.');
+  const len = Math.max(a1.length, a2.length);
+  let arr = [a1, a2];
+  // 长度不足的往后补0
+  arr = arr.map((v) => {
+    let s = len - v.length;
+    if (s > 0) {
+      for (; v.length < len; s++) {
+        v.push('0');
+      }
+    }
+    return v;
+  });
+  if (arr[0].join('.') === arr[1].join('.')) return 0;
+  // 逐位转换成数字比对
+  for (let i = 0; i < len; i++) {
+    if (parseInt(arr[0][i], 10) > parseInt(arr[1][i], 10)) {
+      return 1;
+    } else if (parseInt(arr[0][i], 10) < parseInt(arr[1][i], 10)) {
+      return -1;
+    }
+  }
+}
+```
+
 ## video 自动播放
 
 ### Chrome 策略
