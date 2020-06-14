@@ -564,3 +564,11 @@ volumes:
       - "80:80"
       - "443:443"
 ```
+
+# 实践
+
+## 查看日志
+
+```sh
+docker logs <container-id>
+```

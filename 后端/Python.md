@@ -12,6 +12,12 @@ https_proxy=127.0.0.1:1081 pyenv install 2.7.16
 pyenv global 2.7.16
 ```
 
+## pip 代理
+
+```sh
+pip install pandas -i https://mirrors.ustc.edu.cn/pypi/web/simple/
+```
+
 # 语法和包
 
 ## 时间函数
@@ -255,6 +261,209 @@ soup = BeautifulSoup(html_doc, 'html.parser')
 print(soup.select('.bang_list_mode > li'))
 ```
 
+## threading.Thread 多线程
+
+```py
+# encoding = utf-8
+
+import threading
+import time
+
+
+# 创建一个线程子类
+class MyThread(threading.Thread):
+    def __init__(self, threadID, name, gap):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.gap = gap
+
+    def run(self):
+        print("开始线程：" + self.name)
+        moyu_time(threadName=self.name, delay=self.gap, counter=10)
+        print("退出线程：" + self.name)
+
+
+def moyu_time(threadName, delay, counter):
+    while counter:
+        time.sleep(delay)
+        print("%s 开始报时 %s" % (threadName, time.strftime(
+            "%Y-%m-%d %H:%M:%S", time.localtime())))
+        counter -= 1
+
+
+# 创建新线程
+thread1 = MyThread(threadID=1, name="Ring", gap=1)
+thread2 = MyThread(threadID=2, name="Chenng", gap=2)
+
+# 开启新线程
+thread1.start()
+thread2.start()
+# 等待至线程中止
+thread1.join()
+thread2.join()
+print("退出主线程")
+```
+
+## Queue 线程池
+
+```py
+
+import threading
+import time
+from queue import Queue
+
+
+class CustomThread(threading.Thread):
+    def __init__(self, queue):
+        threading.Thread.__init__(self)
+        self.__queue = queue
+
+    def run(self):
+        while True:
+            q_method = self.__queue.get()
+            q_method()
+            self.__queue.task_done()
+
+
+def alert():
+    print("开始报时 %s" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+
+
+def queue_pool():
+    queue = Queue(5)
+    for i in range(queue.maxsize):
+        t = CustomThread(queue)
+        t.setDaemon(True)
+        t.start()
+
+    for i in range(20):
+        queue.put(alert)
+    queue.join()
+
+
+if __name__ == '__main__':
+    queue_pool()
+```
+
+## flask web 框架
+
+https://dormousehole.readthedocs.io/en/latest/
+
+```py
+from flask import Flask
+from flask import request
+
+app = Flask(__name__)
+
+
+@app.route('/hello_world')
+def hello_world():
+    print(request.headers)
+    return "hello_world"
+
+
+if __name__ == "__main__":
+    app.run(debug=False)
+```
+
+## selenium 操作浏览器
+
+```py
+import time
+from selenium import webdriver
+
+# Optional argument, if not specified will search path.
+driver = webdriver.Chrome(
+    '/Users/ringcrl/Documents/sdk/chromedriver/chromedriver')
+driver.get('http://www.google.com/')
+time.sleep(5)  # Let the user actually see something!
+search_box = driver.find_element_by_name('q')
+search_box.send_keys('ChromeDriver')
+search_box.submit()
+time.sleep(5)  # Let the user actually see something!
+driver.quit()
+```
+
+## pandas 存储 csv 文件
+
+```py
+# 写文件
+import pandas as pd
+
+b = ['Ring', 'Chenng']
+c = ['18岁', '19岁']
+d = ['170cm', '180cm']
+
+df = pd.DataFrame({'姓名' : b, '年纪' : c, '身高' : d})
+df.to_csv("xsb.csv", index=False, sep=',')
+```
+
+```py
+# 读文件
+import pandas
+
+test_csv = pandas.read_csv('test.csv')
+
+print(test_csv)
+```
+
+## pymysql 连接数据库
+
+```sh
+mysql -u root -p
+```
+
+```sql
+-- 建库
+create database if not exists idol;
+
+-- 建表
+create table person (
+    name char(20) not null,
+    age int
+)
+
+-- 查看表
+use idol;
+show full columns from person;
+
+-- 查看数据
+select * from person;
+```
+
+```py
+import pymysql
+
+# 使用 connect 方法，传入数据库地址，账号密码，数据库名就可以得到你的数据库对象
+db = pymysql.connect(
+    "localhost",
+    "root",
+    "password",
+    "idol"
+)
+
+# 获取 cursor 来操作 idol 数据库
+cursor = db.cursor()
+
+# 插入一条记录
+sql = """
+  insert into person(name, age) values ('Ring', 18)
+"""
+
+try:
+    cursor.execute(sql)
+    # 调用 commit 才会执行
+    db.commit()
+except:
+    # 回滚保证事务一致性
+    db.rollback()
+
+# 关闭这个数据库的连接
+db.close()
+```
+
+
 # 实践
 
 ## 连接 mysql 类型转换
@@ -333,7 +542,7 @@ def insert_batch(connect,sql):
         return e
 ```
 
-## 当当top500写到txt
+## 单进程当当top500
 
 ```py
 # -*- coding: utf-8 -*-
@@ -384,6 +593,19 @@ def write_item_to_file(item):
 if __name__ == '__main__':
     for i in range(16):
         main(i)
+```
+
+## 多进程当当top500
+
+```py
+# 修改调用部分
+import multiprocessing
+
+if __name__ == '__main__':
+    pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    pool.map(main, range(16))
+    pool.close()
+    pool.join()
 ```
 
 ## 豆瓣top250写到xlsx
