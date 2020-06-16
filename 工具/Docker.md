@@ -29,6 +29,16 @@ wget -qO- https://get.docker.com/ | sh
 sudo usermod -aG docker <your-user>
 ```
 
+# 拷贝镜像文件
+
+```sh
+# 本地打包
+docker save -o <file_name> <image_name>
+
+# 服务器导入
+docker load --input <file_name>
+```
+
 # 镜像
 
 ## 构建镜像
