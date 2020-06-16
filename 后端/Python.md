@@ -18,6 +18,24 @@ pyenv global 2.7.16
 pip install pandas -i https://mirrors.ustc.edu.cn/pypi/web/simple/
 ```
 
+## requirements.txt 项目依赖
+
+```sh
+# 安装依赖项
+pip install -r requirements.txt
+```
+
+```sh
+# 项目依赖
+pip install pipreqs
+pipreqs ./ # 在项目根目录执行
+```
+
+```sh
+# 导出全局依赖
+pip freeze > requirements.txt
+```
+
 # 语法和包
 
 ## 时间函数
