@@ -517,6 +517,12 @@ du -sh vue.css
 du -h 工具
 ```
 
+## df 查看磁盘大小
+
+```sh
+df -h
+```
+
 ## tar 打包解包
 
 ```sh
@@ -585,6 +591,9 @@ cp -r source_dir dist_dir
 ## echo
 
 ```sh
+# 查看当前使用的脚本
+echo $SHELL # /bin/zsh
+
 # -e 开启转义
 echo -e "OK! \n"
 echo "It is a test"
