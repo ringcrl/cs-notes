@@ -481,6 +481,54 @@ except:
 db.close()
 ```
 
+## mitmproxy 网络控制
+
+https://mitmproxy.org/
+
+https://juejin.im/post/5ac9ea6d518825364001b5b9
+
+### 安装
+
+```sh
+# 安装
+pip install mitmproxy
+
+# 启动，开启端口监听
+mitmweb
+
+# 手机 wifi 设置代理
+# mitm.it 安装证书
+```
+
+### 脚本
+
+```sh
+mitmdump -s test.py
+```
+
+```py
+# test.py
+import requests
+
+location = '/home/wistbean/douyin/'
+num = 0
+
+
+def response(flow):
+    global num
+    path = 'ixigua'
+
+    # 判断请求 url 是否包含音视频
+    if path in flow.request.url:
+        filename = location + str(num) + '.mp4'
+        res = requests.get(flow.request.url)
+
+        # 下载视频
+        with open(filename, 'ab') as f:
+            f.write(res.content)
+            f.flush()
+            num += 1
+```
 
 # 实践
 
