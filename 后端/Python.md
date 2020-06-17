@@ -530,7 +530,26 @@ def response(flow):
             num += 1
 ```
 
+## path 路径
+
+```py
+from os import path
+
+# __file__：/Users/ringcrl/Documents/saga/cs-notes/_test/test2.py
+# path.dirname(__file__)：/Users/ringcrl/Documents/saga/cs-notes/_test
+d = path.dirname(__file__)
+
+# /Users/ringcrl/Documents/saga/cs-notes/_test/txt_file.txt
+txt_file_path = path.join(d, 'txt_file.txt') 
+```
+
 # 实践
+
+## devtools&postman 网络请求
+
+- chrome 的 network 找到网络请求，选择 `copy as cURL`
+- Postman 选择 Import、Raw Text、粘贴
+- 点击 Send 下面的 code，选择 `Python - Requests`，获取 python
 
 ## 连接 mysql 类型转换
 
