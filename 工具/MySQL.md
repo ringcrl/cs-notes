@@ -155,6 +155,22 @@ mysql> use mysql;
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'new_password';
 ```
 
+## 用户操作
+
+```sql
+-- 操作后刷新权限
+flush privileges;
+
+-- 新增用户
+CREATE USER 'chenng'@'localhost' IDENTIFIED BY 'password';
+
+-- 删除用户
+DELETE FROM mysql.user WHERE Host='localhost' AND User='chenng';
+
+-- 给用户添加权限
+GRANT ALL ON *.* TO 'chenng'@'localhost';
+```
+
 ## 库操作
 
 ```sql
