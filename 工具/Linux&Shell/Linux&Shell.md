@@ -307,6 +307,31 @@ https://support.apple.com/zh-cn/HT201065
 
 # shell 常用命令
 
+## curl 请求或下载
+
+```sh
+# 普通请求
+curl https://httpbin.org/get?answer=42
+
+# -i 显示完整 response
+curl -i https://httpbin.org/get?answer=42
+
+# -O 下载文件，-L 跟随重定向
+curl -OL https://images.unsplash.com/photo-1506812574058-fc75fa93fead
+
+# -o 重命名下载
+curl -o miaxi-beach.jpg -L https://images.unsplash.com/photo-1506812574058-fc75fa93fead
+
+# 设置 Authorization Header
+curl -H "Authorization: my-secret-token" https://httpbin.org/get
+
+# post 请求
+curl -X POST -d '{"answer": 42}' https://httpbin.org/post
+
+# 设置 Content-Type
+curl -X POST -d '{"answer":42}' -H "Content-Type: application/json" https://httpbin.org/post
+```
+
 ## grep
 
 ```sh
