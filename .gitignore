@@ -16,5 +16,4 @@ node_modules/
 # Custom
 _test/*
 !_test/.gitkeep
-**/password.js
 .vscode/settings.json

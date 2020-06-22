@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "js",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "outputCapture" : "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "ts",
+      "program": "${file}",
+      "preLaunchTask": "tsc: watch - server/tsconfig.json",
+      "outFiles": ["${workspaceFolder}/server/dist/**/*.js"]
+    },
+  ]
+}
