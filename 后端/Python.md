@@ -189,19 +189,16 @@ runoob1.runoob1()
 runoob2.runoob2()
 ```
 
-## 列表
-
-### 遍历
+## list 列表
 
 ```py
 # 不需要 index
 for item in data_list:
-    # ...
+    pass
 
 # 需要 index
-for index in range(len(data_list)):
-    item = data_list[index]
-    # ...
+for index, item in enumerate(data_list):
+    pass
 ```
 
 ## 读文件
