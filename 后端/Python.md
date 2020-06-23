@@ -189,7 +189,7 @@ runoob1.runoob1()
 runoob2.runoob2()
 ```
 
-## 列表
+## list 列表
 
 ### 遍历
 
@@ -202,6 +202,46 @@ for item in data_list:
 for index in range(len(data_list)):
     item = data_list[index]
     # ...
+```
+
+### 截取
+
+```py
+a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+print('First four: ', a[:4]) # First four:  ['a', 'b', 'c', 'd']
+print('Last four:  ', a[-4:]) # Last four:   ['e', 'f', 'g', 'h']
+print('Middle two: ', a[3:-3]) # Middle two:  ['d', 'e']
+```
+
+## list、dict 推导式
+
+```py
+# list
+a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+squares = [x**2 for x in a]
+print(squares) # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+# dict
+chile_ranks = {'ghost': 1, 'habanero': 2, 'cayenne': 3}
+rank_dict = {rank: name for name, rank in chile_ranks.items()}
+chile_len_set = {len(name) for name in rank_dict.values()}
+print(rank_dict) # {1: 'ghost', 2: 'habanero', 3: 'cayenne'}
+print(chile_len_set) # {8, 5, 7}
+```
+
+## zip 并行遍历
+
+```py
+names = ['Cecilia', 'Lise', 'Marie']
+letters = [len(n) for n in names]
+
+longest_name = None
+max_letters = 0
+
+for name, count in zip(names, letters):
+    if count > max_letters:
+        longest_name = name
+        max_letters = count
 ```
 
 ## 读文件
@@ -545,6 +585,47 @@ txt_file_path = path.join(d, 'txt_file.txt')
 
 # 实践
 
+## str 与 bytes 转换
+
+```py
+# python3
+def to_str(bytes_or_str):
+    if isinstance(bytes_or_str, bytes):
+        value = bytes_or_str.decode('utf-8')
+    else:
+        value = bytes_or_str
+    return value  # Instance of str
+
+print(to_str('中文')) # 中文
+
+def to_bytes(bytes_or_str):
+    if isinstance(bytes_or_str, str):
+        value = bytes_or_str.encode('utf-8')
+    else:
+        value = bytes_or_str
+    return value  # Instance of str
+
+print(to_bytes('中文')) # b'\xe4\xb8\xad\xe6\x96\x87'
+```
+
+```py
+# python2
+def to_unicode(unicode_or_str):
+    if isinstance(unicode_or_str, str):
+        value = unicode_or_str.decode('utf-8')
+    else:
+        value = unicode_or_str
+    return value  # Instance of unicode
+
+
+def to_str(unicode_or_str):
+    if isinstance(unicode_or_str):
+        value = unicode_or_str.encode('utf-8')
+    else:
+        value = unicode_or_str
+    return value  # Instance of str
+```
+
 ## devtools&postman 网络请求
 
 - chrome 的 network 找到网络请求，选择 `copy as cURL`
@@ -572,12 +653,16 @@ def connect_mdb():
     )
 ```
 
-## unicode 转中文
+## binary mode 读写文件
 
 ```py
-def unicode_to_chinese(text):
-    return text.encode('utf-8')
+with open('random.bin', 'wb') as f:
+    f.write(os.urandom(10))
+
+with open('random.bin', 'rb') as f:
+    print(f.read())
 ```
+
 
 ## 写文件 unicode 转成中文
 
