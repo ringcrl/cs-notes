@@ -196,12 +196,11 @@ runoob2.runoob2()
 ```py
 # 不需要 index
 for item in data_list:
-    # ...
+    pass
 
 # 需要 index
-for index in range(len(data_list)):
-    item = data_list[index]
-    # ...
+for index, item in enumerate(data_list):
+    pass
 ```
 
 ### 截取
