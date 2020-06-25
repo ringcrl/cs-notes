@@ -38,6 +38,21 @@ pip freeze > requirements.txt
 
 # 语法和包
 
+## 运算符
+
+```py
+# 产生整数的分割
+x = 15
+y = 4
+print(x // y) # 3
+
+x = True
+y = False
+print(x and y) # False
+print(x or y) # True
+print(not x) # False
+```
+
 ## time 时间函数
 
 ```py
@@ -189,38 +204,40 @@ runoob1.runoob1()
 runoob2.runoob2()
 ```
 
-## list 列表
-
-### 遍历
+## str 字符串
 
 ```py
-# 不需要 index
-for item in data_list:
-    pass
-
-# 需要 index
-for index, item in enumerate(data_list):
-    pass
+# 字符串截取
+str[1:-1] # 移除字符串首尾字符
 ```
 
-### 截取
-
+## list 列表
 ```py
+# 截取
 a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 print('First four: ', a[:4]) # First four:  ['a', 'b', 'c', 'd']
 print('Last four:  ', a[-4:]) # Last four:   ['e', 'f', 'g', 'h']
 print('Middle two: ', a[3:-3]) # Middle two:  ['d', 'e']
-```
 
-## list、dict 推导式
+# 遍历
+for item in data_list: # 不需要 index
+    pass
+for index, item in enumerate(data_list): # 需要 index
+    pass
 
-```py
-# list
+# 推导式
 a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 squares = [x**2 for x in a]
 print(squares) # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+```
 
-# dict
+## dict 字典
+
+```py
+# 取值并兜底
+res = stock.get('merch', 0) # 若 stock 没有 key: merch，则返回 0
+
+# 推导式
 chile_ranks = {'ghost': 1, 'habanero': 2, 'cayenne': 3}
 rank_dict = {rank: name for name, rank in chile_ranks.items()}
 chile_len_set = {len(name) for name in rank_dict.values()}
