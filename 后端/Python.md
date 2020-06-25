@@ -38,7 +38,7 @@ pip freeze > requirements.txt
 
 # 语法和包
 
-## 时间函数
+## time 时间函数
 
 ```py
 import time
@@ -86,7 +86,7 @@ print datetime.datetime.strptime(str(datetime.date(2020, 05, 29)), '%Y-%m-%d')
 print datetime.datetime.strptime('2020-05-29', '%Y-%m-%d') + datetime.timedelta(days=-1)
 ```
 
-## 模块
+## import 模块
 
 ### 引入模块
 
@@ -243,7 +243,7 @@ for name, count in zip(names, letters):
         max_letters = count
 ```
 
-## 读文件
+## codecs 读文件
 
 ```py
 import json
@@ -253,7 +253,7 @@ with codecs.open(file_path, 'r', 'utf-8') as f:
     print json.loads(f.read())
 ```
 
-## 运行时参数
+## sys 运行时参数
 
 ```py
 # python read_path.py json_path
@@ -263,7 +263,7 @@ import sys
 JSON_PATH = sys.argv[1]
 ```
 
-## 下载文件
+## requests 下载文件
 
 ```py
 import requests
@@ -278,7 +278,21 @@ def download_file(url, file_path):
         f.close()
 ```
 
-## yield
+## generators 迭代函数
+
+```py
+# 比起直接声明一个 list append 更好：代码更精简、更节约内存
+address = 'Four score and seven years ago...'
+def index_words_iter(text):
+    if text:
+        yield 0
+    for index, letter in enumerate(text):
+        if letter == ' ':
+            yield index + 1
+
+result = list(index_words(address))
+print(result) # [0, 5, 11, 15, 21, 27]
+```
 
 ```py
 def parse_result(items):
@@ -580,6 +594,12 @@ d = path.dirname(__file__)
 
 # /Users/ringcrl/Documents/saga/cs-notes/_test/txt_file.txt
 txt_file_path = path.join(d, 'txt_file.txt') 
+
+# 定位相对路径文件
+curr_dir = path.dirname(__file__)
+logfile_path = path.abspath(
+    path.join(curr_dir, '../log/scheduler.log')
+)
 ```
 
 # 实践
