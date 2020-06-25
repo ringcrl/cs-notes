@@ -2499,6 +2499,54 @@ window.addEventListener('storage', function (event) {
 - 它设计为完全异步，同步API（如 XHR 和 localStorage）不能在 service worker 中使用
 - 使用 `ServiceWorkerContainer.register()` 方法首次注册 service worker
 
+# JSDoc
+
+```js
+/**
+ * 定义对象格式
+ * 
+ * @namespace
+ * @property {object}  defaults               - The default values for parties.
+ * @property {number}  defaults.players       - The default number of players.
+ * @property {string}  defaults.level         - The default level for the party.
+ * @property {object}  defaults.treasure      - The default treasure.
+ * @property {number}  defaults.treasure.gold - How much gold the party starts with.
+ */
+var config = {
+    defaults: {
+        players: 1,
+        level:   'beginner',
+        treasure: {
+            gold: 0
+        }
+    }
+};
+
+/**
+ * 
+ * 定义参数格式
+ * 
+ * @typedef {Object} User
+ * @property {string} email
+ * @property {string} [nickName]
+ * 
+ * @param {User} user
+ */
+function getUserInfo(user) {
+  // pass
+}
+
+/**
+ * 返回 Promise
+ * 
+ * @return {Promise<Number>} time
+ */
+function getTime() {
+  return new Promise (resolve => {
+    // pass
+  })
+}
+```
 
 # 实践
 
