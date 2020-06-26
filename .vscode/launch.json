@@ -2,9 +2,16 @@
   "version": "1.0.0",
   "configurations": [
     {
+      "name": "Python",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
       "type": "node",
       "request": "launch",
-      "name": "js",
+      "name": "JS",
       "program": "${file}",
       "cwd": "${workspaceFolder}",
       "outputCapture" : "std"
@@ -12,7 +19,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "ts",
+      "name": "TS",
       "program": "${file}",
       "preLaunchTask": "tsc: watch - server/tsconfig.json",
       "outFiles": ["${workspaceFolder}/server/dist/**/*.js"]

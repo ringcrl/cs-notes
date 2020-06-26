@@ -38,9 +38,12 @@ pip freeze > requirements.txt
 
 # 语法和包
 
-## 运算符
+## 类型与运算
 
 ```py
+# 判断类型字符串
+print(isinstance('string', str)) # True
+
 # 产生整数的分割
 x = 15
 y = 4
@@ -51,6 +54,13 @@ y = False
 print(x and y) # False
 print(x or y) # True
 print(not x) # False
+```
+
+## int 数字
+
+```py
+# 二进制转十进制
+print(int('1001001', 2)) # 73
 ```
 
 ## time 时间函数
@@ -229,6 +239,16 @@ for index, item in enumerate(data_list): # 需要 index
 a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 squares = [x**2 for x in a]
 print(squares) # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+# range 生成 [1, 2, 3, ..., n]
+print(range(1, n+1))
+
+# 数组合并
+print([1, 2, 3] + [4]) # [1, 2, 3, 4]
+
+# filter
+numbers = [1, 2, 3, 4, 5, 6]
+print([x for x in numbers if x > 3]) # [4, 5, 6]
 ```
 
 ## dict 字典
