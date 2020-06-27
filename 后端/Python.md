@@ -36,13 +36,17 @@ pipreqs ./ # 在项目根目录执行
 pip freeze > requirements.txt
 ```
 
-# 语法和包
+# 语法
 
 ## 类型与运算
 
 ```py
 # 判断类型字符串
 print(isinstance('string', str)) # True
+
+# 判断类型函数
+def get_type(x):
+    {str:"str", float:"float", int:"int", bool: 'bool'}.get(type(x))
 
 # 产生整数的分割
 x = 15
@@ -219,6 +223,9 @@ runoob2.runoob2()
 ```py
 # 字符串截取
 str[1:-1] # 移除字符串首尾字符
+
+# 字符串反转
+str[::-1]
 ```
 
 ## list 列表
@@ -249,6 +256,13 @@ print([1, 2, 3] + [4]) # [1, 2, 3, 4]
 # filter
 numbers = [1, 2, 3, 4, 5, 6]
 print([x for x in numbers if x > 3]) # [4, 5, 6]
+
+# 判断元素是否存在
+'gold' in ['stone', 'stone', 'gold'] # True
+
+# 合并、去重、排序两个数组
+def merge_arrays(arr1, arr2):
+    return sorted(set(arr1 + arr2))
 ```
 
 ## dict 字典
@@ -907,6 +921,31 @@ if __name__ == '__main__':
         main(i)
 
     book.save(u'豆瓣最受欢迎的250部电影.xlsx')
+```
+
+# 题目
+
+## is_palindrome 判断回文
+
+```py
+def is_palindrome(s):
+    start = 0
+    end = len(s) -1
+    while start < end:
+        if s[start].lower() == s[end].lower():
+            start += 1
+            end -= 1
+        else:
+            return False
+    
+    return True
+```
+
+## 寻找最接近某数的平方数
+
+```py
+def nearest_sq(n):
+    return round(n ** 0.5) ** 2
 ```
 
 # 编码规范
