@@ -4,44 +4,7 @@ git cheat sheet。
 
 <!--more-->
 
-# git config
-
-## 配置个人信息
-
-```sh
-# 显示中文
-git config --global core.quotepath false
-
-# 全局
-git config --global user.name 'Chenng'
-git config --global user.email 'ringcrl@foxmail.com'
-
-# 单个项目
-git config user.name 'Chenng'
-git config user.email 'ringcrl@foxmail.com'
-
-# 某个目录下所有仓库修改
-cd ~/codemao/
-for repo in $(ls); do cd $repo; git config user.email 'your_email@codemao.cn'; cd ..; done
-```
-
-## 初始化仓库
-
-```sh
-git init
-```
-
-## 配置命令别名
-
-```sh
-# 列出每个修订的提交消息
-git config --global alias.mist 'log --pretty=format:"%s"'
-
-# 使用
-git mist
-```
-
-## .gitignore
+# .gitignore
 
 ```sh
 # 匹配模式前 / 代表项目根目录
@@ -66,34 +29,28 @@ README.md
 !/README.md
 ```
 
-## 修正错误的邮箱提交
-
-https://help.github.com/en/articles/changing-author-info
+# git config
 
 ```sh
-#!/bin/sh
+# 初始化 git 仓库
+git init
 
-git filter-branch --env-filter '
+# 显示中文
+git config --global core.quotepath false
 
-OLD_EMAIL="sagacheng@tencent.com"
-CORRECT_NAME="ringcrl"
-CORRECT_EMAIL="ringcrl@foxmail.com"
+# 全局
+git config --global user.name 'Chenng'
+git config --global user.email 'ringcrl@foxmail.com'
 
-if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
-then
-    export GIT_COMMITTER_NAME="$CORRECT_NAME"
-    export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
-fi
-if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]
-then
-    export GIT_AUTHOR_NAME="$CORRECT_NAME"
-    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
-fi
-' --tag-name-filter cat -- --branches --tags
-```
+# 单个项目
+git config user.name 'Chenng'
+git config user.email 'ringcrl@foxmail.com'
 
-```sh
-git push --force --tags origin 'refs/heads/*'
+# 编辑仓库
+git config -e
+
+# 编辑全局
+git config --global -e
 ```
 
 # git diff
@@ -458,8 +415,42 @@ gstl
 gtv
 ```
 
-# 项目代码提交情况
+
+
+# 实践
+
+## 项目代码提交情况
 
 ```sh
 git log --format='%aN' | sort -u | while read name; do echo -en "$name\t"; git log --author="$name" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -; done
+```
+
+## 修正错误的邮箱提交
+
+https://help.github.com/en/articles/changing-author-info
+
+```sh
+#!/bin/sh
+
+git filter-branch --env-filter '
+
+OLD_EMAIL="sagacheng@tencent.com"
+CORRECT_NAME="ringcrl"
+CORRECT_EMAIL="ringcrl@foxmail.com"
+
+if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
+then
+    export GIT_COMMITTER_NAME="$CORRECT_NAME"
+    export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+fi
+if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]
+then
+    export GIT_AUTHOR_NAME="$CORRECT_NAME"
+    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+fi
+' --tag-name-filter cat -- --branches --tags
+```
+
+```sh
+git push --force --tags origin 'refs/heads/*'
 ```
