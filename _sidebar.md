@@ -21,6 +21,7 @@
     * [ffmpeg](工具/ffmpeg/ffmpeg.md)
     * [Jest](工具/Jest/Jest.md)
     * [react-redux](工具/react-redux/react-redux.md)
+    * [Babel](工具/Babel.md)
     * [Chrome](工具/Chrome.md)
     * [Docker](工具/Docker.md)
     * [Git](工具/Git.md)
