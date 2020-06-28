@@ -653,6 +653,52 @@ logfile_path = path.abspath(
 )
 ```
 
+## sys 添加模块查找路径
+
+```py
+curr_dir = path.dirname(__file__)
+root_dir = path.abspath(path.join(curr_dir, '..'))
+
+# 添加上级目录文件查找路径，后面可以进行 import
+sys.path.append(root_dir)
+
+import logger
+```
+
+## logging 封装
+
+```py
+import logging
+from os import path
+
+curr_dir = path.dirname(__file__)
+logfile_path = path.abspath(path.join(curr_dir, './log/scheduler.log'))
+
+logging.basicConfig(
+    filename=logfile_path,
+    level=logging.DEBUG,
+    format='%(levelname)s %(module)s %(asctime)s %(message)s',
+    datefmt='%Y/%m/%d %H:%M:%S'
+)
+
+# 禁用 requests、apscheduler 的 log
+logging.getLogger('urllib3').setLevel(logging.WARNING)
+logging.getLogger('apscheduler').setLevel(logging.WARNING)
+
+def error(msg):
+    logging.error(msg)
+
+def info(msg):
+    logging.info(msg)
+    pass
+
+def debug(msg):
+    logging.debug(msg)
+
+if __name__ == "__main__":
+    logging.debug('test')
+```
+
 # 实践
 
 ## str 与 bytes 转换
