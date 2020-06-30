@@ -2,6 +2,32 @@
   "version": "1.0.0",
   "configurations": [
     {
+      "name": "JS",
+      "type": "node",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "outputCapture" : "std"
+    },
+    {
+      "name": "TS",
+      "type": "node",
+      "request": "launch",
+      "program": "${file}",
+      "preLaunchTask": "tsc: watch - server/tsconfig.json",
+      "outFiles": ["${workspaceFolder}/server/dist/**/*.js"]
+    },
+    {
+      "name": "Jest",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--testPathPattern=${file}", "--config", "jest.config.js"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+    },
+    {
       "name": "Python",
       "type": "python",
       "request": "launch",
@@ -9,20 +35,23 @@
       "console": "integratedTerminal"
     },
     {
-      "type": "node",
+      "name": "Python: Flask",
+      "type": "python",
       "request": "launch",
-      "name": "JS",
-      "program": "${file}",
-      "cwd": "${workspaceFolder}",
-      "outputCapture" : "std"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "TS",
-      "program": "${file}",
-      "preLaunchTask": "tsc: watch - server/tsconfig.json",
-      "outFiles": ["${workspaceFolder}/server/dist/**/*.js"]
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "${file}",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "0"
+      },
+      "args": [
+        "run",
+        "--no-debugger",
+        "--no-reload",
+        "--host=0.0.0.0",
+        "--port=2334",
+      ],
+      "jinja": true
     },
   ]
 }
