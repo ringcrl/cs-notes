@@ -1,10 +1,19 @@
-# router
+# 实践
+
+## 两种 router
 
 - history
     - 刷新后还是发送原来的页面，后端不作处理就是 404
     - 后端需要定位到同一个 URL
 - hash
     - 刷新后还是当前页面
+
+## 添加实例 property
+
+```js
+// 实例中使用 this.$http 调用，可以访问到该实例的上下文
+Vue.prototype.$http = axios
+```
 
 # 源码
 

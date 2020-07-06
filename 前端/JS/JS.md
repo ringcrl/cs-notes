@@ -808,6 +808,44 @@ const showColumnInfo = async () => {
 
 ## DOM
 
+### 元素查找
+
+#### querySelector
+
+```js
+// 查找所有 id 以 d 开头的元素
+document.querySelectorAll('[id^=d]');
+
+node.querySelector('[name="x"]');
+```
+
+#### 上下查找
+
+- Node.parentNode
+- Node.firstChild
+- Node.lastChild
+- Node.childNodes
+
+#### 左右查找
+
+- Node.previousSibling
+- Node.nextSibling
+
+### 增删改查
+
+```js
+// DOM 元素的添加、删除、替换、插入到某个节点
+$ele.appendChild()
+$ele.removeChild()
+$ele.replaceChild()
+$ele.insertBefore()
+
+// 创建新节点
+document.createDocumentFragment() // 创建一个 DOM 片段
+document.createElement() // 创建一个具体的元素
+ducoment.createTextNode() // 创建一个文本节点
+```
+
 ### offset、clent、scrollWidth
 
 ![01.jpg](https://qiniu.chenng.cn/2019-02-07-21-24-01.jpg)
@@ -827,44 +865,6 @@ const showColumnInfo = async () => {
 - `nodeName` 是 `node` 接口上的属性
 - `tagName` 是 `element` 接口上的属性
 - 所有的节点（元素节点，属性节点，文本节点等 12 种）都继承了 `node` 接口，而只有元素节点才继承了 `element` 节点，因此 `nodeName` 比 `tagName` 具有更大的使用范围
-
-### 元素查找
-
-### querySelectorAll
-
-可以使用 CSS 的所有属性选择器
-
-```js
-document.querySelectorAll('[id^=d]');
-node.querySelector('[name="x"]');
-```
-
-### 上下查找
-
-- Node.parentNode
-- Node.firstChild
-- Node.lastChild
-- Node.childNodes
-
-### 左右查找
-
-- Node.previousSibling
-- Node.nextSibling
-
-### 增删改查
-
-```js
-// DOM 元素的添加、删除、替换、插入到某个节点
-$ele.appendChild()
-$ele.removeChild()
-$ele.replaceChild()
-$ele.insertBefore()
-
-// 创建新节点
-document.createDocumentFragment() // 创建一个 DOM 片段
-document.createElement() // 创建一个具体的元素
-ducoment.createTextNode() // 创建一个文本节点
-```
 
 ### createDocumentFragment
 

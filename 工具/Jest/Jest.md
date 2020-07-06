@@ -66,7 +66,7 @@ describe('makePoniesPink', () => {
 })
 ```
 
-# 使用
+# 测试 JS
 
 [Using matchers](http://jestjs.io/docs/en/using-matchers)
 
@@ -398,64 +398,64 @@ test('second text', () => {
 
 [ts-jest](https://github.com/kulshekhar/ts-jest)
 
-# 调试
+# 测试 Vue
 
-## 使用 Chrome 调试
+## 测试组件
 
-最近，我们遇到了一个问题，我们在 Jest 的某个测试失败了，但是我们不知道为什么。
+```vue
+<template>
+  <div>
+    <input v-model="username">
+    <div
+      v-if="error"
+      class="error"
+    >
+      {{ error }}
+    </div>
+  </div>
+</template>
 
-我们认为这是我们编写的测试用例的问题。我们试图通过在整个测试过程中 `console.log` 来解决这个问题，但是仍然很难弄清楚到底发生了什么，尤其是在不知道如何深入查看某些对象的属性的情况下。
-
-我们可以使用 Chrome Node DevTools。我们测试是通过 `yarn jest` 命令，yarn 是通过 Node 运行的，这意味着我们可以使用 Chrome Node DevTools 来 debugger 运行中的测试用例。这是非常有用的，因为我们需要的一件事就是能够窥视某些物体，看看它们的样子以及它们是如何失效的。这是一种更快，更有条理的方法来调试此测试。以下是我们采取的步骤：
-
-- 首先，在您认为可能失败并输入的测试中插入一个 `debugger`。这将作为调试器停止的断点。
-- 打开Chrome并输入地址栏： `chrome://inspect`
-- 点击 `Open dedicated DevTools for Node`
-- 使用下面的语句代替 `yarn jest`，最好保存到 `package.json` 中
-  ```sh
-  node --inspect node_modules/.bin/jest --runInBand
-  # --runInBand Jest 命令，仅在当前的进程中连续运行所有测试，而非通过创建的子进程的工作池来运行测试。在调试中很有用处。
-  ```
-  ```json
-  "scripts" : {
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
-  }
-  ```
-
-接下来运行 `yarn test:debug`，您的测试现在应该在 Chrome 调试器中运行。你可以使用方便的控制台来探索各种各样的东西！
-
-## 使用 VSCode 调试
-
-配置 `launch.json`，如果所示
-
-![01.png](https://qiniu.chenng.cn/2018-12-05-12-44-32.png)
-
-配置代码
-
-```json
-{
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "name": "vscode-jest-tests",
-      "request": "launch",
-      "args": [
-        "--runInBand"
-      ],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+<script>
+export default {
+  name: 'Hello',
+  data () {
+    return {
+      username: ''
     }
-  ]
+  },
+
+  computed: {
+    error () {
+      return this.username.trim().length < 7
+        ? 'Please enter a longer username'
+        : ''
+    }
+  }
 }
+</script>
 ```
 
-参考链接：[How To Debug Jest Tests](http://artsy.github.io/blog/2018/08/24/How-to-debug-jest-tests/)
+```js
+import { shallowMount } from '@vue/test-utils'
+import Hello from './Hello.vue'
+
+test('Hello', () => {
+  // 渲染这个组件
+  const wrapper = shallowMount(Hello)
+
+  // `username` 在除去头尾空格之后不应该少于 7 个字符
+  wrapper.setData({ username: ' '.repeat(7) })
+
+  // 确认错误信息被渲染了
+  expect(wrapper.find('.error').exists()).toBe(true)
+
+  // 将名字更新至足够长
+  wrapper.setData({ username: 'Lachlan' })
+
+  // 断言错误信息不再显示了
+  expect(wrapper.find('.error').exists()).toBe(false)
+})
+```
 
 # 参考
 
