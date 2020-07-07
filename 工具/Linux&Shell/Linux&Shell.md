@@ -305,7 +305,7 @@ https://support.apple.com/zh-cn/HT204904
 
 https://support.apple.com/zh-cn/HT201065
 
-# shell 常用命令
+# shell 命令
 
 ## curl 请求或下载
 
@@ -617,6 +617,27 @@ less index.html
 cp -r source_dir dist_dir
 ```
 
+## tr 管道替换
+
+```sh
+# 将所有 ; 替换为换行符方便阅读
+cat vue.css | tr ';' '\n'
+```
+
+## export 环境变量
+
+```sh
+# 添加 HTTP_PROXY
+HTTP_PROXY=127.0.0.1:1081
+export HTTP_PROXY
+
+# 等价于
+export HTTP_PROXY=127.0.0.1:1081
+
+# 添加环境变量 PATH
+export PATH="$PATH:/home/user/bin"
+```
+
 # Shell 脚本
 
 ```sh
@@ -640,6 +661,12 @@ echo "It is a test" > myfile
 echo `tnpm pack`
 echo "$(tnpm pack)"
 echo `date`
+
+# 彩色输出
+# 文字：0重置、30黑、31红、32绿、33黄、34蓝、35洋红、36青、37白
+# 背景：0重置、40黑、41红、42绿、43黄、44蓝、45洋红、46青、47白
+echo -e "\e[1;31m This is red text \e[0m"
+echo -e "\e[1;42m Green background \e[0m"
 ```
 
 ## 变量
@@ -650,6 +677,7 @@ echo `date`
 name="chenng"
 
 # 最好加 {}，直接写 $name 嵌入字符串会出问题
+echo $name
 echo ${name} 
 
 # 删除变量
