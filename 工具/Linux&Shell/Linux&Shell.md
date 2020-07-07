@@ -330,6 +330,16 @@ curl -X POST -d '{"answer": 42}' https://httpbin.org/post
 
 # 设置 Content-Type
 curl -X POST -d '{"answer":42}' -H "Content-Type: application/json" https://httpbin.org/post
+
+# -x 使用代理，-p 或 --proxytunnel 选项让 curl 穿过 HTTP 代理
+curl -x 127.0.0.1:1081 -v http:/example.com/
+# socks5 代理
+curl -x socks5://proxy.example.com http://www.example.com/
+
+# 读写 cookie
+# -c 指示 curl 将 cookie 写入文件，-b 指示 curl 从文件读取 cookie。通常需要同时使用它们
+curl -L -b cookies.txt http://example.com
+curl -c cookie-jar.txt http://example.com
 ```
 
 ## grep
