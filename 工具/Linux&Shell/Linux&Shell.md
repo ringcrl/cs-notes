@@ -638,6 +638,37 @@ export HTTP_PROXY=127.0.0.1:1081
 export PATH="$PATH:/home/user/bin"
 ```
 
+## date 日期函数
+
+```sh
+# Unix 时间
+date +%s # 1594219446
+
+# 格式化时间
+date "+%d %B %Y" # 08 July 2020
+
+# 格式化规则
+# 星期
+date +%a # Wed
+date +%A # Wednesday
+# 月份
+date +%b # Jul
+date +%B # July
+# 日
+date +%d # 08
+date +%D # 07/08/20
+# 年
+date +%y # 20
+date +%Y # 2020
+# 小时
+date +%I # 10 12小时制
+date +%H # 22 24小时制
+# 分钟
+date +%M # 58
+# 秒
+date +%S # 05
+```
+
 # Shell 脚本
 
 ```sh
