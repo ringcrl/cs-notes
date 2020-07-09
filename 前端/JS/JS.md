@@ -2475,21 +2475,51 @@ window.addEventListener('storage', function (event) {
 })
 ```
 
-## Web Workers 单独运行线程
+## Workers
 
-### 基本概念
+### 概念
 
 - 在与主线程分离的后台线程中运行一个脚本操作
 - 构造函数接受一个 JS 文件 URL，这个文件包含了将在 worker 线程中运行的代码
-- 主线程和 worker 线程之间都使用 `postMessage()` 方法来发送信息, 并且通过 `onmessage` 这个 event handler 来接收信息（传递的信息包含在 Message 这个事件的 data 属性内) 
+- 主线程和 worker 线程之间都使用 `postMessage()` 方法来发送信息, 并且通过 `onmessage` 这个 event_handler 来接收信息（传递的信息包含在 Message 这个事件的 data 属性内) 
 - 数据的交互是通过传递副本，而不是直接共享数据
 
-### Workers 类型
+```js
+// main.js
+const worker = new Worker('./worker.js');
+worker.postMessage('hello');
+worker.onmessage = (event) => {
+  console.log(event.data); // world
+};
 
-- Web Worker（专用 Worker）
-- Shared Workers：可被不同的窗体的多个脚本运行，例如 iFrames 等，只要这些 workers 处于同一主域
-- Service Workers：作为 web 应用程序、浏览器和网络（如果可用）之间的代理服务，旨在创建有效的离线体验，拦截网络请求，以及根据网络是否可用采取合适的行动，更新驻留在服务器上的资源
-- 音频 Workers：在网络 worker 上下文中直接完成脚本化音频处理
+// worker.js
+self.onmessage = (event) => {
+  console.log(event.data); // hello
+  postMessage('world');
+};
+```
+
+### 多线程
+
+- JS 中的并发（setTimeout 等）是 Concurrent；Worker 的多线程是 Parallel
+
+![](./imgs/06.jpeg)
+
+- 单核多线程通过时间切片交替执行，多核多线程可在不同核中真正并行
+
+![](./imgs/07.jpeg)
+
+- 任务在 Worker 线程上运行并不会比原本主线程更快, 而线程新建消耗和通信开销使得渲染间隔可能变得更久
+
+### Dedicated Worker
+
+- DedicatedWorker 简称 Worker, 其线程只能与一个页面渲染进程(Render Process)进行绑定和通信, 不能多 Tab 共享
+- DedicatedWorker 是最早实现并最广泛支持的 Web Worker 能力
+
+### Shared Worker
+
+- 可以在多个浏览器 Tab 中访问到同一个 Worker 实例, 实现多 Tab 共享数据, 共享 webSocket 连接等
+- Safari 不支持
 
 ### Service Worker
 
