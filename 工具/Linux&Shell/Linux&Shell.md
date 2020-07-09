@@ -669,6 +669,20 @@ date +%M # 58
 date +%S # 05
 ```
 
+## ifconfig 获取本机 ip
+
+```sh
+# 显示本机 ip
+ifconfig | grep inet | grep -v inet6 | grep -v 127 | cut -d ' ' -f2 # 192.168.31.77
+```
+
+## cut 截取字符
+
+```sh
+# 通过 ' '  分割，获取第二项
+echo 'inet 192.168.31.77 netmask 0xffffff00 broadcast 192.168.31.255' | cut -d ' ' -f2 # 192.168.31.77
+```
+
 # Shell 脚本
 
 ```sh
@@ -991,6 +1005,11 @@ funWithParam(){
     echo "作为一个字符串输出所有参数 $* !"
 }
 funWithParam 1 2 3 4 5 6 7 8 9 34 73
+```
+
+```sh
+# 获取本机 ip
+
 ```
 
 ## 流程控制
