@@ -638,6 +638,37 @@ export HTTP_PROXY=127.0.0.1:1081
 export PATH="$PATH:/home/user/bin"
 ```
 
+## date 日期函数
+
+```sh
+# Unix 时间
+date +%s # 1594219446
+
+# 格式化时间
+date "+%d %B %Y" # 08 July 2020
+
+# 格式化规则
+# 星期
+date +%a # Wed
+date +%A # Wednesday
+# 月份
+date +%b # Jul
+date +%B # July
+# 日
+date +%d # 08
+date +%D # 07/08/20
+# 年
+date +%y # 20
+date +%Y # 2020
+# 小时
+date +%I # 10 12小时制
+date +%H # 22 24小时制
+# 分钟
+date +%M # 58
+# 秒
+date +%S # 05
+```
+
 # Shell 脚本
 
 ```sh
@@ -713,10 +744,10 @@ for file in `ls /etc`; do echo ${file}; done;
 ## 数组
 
 ```sh
-array_name=("value0" "value1" "value2" "value3")
-echo ${array_name[0]} # value0
-echo ${array_name[@]} # "value0" "value1" "value2" "value3"
-echo ${#array_name[@]} # 4
+array_var=("value0" "value1" "value2" "value3")
+echo ${array_var[0]} # value0
+echo ${array_var[*]} # "value0" "value1" "value2" "value3"
+echo ${#array_var[*]} # 4
 ```
 
 ## sh 脚本传参
@@ -764,6 +795,14 @@ if [ $a != $b ]
 then
    echo "a 不等于 b"
 fi
+```
+
+```sh
+# let 运算符
+no1=4;
+no2=5;
+let result=no1+no2;
+echo $result;
 ```
 
 ### 关系运算符
@@ -986,24 +1025,27 @@ else
 fi
 ```
 
-## 输出重定向
+## 文件描述符与重定向
 
 ```sh
 # 将输出重定向到 file
-command > file
+ls > _test/out.log
 
 # 将输出以追加的方式重定向到 file
-command >> file
+ls >> _test/out.log
 
 # 文件描述符 0 通常是标准输入（STDIN）
 # 文件描述符 1 是标准输出（STDOUT）
 # 文件描述符 2 是标准错误输出（STDERR）
 
 # 输出错误到文件
-command 2 >> file
+ls + 2> _test/out.log
 
 # 将标准输出和标准错误合并输出到文件 2>&1
-command >> file 2>&1
+ls > _test/out.log 2>&1
+
+# 不保存输出信息
+ls > /dev/null 2>&1
 ```
 
 ## 综合应用
