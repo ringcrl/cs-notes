@@ -400,73 +400,362 @@ test('second text', () => {
 
 # 测试 Vue
 
-## 测试组件
+https://vue-test-utils.vuejs.org/zh/
+
+## html 渲染、点击事件
+
+```js
+// counter.js
+
+export default {
+  template: `
+    <div>
+      <span class="count">{{ count }}</span>
+      <button @click="increment">Increment</button>
+    </div>
+  `,
+
+  data() {
+    return {
+      count: 0
+    }
+  },
+
+  methods: {
+    increment() {
+      this.count++
+    }
+  }
+}
+```
+
+
+```js
+// test.js
+
+// 从测试实用工具集中导入 `mount()` 方法，同时导入你要测试的组件
+// shallowMount 方法只挂载一个组件而不渲染其子组件
+import { mount } from '@vue/test-utils'
+import Counter from './counter'
+
+// 测试 html 渲染
+describe('Counter', () => {
+  // 现在挂载组件，你便得到了这个包裹器
+  const wrapper = mount(Counter)
+
+  it('renders the correct markup', () => {
+    expect(wrapper.html()).toContain('<span class="count">0</span>')
+  })
+
+  // 也便于检查已存在的元素
+  it('has a button', () => {
+    expect(wrapper.contains('button')).toBe(true)
+  })
+  
+  it('button click should increment the count', async () => {
+    expect(wrapper.vm.count).toBe(0)
+    const button = wrapper.find('button')
+    await button.trigger('click')
+    expect(wrapper.vm.count).toBe(1)
+  })
+})
+```
+
+## $emit 断言
+
+
+```js
+wrapper.vm.$emit('foo')
+wrapper.vm.$emit('foo', 123)
+
+/*
+`wrapper.emitted()` 返回以下对象：
+{
+  foo: [[], [123]]
+}
+*/
+
+// 断言事件已经被触发
+expect(wrapper.emitted().foo).toBeTruthy()
+
+// 断言事件的数量
+expect(wrapper.emitted().foo.length).toBe(2)
+
+// 断言事件的有效数据
+expect(wrapper.emitted().foo[1]).toEqual([123])
+```
+
+## 从子组件触发事件
+
 
 ```vue
 <template>
   <div>
-    <input v-model="username">
-    <div
-      v-if="error"
-      class="error"
-    >
-      {{ error }}
-    </div>
+    <child-component @custom="onCustom" />
+    <p v-if="emitted">Emitted!</p>
+  </div>
+</template>
+
+<script>
+  import ChildComponent from './ChildComponent'
+
+  export default {
+    name: 'ParentComponent',
+    components: { ChildComponent },
+    data() {
+      return {
+        emitted: false
+      }
+    },
+    methods: {
+      onCustom() {
+        this.emitted = true
+      }
+    }
+  }
+</script>
+```
+
+
+```js
+import { mount } from '@vue/test-utils'
+import ParentComponent from '@/components/ParentComponent'
+import ChildComponent from '@/components/ChildComponent'
+
+describe('ParentComponent', () => {
+  it("displays 'Emitted!' when custom event is emitted", () => {
+    const wrapper = mount(ParentComponent)
+    wrapper.find(ChildComponent).vm.$emit('custom')
+    expect(wrapper.html()).toContain('Emitted!')
+  })
+})
+```
+
+## setData、setProps 操作组件状态
+
+
+```js
+wrapper.setData({ count: 10 })
+
+wrapper.setProps({ foo: 'bar' })
+```
+
+## 初始化 Prop
+
+
+```js
+import { mount } from '@vue/test-utils'
+
+mount(Component, {
+  propsData: {
+    aProp: 'some value'
+  }
+})
+```
+
+## 仿造 Transitions
+
+
+```vue
+<template>
+  <div>
+    <transition>
+      <p v-if="show">Foo</p>
+    </transition>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Hello',
-  data () {
+  data() {
     return {
-      username: ''
-    }
-  },
-
-  computed: {
-    error () {
-      return this.username.trim().length < 7
-        ? 'Please enter a longer username'
-        : ''
+      show: true
     }
   }
 }
 </script>
 ```
 
+
 ```js
-import { shallowMount } from '@vue/test-utils'
-import Hello from './Hello.vue'
+const transitionStub = () => ({
+  render: function(h) {
+    return this.$options._renderChildren
+  }
+})
 
-test('Hello', () => {
-  // 渲染这个组件
-  const wrapper = shallowMount(Hello)
+test('should render Foo, then hide it', async () => {
+  const wrapper = mount(Foo, {
+    stubs: {
+      transition: transitionStub()
+    }
+  })
+  expect(wrapper.text()).toMatch(/Foo/)
 
-  // `username` 在除去头尾空格之后不应该少于 7 个字符
-  wrapper.setData({ username: ' '.repeat(7) })
+  wrapper.setData({
+    show: false
+  })
+  await wrapper.vm.$nextTick()
 
-  // 确认错误信息被渲染了
-  expect(wrapper.find('.error').exists()).toBe(true)
-
-  // 将名字更新至足够长
-  wrapper.setData({ username: 'Lachlan' })
-
-  // 断言错误信息不再显示了
-  expect(wrapper.find('.error').exists()).toBe(false)
+  expect(wrapper.text()).not.toMatch(/Foo/)
 })
 ```
 
-# 参考
+## vue-router 使用 createLocalVue 注入
 
-- [jest-cheat-sheet](https://github.com/sapegin/jest-cheat-sheet)
-- [Jest 官网](https://facebook.github.io/jest/)
-- [使用Jest和Enzyme测试React组件](http://blog.sapegin.me/all/react-jest)
-- [React 测试示例](https://react-testing-examples.com/)
-- [测试 React 应用程序](https://youtu.be/59Ndb3YkLKA)
-- [有效的快照测试](https://blog.kentcdodds.com/effective-snapshot-testing-e0d1a2c28eca)
-- [迁移到 jest](https://medium.com/@kentcdodds/migrating-to-jest-881f75366e7e#.pc4s5ut6z)
-- [如何使用 Jest 测试 React 和 MobX](https://semaphoreci.com/community/tutorials/how-to-test-react-and-mobx-with-jest)
-- [使用 Jest 和 Enzyme 测试 React Intl 组件](https://medium.com/@sapegin/testing-react-intl-components-with-jest-and-enzyme-f9d43d9c923e)
-- [用 Jest 测试：15个奇妙的技巧和窍门](https://medium.com/@stipsan/testing-with-jest-15-awesome-tips-and-tricks-42150ec4c262)
-- [对 React 组件进行单元测试](https://juejin.im/post/5a71413e5188252edb593020)
+
+```js
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import VueRouter from 'vue-router'
+
+const localVue = createLocalVue()
+localVue.use(VueRouter)
+const router = new VueRouter()
+
+shallowMount(Component, {
+  localVue,
+  router
+})
+```
+
+## 伪造 $route 和 $router
+
+
+```js
+import { shallowMount } from '@vue/test-utils'
+
+const $route = {
+  path: '/some/path'
+}
+
+const wrapper = shallowMount(Component, {
+  mocks: {
+    $route
+  }
+})
+
+wrapper.vm.$route.path // /some/path
+```
+
+## 测试 Vuex
+
+
+```vue
+<template>
+  <div class="text-align-center">
+    <input type="text" @input="actionInputIfTrue" />
+    <button @click="actionClick()">Click</button>
+  </div>
+</template>
+
+<script>
+  import { mapActions } from 'vuex'
+
+  export default {
+    methods: {
+      ...mapActions(['actionClick']),
+      actionInputIfTrue: function actionInputIfTrue(event) {
+        const inputValue = event.target.value
+        if (inputValue === 'input') {
+          this.$store.dispatch('actionInput', { inputValue })
+        }
+      }
+    }
+  }
+</script>
+```
+
+
+```js
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import Vuex from 'vuex'
+import Actions from '../../../src/components/Actions'
+
+const localVue = createLocalVue()
+
+localVue.use(Vuex)
+
+describe('Actions.vue', () => {
+  let actions
+  let store
+
+  beforeEach(() => {
+    actions = {
+      actionClick: jest.fn(),
+      actionInput: jest.fn()
+    }
+    store = new Vuex.Store({
+      state: {},
+      actions
+    })
+  })
+
+  it('dispatches "actionInput" when input event value is "input"', () => {
+    const wrapper = shallowMount(Actions, { store, localVue })
+    const input = wrapper.find('input')
+    input.element.value = 'input'
+    input.trigger('input')
+    expect(actions.actionInput).toHaveBeenCalled()
+  })
+
+  it('does not dispatch "actionInput" when event value is not "input"', () => {
+    const wrapper = shallowMount(Actions, { store, localVue })
+    const input = wrapper.find('input')
+    input.element.value = 'not input'
+    input.trigger('input')
+    expect(actions.actionInput).not.toHaveBeenCalled()
+  })
+
+  it('calls store action "actionClick" when button is clicked', () => {
+    const wrapper = shallowMount(Actions, { store, localVue })
+    wrapper.find('button').trigger('click')
+    expect(actions.actionClick).toHaveBeenCalled()
+  })
+})
+```
+
+## axios 返回测试
+
+
+```vue
+<template>
+  <button @click="fetchResults">{{ value }}</button>
+</template>
+
+<script>
+  import axios from 'axios'
+
+  export default {
+    data() {
+      return {
+        value: null
+      }
+    },
+
+    methods: {
+      async fetchResults() {
+        const response = await axios.get('mock/service')
+        this.value = response.data
+      }
+    }
+  }
+</script>
+```
+
+
+```js
+import { shallowMount } from '@vue/test-utils'
+// flush-promises 会刷新所有处于 pending 状态或 resolved 状态的 Promise
+import flushPromises from 'flush-promises'
+import Foo from './Foo'
+jest.mock('axios', () => ({
+  get: Promise.resolve('value')
+}))
+
+it('fetches async when a button is clicked', async () => {
+  const wrapper = shallowMount(Foo)
+  wrapper.find('button').trigger('click')
+  await flushPromises()
+  expect(wrapper.text()).toBe('value')
+})
+```
