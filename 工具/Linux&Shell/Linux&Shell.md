@@ -19,19 +19,34 @@ git config --global user.name "Chenng"
 git config --global user.email "ringcrl@foxmail.com"
 ```
 
-## oh-my-zsh
+## .bash_profile & .bashrc
 
-https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
-
-https://github.com/robbyrussell/oh-my-zsh
+- .bash_profile 登陆时执行
+- .bashrc 启动交互式 shell 时执行
 
 ```sh
-vim .zshrc
+# 登陆时执行，.bash_profile 存在则不会读取 .profile
+vim ~/.bash_profile
 
-ZSH_THEME="avit"
+# 添加下面内容到 ~/.bash_profile
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
 
-alias lc='ls -l node_modules/@cmao | grep ^l'
-alias lk='ls -l node_modules | grep ^l'
+# hstr 输入提示：https://github.com/dvorka/hstr
+```
+
+## bash & zsh
+
+```sh
+# https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
+# https://github.com/robbyrussell/oh-my-zsh
+
+# 切换 zsh
+chsh -s /bin/zsh
+
+# 切换 bash
+chsh -s /bin/bash
 ```
 
 ## zsh-syntax-highlighting
@@ -683,6 +698,16 @@ ifconfig | grep inet | grep -v inet6 | grep -v 127 | cut -d ' ' -f2 # 192.168.31
 echo 'inet 192.168.31.77 netmask 0xffffff00 broadcast 192.168.31.255' | cut -d ' ' -f2 # 192.168.31.77
 ```
 
+## pwd 获取文件路径
+
+```sh
+# 获取当前执行文件路径
+filepath=$(cd "$(dirname "$0")"; pwd)
+
+# 获取文件文件全路径
+ls $PWD/工具/Linux\&Shell/Linux\&Shell.md
+```
+
 # Shell 脚本
 
 ```sh
@@ -930,35 +955,40 @@ fi
 a="abc"
 b="efg"
 
-if [ $a = $b ] # 字符串相等
+# 字符串相等
+if [ $a = $b ]
 then
    echo "$a = $b : a 等于 b"
 else
    echo "$a = $b: a 不等于 b"
 fi
 
-if [ $a != $b ] # 字符串不相等
+# 字符串不相等
+if [ $a != $b ]
 then
    echo "$a != $b : a 不等于 b"
 else
    echo "$a != $b: a 等于 b"
 fi
 
-if [ -z $a ] # 字符串长度为0
+# 字符串是空串
+if [ -z $a ]
 then
    echo "-z $a : 字符串长度为 0"
 else
    echo "-z $a : 字符串长度不为 0"
 fi
 
-if [ -n "$a" ] # 字符串长度不为0
+# 字符串不是空串
+if [ -n "$a" ]
 then
    echo "-n $a : 字符串长度不为 0"
 else
    echo "-n $a : 字符串长度为 0"
 fi
 
-if [ $a ] # 字符串不为空
+# 字符串不为空
+if [ $a ]
 then
    echo "$a : 字符串不为空"
 else
@@ -1065,6 +1095,49 @@ ls > _test/out.log 2>&1
 
 # 不保存输出信息
 ls > /dev/null 2>&1
+```
+
+## 文件存在测试
+
+```sh
+filepath=/Users/ringcrl/Documents/saga/cs-notes/工具/Linux\&Shell/Linux\&Shell.md
+
+# 文件存在
+if [ -f $filepath ]
+then
+   echo "文件存在"
+fi
+
+# 文件可执行
+if [ -x $filepath ]
+then
+   # pass
+else 
+   echo "文件不可执行"
+fi
+
+# 是目录
+if [ -d $filepath ]
+then
+   # pass
+else
+   echo "不是目录"
+fi
+
+# 文件存在
+if [ -e $filepath ]
+then
+   echo "文件存在"
+fi
+
+# 文件可写、可读
+if [ -w $filepath ] && [ -r $filepath ]
+then
+   echo "文件可写且可读"
+fi
+
+# 短路写法
+[ -f $filepath ] && echo "短路写法"
 ```
 
 ## 综合应用
