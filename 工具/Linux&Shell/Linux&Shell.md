@@ -598,7 +598,16 @@ which mv
 locate nginx.conf
 
 # 文件查找
-find root_path -name '*.md'
+find . -name '*.md'
+find . -iname '*linux*' -and -name '*.md' # -iname 不区分带小写，-and 与关系
+find . -regex '.*\.py$' # 正则
+find . ! -iregex '.*\.js$' # 非 js 文件
+find . -type d # 列出目录
+find . -type f # 列出文件
+find . -type l # 列出符号链接
+find . -name '*.md' -atime -7 # 7天内修改过的 md 文件，-atime 天，-mmin 分钟
+find . -name '*.md' -size +10k # 大于 10k 的 md 文件
+find . -name 'node_modules' -prune -o -name '*.md' # 排除 node_modules 文件夹
 ```
 
 ## nohup 持续运行
@@ -619,7 +628,10 @@ mkdir -p test1/test2
 
 ```sh
 # 显示行号
-cat -b index.html
+cat -n index.html
+
+# 合并输出多个文件
+cat index.html vue.css
 
 # 交互式查看文件
 less index.html
