@@ -662,6 +662,19 @@ cp -r source_dir dist_dir
 ```sh
 # 将所有 ; 替换为换行符方便阅读
 cat vue.css | tr ';' '\n'
+
+# 输入字符大写转为小写
+echo 'HELLO WHO IS THIS' | tr 'A-Z' 'a-z' # hello who is this
+
+# 文本加密、解密
+echo 'tr came, tr saw, tr conquered' | tr 'a-zA-Z' 'n-za-mN-ZA-M' # ge pnzr, ge fnj, ge pbadhrerq
+echo 'ge pnzr, ge fnj, ge pbadhrerq' | tr 'a-zA-Z' 'n-za-mN-ZA-M' # tr came, tr saw, tr conquered
+
+# 删除字符
+echo 'Hello 123 world 456' | tr -d '0-9' # Hello  world
+
+# 删除多余空格
+echo 'Hello    world' | tr -s ' ' # Hello world
 ```
 
 ## export 环境变量
