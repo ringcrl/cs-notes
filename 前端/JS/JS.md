@@ -2483,6 +2483,7 @@ window.addEventListener('storage', function (event) {
 - 构造函数接受一个 JS 文件 URL，这个文件包含了将在 worker 线程中运行的代码
 - 主线程和 worker 线程之间都使用 `postMessage()` 方法来发送信息, 并且通过 `onmessage` 这个 event_handler 来接收信息（传递的信息包含在 Message 这个事件的 data 属性内) 
 - 数据的交互是通过传递副本，而不是直接共享数据
+- 如果 JS 代码里面不包括动画渲染(100ms), 数据传输规模应该保持在 100KB 以下；如果 JS 代码里面包括动画渲染(16ms), 数据传输规模应该保持在 10KB 以下
 
 ```js
 // main.js

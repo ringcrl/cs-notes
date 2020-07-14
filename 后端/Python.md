@@ -271,6 +271,12 @@ def merge_arrays(arr1, arr2):
 # 取值并兜底
 res = stock.get('merch', 0) # 若 stock 没有 key: merch，则返回 0
 
+# 遍历
+var_map = { 'key1': 1, 'key2': 2, 'key3': 3 }
+for item in var_map.items():
+    print(item[0]) # 'key1'
+    print(item[1]) # 1
+
 # 推导式
 chile_ranks = {'ghost': 1, 'habanero': 2, 'cayenne': 3}
 rank_dict = {rank: name for name, rank in chile_ranks.items()}

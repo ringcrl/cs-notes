@@ -322,6 +322,19 @@ https://support.apple.com/zh-cn/HT201065
 
 # shell 命令
 
+## xargs 拆分数据调用指令
+
+```sh
+# -d 分割数据
+echo 'split1Xsplit2Xsplit3' | xargs -d X # split1 split2 split3
+
+# 列出查找出的文件行数
+find . -name "*.md" | xargs wc -l
+
+# 所有 *.js 文件转换为 *.js.backup
+ls *.js | xargs -t -I '{}' mv {} {}.backup
+```
+
 ## curl 请求或下载
 
 ```sh
@@ -357,7 +370,7 @@ curl -L -b cookies.txt http://example.com
 curl -c cookie-jar.txt http://example.com
 ```
 
-## grep
+## grep 过滤输出
 
 ```sh
 ls | grep '^doc' # 以 doc 开头

@@ -65,7 +65,14 @@ VSCode
 ## 两个 commit 间的文件变化
 
 ```sh
-git diff --stat 29526d835 7743598d7 
+git diff --stat <commit-ish> <commit-ish>
+```
+
+# git log
+
+```sh
+# 查看文件修改记录
+git log --stat
 ```
 
 # git submodule
