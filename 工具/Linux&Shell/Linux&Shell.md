@@ -322,6 +322,16 @@ https://support.apple.com/zh-cn/HT201065
 
 # shell 命令
 
+## %、# 切分文件名与后缀
+
+```sh
+file_jpg="sample.jpg"
+name=${file_jpg%.*} # 从右向左匹配到【.jpg】删除，% 非贪婪，%% 是贪婪
+echo $name # sample
+extension=${file_jpg#*.} # 从左向右匹配到【sample.】删除，# 非贪婪，## 贪婪
+echo $extension # jpg
+```
+
 ## xargs 拆分数据调用指令
 
 ```sh
