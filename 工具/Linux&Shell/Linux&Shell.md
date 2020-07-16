@@ -322,6 +322,58 @@ https://support.apple.com/zh-cn/HT201065
 
 # shell 命令
 
+## wc 统计数量
+
+```sh
+# 统计行数
+wc -l tsconfig.json # 9
+
+# 统计词数
+wc -w tsconfig.json # 15
+
+# 行数+词数+字符数
+wc tsconfig.json # 9 15 138
+```
+
+## diff 文件差异
+
+```sh
+# 创建文件差异
+diff -u file1 file2 > version.patch
+
+patch -p1 file1 < version.patch # file1 变成跟 file2 一样
+patch -p1 file2 < version.patch # file2 变成跟 file1 一样
+
+patch -p1 file1 < version.patch # 撤销 file1 修改
+
+```
+
+## file 查看文件类型
+
+```sh
+file vue.css # vue.css: ASCII text, with very long lines
+```
+
+## ln 创建符号链接
+
+```sh
+# 本目录下创建一个 symbolic_link_name 符号链接指向 target
+ln -s target ./symbolic_link_name
+
+# 列出符号链接
+ls -l | grep '^l'
+
+# readlink 打印出符号链接指向的目标路径
+readlink ./symbolic_link_name
+```
+
+## dd 生成文件
+
+```sh
+# 生成一个1M的文件
+dd if=/dev/zero of=junk.data bs=1m count=1
+```
+
 ## %、# 切分文件名与后缀
 
 ```sh
@@ -756,7 +808,7 @@ filepath=$(cd "$(dirname "$0")"; pwd)
 ls $PWD/工具/Linux\&Shell/Linux\&Shell.md
 ```
 
-# Shell 脚本
+# Shell 脚本基础
 
 ```sh
 #!/bin/bash
@@ -1188,9 +1240,9 @@ fi
 [ -f $filepath ] && echo "短路写法"
 ```
 
-## 综合应用
+# shell 脚本应用
 
-### sed 修改文件
+## sed 修改文件内容
 
 ```sh
 CURRENT_DIR=$(cd $(dirname $0); pwd)
@@ -1200,7 +1252,7 @@ cd ../
 sed -i "" 's/"private": true/"private": false/' package.json
 ```
 
-### git lint
+## git lint 限制提交
 
 ```sh
 branch="$(git rev-parse --abbrev-ref HEAD)"
@@ -1225,6 +1277,20 @@ if [ "$?" == 0 ]; then
 else
     exit 1
 fi
+```
+
+## find 批量重命名文件
+
+```sh
+count=1
+for img in `find . -name '*.png' -o -iname '*.jpg' -type f -maxdepth 1`
+do
+ new=image-$count.${img##*.}
+
+ echo "Renaming $img to $new"
+ mv "$img" "$new"
+ let count++
+done
 ```
 
 # 命令行工具
