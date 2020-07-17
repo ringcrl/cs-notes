@@ -1,50 +1,17 @@
-<!--webpack-real-project-configuration-->
-
-配过不少的项目了，每次没有用脚手架工具，都是复制粘贴，现在来系统的梳理一下。
-
-<!--more-->
-
-# 参考地址
-
-[webpack：从入门到真实项目配置](https://juejin.im/post/59bb37fa6fb9a00a554f89d2)
-
-[前端构建秘籍](https://juejin.im/post/5c9075305188252d5c743520)
-
-# 简单使用
-
-## webpack.config.js
+# webpack.config.js
 
 ```js
 const path = require('path')
 module.exports = {
   entry:  './app/index.js', // 入口文件
+  mode: 'production',
+
   output: {
-    path: path.resolve(__dirname, 'build'), // 必须使用绝对地址，输出文件夹
-    filename: "bundle.js" // 打包后输出文件的文件名
+    path: path.resolve(__dirname, 'dist'), // 必须使用绝对地址，输出文件夹
+    filename: "bundle.js", // 打包后输出文件的文件名
+    libraryTarget: 'umd2',
+    libraryExport: 'default',
   }
-}
-```
-
-## index.html
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Document</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script src="./build/bundle.js"></script>
-</body>
-</html>
-```
-
-## package.json
-
-```js
-"scripts": {
-  "start": "webpack"
 }
 ```
 
@@ -59,12 +26,10 @@ https://www.babeljs.cn/docs/usage
 ### 依赖包
 
 ```bash
-npm i --save-dev babel-loader babel-core babel-preset-env
+npm i --save-dev babel-loader \ # babel-loader 用于让 webpack 知道如何运行 babel
+  babel-core \ # babel-core 可以看做编译器，这个库知道如何解析代码
+  babel-preset-env # babel-preset-env 这个库可以根据环境的不同转换代码
 ```
-
-- babel-loader 用于让 webpack 知道如何运行 babel
-- babel-core 可以看做编译器，这个库知道如何解析代码
-- babel-preset-env 这个库可以根据环境的不同转换代码
 
 ### webpack-config.js
 
@@ -154,11 +119,9 @@ module.exports = {
 ### 依赖包
 
 ```bash
-npm i --save-dev css-loader style-loader
+npm i --save-dev css-loader \ # 可以让 CSS 文件也支持 impost，并且会解析 CSS 文件
+  style-loader # style-loader 可以将解析出来的 CSS 通过标签的形式插入到 HTML 中，依赖 css-loader
 ```
-
-- css-loader 可以让 CSS 文件也支持 impost，并且会解析 CSS 文件
-- style-loader 可以将解析出来的 CSS 通过标签的形式插入到 HTML 中，依赖 css-loader
 
 ### addImage.js
 
@@ -232,9 +195,69 @@ module.exports = {
 }
 ```
 
- HTML 文件没有引用新的 CSS 文件，所以这里需要手动引入下。
+HTML 文件没有引用新的 CSS 文件，所以这里需要手动引入下
 
-# 在项目中使用
+# plugins
+
+## webpack-plugin-replace
+
+```js
+// 替换代码中的 '__version__' 为 package.json 里面的版本号
+module.exports = {
+  // ...
+  plugins: [
+    new ReplacePlugin({
+      patterns: [{
+        regex: /__version__/g,
+        value: pkg.version,
+      }],
+    }),
+  ],
+};
+```
+
+```js
+// webpack-plugin-replace.js
+const RawSource = require('webpack-sources/lib/RawSource');
+
+const toRegexMap = (arr) => {
+  let i = 0; const len = arr.length; const map = new Map();
+  for (; i < len; i++) {
+    if (!('regex' in arr[i] && 'value' in arr[i])) continue;
+    map.set(arr[i].regex, arr[i].value);
+  }
+  return map;
+};
+
+const NAME = 'webpack-plugin-replace';
+
+class ReplaceText {
+  constructor(opts) {
+    this.patterns = toRegexMap(opts.patterns);
+  }
+
+  apply(compiler) {
+    const pats = this.patterns;
+
+    compiler.hooks.emit.tap(NAME, (compilation) => {
+      const { assets } = compilation;
+      const keys = Object.keys(assets);
+      keys.forEach((key) => {
+        const asset = assets[key];
+        let content = asset.source();
+        pats.forEach((v, k) => {
+          content = content.replace(k, v);
+        });
+        assets[key] = new RawSource(content);
+      });
+    });
+  }
+}
+
+module.exports = ReplaceText;
+```
+
+# 实践
 
 ## Tree Shaking
 

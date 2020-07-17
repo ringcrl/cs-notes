@@ -18,6 +18,15 @@
       "outFiles": ["${workspaceFolder}/server/dist/**/*.js"]
     },
     {
+      "name": "Webpack",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+      "args": [
+        "--config=build/webpack.build-lib.js"
+      ]
+    },
+    {
       "name": "Jest",
       "type": "node",
       "request": "launch",
