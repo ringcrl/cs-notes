@@ -96,6 +96,17 @@ npm install -g yarn
 ## 安装源码包
 
 ```sh
+# 依赖项
+yum -y install gcc \
+   automake \
+   autoconf \
+   libtool \
+   make \
+   ncurses-devel \
+   ncurses
+```
+
+```sh
 # 定制软件安装的功能/配置，生成 Makefile 文件
 ./configure
 
@@ -105,7 +116,7 @@ make
 # 安装
 make install
 ```
-## 防火墙
+## firewalld 防火墙
 
 ```sh
 # 查看防火墙状态
@@ -124,7 +135,7 @@ systemctl disable firewalld.service
 systemctl enable firewalld.service
 ```
 
-## 安全配置
+## sshd_config 安全配置
 
 ```bash
 # 更改安全项配置
@@ -141,7 +152,7 @@ AllowUsers common # 只允许 common 登陆
 service sshd restart
 ```
 
-## 切换语言
+## zshrc 切换语言
 
 ```sh
 vim ~/.zshrc
@@ -149,16 +160,31 @@ vim ~/.zshrc
 LANG=en_US.UTF-8
 ```
 
-## 配置 cc
+## resolve.conf 名字服务
 
 ```sh
-yum -y install gcc \
-automake \
-autoconf \
-libtool \
-make \
-ncurses-devel \
-ncurses
+# 配置 DNS 解析 ip 地址
+vim /etc/resolve.conf
+
+# 配置 host ip 映射
+vim /etc/hosts
+
+# 查看网址 ip
+host www.chenng.cn
+```
+
+## sqlite3 数据库
+
+```sh
+# 安装
+apt-get install sqlite3 libsqlite3-dev
+yum install sqlite sqlite-devel
+
+# 使用
+sqlite3 books.db
+> CREATE TABLE books (title string, author string);
+> INSERT INTO books (title, author) VALUES('Notes', 'Chenng');
+> SELECT * FROM books;
 ```
 
 # Mac
@@ -421,53 +447,84 @@ curl -X POST -d '{"answer": 42}' https://httpbin.org/post
 # 设置 Content-Type
 curl -X POST -d '{"answer":42}' -H "Content-Type: application/json" https://httpbin.org/post
 
+# 设置 user agent
+curl URL --user-agent "Mozilla/5.0"
+
 # -x 使用代理，-p 或 --proxytunnel 选项让 curl 穿过 HTTP 代理
 curl -x 127.0.0.1:1081 -v http:/example.com/
 # socks5 代理
 curl -x socks5://proxy.example.com http://www.example.com/
 
-# 读写 cookie
+# cookie
+curl https://example.com --cookie "user=username;pass=hack"
 # -c 指示 curl 将 cookie 写入文件，-b 指示 curl 从文件读取 cookie。通常需要同时使用它们
 curl -L -b cookies.txt http://example.com
 curl -c cookie-jar.txt http://example.com
+
+# --referer 指定 referer
+curl --referer Referer_URL target_URL
+
+# -I 只打印 HTTP 头部信息，不下载远程文件
+curl -I https://www.chenng.cn
 ```
 
-## grep 过滤输出
+## grep 过滤与正则
 
 ```sh
-ls | grep '^doc' # 以 doc 开头
-ls | grep 'js$' # 以 js 结尾
-ls | grep 'REA.ME' # 匹配一个非换行符的字符
-ls | grep '.*' # 匹配任意字符
-ls | grep '[vd]ue' # 匹配 vue 或 due
-ls | grep '[^d]ue' # 匹配除了 due 外所有的 "x"ue
-ls | grep '\w' # 等价于 [A-Za-z0-9]
-ls -a | grep 'l\{2\}' # 包含 ll
-ls | grep '^[^x]' # 非 x 开头
-ps -ef | grep '(cron|syslog)' # 包含 cron 或 syslog 的进程
+# ^ 以 doc 开头
+ls | grep '^doc'
+
+# $ 以 js 结尾
+ls | grep 'js$' 
+
+# . 匹配一个非换行符的字符
+ls | grep 'REA.ME' 
+
+# .* 匹配任意字符
+ls | grep '.*'
+
+# [vd] 匹配 vue 或 due
+ls | grep '[vd]ue' 
+
+# [^d] 匹配除了 due 外所有的 .ue
+ls | grep '[^d]ue'
+
+# \w 等价于 [A-Za-z0-9]
+ls | grep '\w'
+
+# 包含 ll
+ls -a | grep 'l\{2\}'
+
+# 非 x 开头
+ls | grep '^[^x]'
+
+# 包含 cron 或 syslog 的进程
+ps -ef | grep '(cron|syslog)' 
+
+# -E 使用扩展正则表达式，-o 只输出匹配的文本
+echo this is a line. | grep -E -o "[a-z]+\."
+
+# -v 反转匹配结果
+ls | grep -v 'README.md' 
 ```
 
 ## sed 字符串操作
 
 ![](./imgs/01.png)
 
-```sh
-# 1、5部分可以省略
-
-# 界定符 / 可以换成任意符如 : |
-
-# flat
-g # 全文替换
-p # 当使用了 -n，p 将仅输出匹配行内容
-i # 忽略大小写
-```
+- 1、5部分可以省略
+- 界定符 / 可以换成任意符如 : |
+- flat：g 全文替换、p 当使用了 -n，p 将仅输出匹配行内容、i 忽略大小写
 
 ```sh
 # 列出文件绝对路径，不包含隐藏文件
-ls | sed "s:^:`pwd`/:"
+ls | sed "s|^|`pwd`/|"
 
 # & 获取匹配结果，文件每一行添加引号
 sed 's/.*/"&"/' file
+
+# -i 修改后的数据替换原数据
+sed -i "" 's/"private": true/"private": false/' package.json
 ```
 
 ## SSH 登录
@@ -814,7 +871,7 @@ ls $PWD/工具/Linux\&Shell/Linux\&Shell.md
 #!/bin/bash
 ```
 
-## echo
+## echo 样式颜色
 
 ```sh
 # 查看当前使用的脚本
@@ -1242,14 +1299,12 @@ fi
 
 # shell 脚本应用
 
-## sed 修改文件内容
+## CURRENT_DIR 脚本目录
 
 ```sh
 CURRENT_DIR=$(cd $(dirname $0); pwd)
 cd ${CURRENT_DIR}
 cd ../
-
-sed -i "" 's/"private": true/"private": false/' package.json
 ```
 
 ## git lint 限制提交
@@ -1291,6 +1346,49 @@ do
  mv "$img" "$new"
  let count++
 done
+```
+
+## 网页图片下载器
+
+```sh
+#!/bin/bash
+#用途：网页图片下载
+#文件名：img_downloader.sh
+
+if [ $# != 3 ];
+then
+  echo -e "
+    Error！
+    Usage：$0 URL -d DIRECTORY
+  "
+  exit -1
+fi
+
+# 获取入参
+url=$1
+directory=$3
+
+# 设置当前脚本文件夹
+CURR_DIR=$(cd $(dirname $0); pwd)
+cd $CURR_DIR
+
+mkdir -p $directory;
+
+# 当图片地址以 / 开头时，补上主域
+baseurl=$(echo $url | egrep -o "https?://[a-z.\-]+")
+
+echo Downloading $url
+curl -s $url | grep -E -o "<img[^>]*src=[^>]*\/?>" | \
+  sed 's/<img[^>]*src=\"\([^"]*\).*/\1/g' | \
+  sed "s,^/,$baseurl/," > /tmp/$$.list
+
+cd $directory;
+
+while read filename;
+do
+  echo Downloading $filename
+  wget "$filename"
+done < /tmp/$$.list
 ```
 
 # 命令行工具
