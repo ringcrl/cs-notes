@@ -4,17 +4,31 @@
   "description": "Chenng's CS Notes",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf _test/*"
+    "clean": "rm -rf _test/*",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "prettier": "prettier _test --write"
   },
   "author": "Chenng",
   "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test",
+      "pre-push": "yarn test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "devDependencies": {
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-angular": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "^3.1.0",
     "@typescript-eslint/parser": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
     "typescript": "^3.9.5"
   }
 }

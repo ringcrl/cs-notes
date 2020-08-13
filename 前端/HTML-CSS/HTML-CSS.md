@@ -1385,7 +1385,7 @@ box-shadow: 0 0 0 1000px #fff inset;
 }
 ```
 
-## 禁止保存或拷贝图像
+## iOS 取消图片 3D touch
 
 ```css
 img {

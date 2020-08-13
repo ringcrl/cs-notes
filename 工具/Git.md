@@ -352,6 +352,16 @@ git reset --hard
 git clean -fd
 ```
 
+# git hooks
+
+```sh
+# 查看 hooks 路径
+git config core.hooksPath
+
+# 配置 hooks 路径
+git config core.hooksPath .git/hooks
+```
+
 # fork 与 PR
 
 - fork 
