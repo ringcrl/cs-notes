@@ -318,6 +318,11 @@ git rebase -i
 # 将不想留下的 commit 信息，pick 改成 s
 ```
 
+```sh
+# 合并最近3个 commit
+git reset --soft HEAD~3 && git commit -m 'xxx'
+```
+
 ## 修改上一个 commit
 
 ```sh
@@ -345,11 +350,33 @@ git cherry pick 9f6c0da3aac62
 # git reset
 
 ```sh
+# commit 后发现要修改，重置最后一个 commit
+git reset HEAD~
+```
+
+```sh
 # 移除所有修改
 git reset --hard
 
 # 移除所有未跟踪文件
 git clean -fd
+```
+
+# git reflog
+
+```sh
+# commit 后 git object 一旦创建就不可变更
+git reflog # 找到某个想回到的 commit_id
+
+git reset --hard <commit_id>
+```
+
+# git stash
+
+```sh
+# git reset --hard 是有损的无法找回的清空工作区，应该用 git stash
+
+git stash push -u
 ```
 
 # git hooks
@@ -431,8 +458,6 @@ gstl
 # 查看 tag
 gtv
 ```
-
-
 
 # 实践
 
