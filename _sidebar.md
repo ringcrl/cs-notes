@@ -38,6 +38,7 @@
     * [redis](工具/redis.md)
     * [VSCode](工具/VSCode)
     * [vue](工具/vue.md)
+    * [wasm](工具/wasm.md)
     * [Webpack](工具/Webpack.md)
 * 算法
     * [CodeWars](算法/CodeWars.md)

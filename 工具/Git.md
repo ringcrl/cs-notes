@@ -108,6 +108,9 @@ git commit -m "update submodule" # 这里的提交应该是更新commit id
 ```sh
 # 重命名
 git clone https://github.com/sferik/sign-in-with-twitter.git 'signin'
+
+# 只克隆一层
+git clone https://github.com/ringcrl/FFmpeg.git --depth=1
 ```
 
 # git tag
@@ -309,6 +312,12 @@ git pull --allow-unrelated-histories
 - git pull 之后提交会分叉，不好看
 - git rebase 把我们本地的提交“挪动”了位置，整个提交历史就成了一条直线
 - 本地的修改不再是基于之前迁出，而是相当于拉完最新代码再提交
+
+```sh
+ # --autosquash 将所有提交压缩到单个提交
+git checkout <branchname>
+git rebase -i --autosquash develop
+```
 
 ## 合并多个本地 commit
 
