@@ -3064,16 +3064,13 @@ Object.fromEntries(new URLSearchParams(location.search));
 ## 注入 JS
 
 ```js
-export function insertJs(src) {
+export function loadScript(src) {
   return new Promise(resolve => {
-    // eslint-disable-next-line no-var
-    var tag = document.createElement('script'); // 此处打包没有改成ES5-语法，手动替换下
-
+    const tag = document.createElement('script');
     tag.type = 'text/javascript';
     tag.src = src;
-    const s = document.getElementsByTagName('head')[0];
-
-    s.appendChild(tag);
+    const head = document.getElementsByTagName('head')[0];
+    head.appendChild(tag);
     tag.addEventListener('load', resolve);
   });
 }
