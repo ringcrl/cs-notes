@@ -46,6 +46,10 @@ git config --global user.email 'ringcrl@foxmail.com'
 git config user.name 'Chenng'
 git config user.email 'ringcrl@foxmail.com'
 
+# 无法连接的时候设置代理
+git config http.proxy "127.0.0.1:1081"
+git config https.proxy "127.0.0.1:1081"
+
 # 编辑仓库
 git config -e
 
