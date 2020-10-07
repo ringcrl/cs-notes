@@ -6,6 +6,16 @@
 - 下载压缩包，存放在根目录下的 .npm 目录里
 - 解压压缩包到当前项目的 node_modules 目录
 
+## 设置代理
+
+```sh
+# 设置代理
+npm config set proxy=http://127.0.0.1:1081
+
+# 取消代理
+npm config delete proxy
+```
+
 ## package semver
 
 允许不改动最左一位非0位的小版本升级
