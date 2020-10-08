@@ -1,4 +1,32 @@
-# 项目
+# 项目配置
+
+## 与 npm 一起工作
+
+- 在 `tsconfig.json` 文件中，配置 `declaration: true`，这样每次 Typescript 编译时都会自动生成声明文件
+- 在 package.json，中配置 `prepublishOnly` script 每次执行 `npm publish` 时编译 Typescript 代码
+- 调整 `package.json` 中的 `main`、`types` 字段指向最终代码路径
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "declaration": true // 自动生成声明文件 d.ts
+  }
+}
+
+// package.json
+{
+  "name": "@scope/awesome-typescript-package",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts", // 模块 types 路径
+  "scripts": {
+    "tsc": "tsc -p ./tsconfig.json",
+    "prepublishOnly": "npm run tsc" // 每次执行 npm publish 之前，编译代码
+  }
+}
+```
+
 
 ## tsconfig.json
 
@@ -232,6 +260,94 @@ import(/* webpackChunkName: "momentjs" */ 'moment')
 
 https://blog.josequinto.com/2017/06/29/dynamic-import-expressions-and-webpack-code-splitting-integration-with-typescript-2-4/
 
+## TSLint
+
+参考：https://tech.meituan.com/2019/01/17/exploring-the-tslint-static-checking-tool-on-the-react-native-project.html
+
+### 规则包
+
+| 规则包                      | 内容                     |
+| --------------------------- | ------------------------ |
+| tslint                      | 官方标准包               |
+| tslint-react                | 官方 React 包            |
+| tslint-consistent-codestyle | 统一代码风格             |
+| tslint-config-airbnb        | 严格的风格               |
+| tslint-eslint-rules         | 补充 TSLint 中缺失的部分 |
+
+```sh
+yarn add tslint tslint-config-airbnb tslint-react -D
+```
+
+```js
+// tslint.json
+{
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-react"
+  ],
+  "rules": {
+    "no-increment-decrement": false
+  }
+}
+```
+
+### 禁用 TS Lint
+
+```js
+/* tslint:disable */
+eval(code);
+/* tslint:enable */
+
+// tslint:disable-next-line
+eval(code);
+
+eval(code); // tslint:disable-line
+```
+
+### 自定义规则
+
+#### 需求
+
+- 团队中的个性化需求难以满足。例如，saga中的异步函数需要在最外层加try-catch，且catch块中需要加异常上报
+- 官方规则的开启与配置不符合当前团队情况
+
+#### 步骤
+
+- 编写规则信息
+    - 文件命名
+        - 驼峰命名
+        - 以 Rule 为后缀
+    - 类命名
+        - 继承自 `Lint.Rules.AbstractRule`
+    - 填写 metadata 信息
+        - ruleName 是规则名，使用烤串命名法，一般是将类名转为烤串命名格式
+        - description 一个简短的规则说明
+        - descriptionDetails 详细的规则说明
+        - rationale 理论基础
+        - options 配置参数形式，如果没有可以配置为 null
+        - optionExamples 参数范例 ，如没有参数无需配置
+        - typescriptOnly true/false 是否只适用于 TypeScript
+        - hasFix true/false 是否带有修复方式
+        - requiresTypeInfo 是否需要类型信息
+        - optionsDescrition options 的介绍
+        - type 规则的类型
+        - functionality ： 针对于语句问题以及功能问题。
+        - maintainability：主要以代码简洁、可读、可维护为目标的规则。
+        - style：以维护代码风格基本统一的规则。
+        - typescript：针对于TypeScript进行提示。
+    - 定义错误提示信息
+        - `public static FAILURE_STRING = 'Class name must be in pascal case'`
+- 编写检查逻辑
+    - 实现 apply 方法
+        - 返回 `applyWithFunction`、`applyWithWalker`，区别在于可以通过 IWalker 实现一个自定义的 IWalker 类
+    - 语法树解析
+        - AST Explorer：https://github.com/fkling/astexplorer
+        - TypeScript AST Viewer：https://github.com/dsherret/ts-ast-viewer
+    - 检查规则代码编写
+- 规则配置使用
+
+参考：https://github.com/palantir/tslint/blob/master/src/rules/classNameRule.ts
+
 # 类型系统
 
 ## 原始类型
@@ -288,6 +404,20 @@ anyThing.myName.setFirstName('Cat');
 let something;
 // 上下等价
 let something:any;
+```
+
+## unknown 未知类型
+
+`any` 增加了运行时出错的风险，表示不知道什么类型的场景使用 `unknown`
+
+```js
+let bar: unknown
+
+bar.toFixed(1) // Error
+
+if (typeof bar === 'number') {
+  bar.toFixed(1) // OK
+}
 ```
 
 ## 类型推论
@@ -370,7 +500,32 @@ function getName(n: NameOrResolver): Name {
 - 不预先指定具体的类型，而在使用的时候再指定类型
 - 定义在函数、接口或类
 
+### 比作方法
+
+可以把泛型比喻成“方法”，“方法”可以传参，可以有多个参数，可以有默认值
+
+```ts
+type Foo<T, U = string> = { // 多参数、默认值
+  foo: Array<T> // 可以传递
+  bar: U
+}
+
+type A = Foo<number> // type A = { foo: number[]; bar: string; }
+type B = Foo<number, number> // type B = { foo: number[]; bar: number; }
+```
+
 ### 函数、类、方法
+
+```ts
+// filter 方法
+decleare function filter<T>(
+  array: T[],
+  fn: (item: unknown) => boolean
+): T[];
+
+filter([1, 2, 3], () => true)
+filter(['1', '2', '3'], () => true)
+```
 
 ```ts
 function reverse<T>(items: T[]): T[] {
@@ -857,22 +1012,40 @@ type Flags = { [K in Keys]: boolean };
 // Readonly可以把每个属性都变成只读
 type A01 = { a: number, b: string }
 type A011 = Readonly<A01> // {readonly a: number;readonly b: string;}
+// Readonly 实现
+type Readonly<T> = {
+  readonly [U in keyof T]: T[U];
+};
 
 // Partial<T>, 让属性都变成可选的
 type A02 = { a: number, b: string }
 type A021 = Partial<A02> // { a?: number; b?: string;}
+// Partial 实现
+type Partial<T> = {
+  [U in keyof T]?: T[U];
+};
 
 // Required<T>, 让属性都变成必选
 type A03 = { a?: number, b?: string }
 type A031 = Required<A03> // { a: number; b: string;}
+// Required 实现
+type Required<T> = {
+  [U in keyof T]-?: T[U];
+};
 
 // Pick<T,K>, 只保留自己选择的属性, U代表属性集合
 type A04 = { a: number, b: string }
 type A041 = Pick<A04, 'a'> //  {a:number}
+// Pick 实现
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
 
 // Omit<T,K> 实现排除已选的属性
 type A05 = { a: number, b: string }
 type A051 = Omit<A05, 'a'> // {b:string}
+// Omit 实现
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
 // Record<K,T>, 创建一个类型,T代表键值的类型, U代表值的类型
 type A06 = Record<string, string> // 等价{[k:string]:string}
@@ -881,6 +1054,8 @@ type A06 = Record<string, string> // 等价{[k:string]:string}
 type A07 = { a: number, b: string }
 type A071 = Exclude<number | string, string | number[]> // number
 type A072 = Exclude<number | string, any | number[]> // never , 因为any兼容number, 所以number被过滤掉
+// Exclude 实现
+type Exclude<T, U> = T extends U ? never : T;
 
 // Extract<T,U>, 提取T中和U相同(或兼容)的类型
 type A08 = { a: number, b: string }
@@ -891,6 +1066,10 @@ type A09 = NonNullable<number | string | null | undefined> // number|string
 
 // ReturnType, 获取T的返回值的类型
 type A10 = ReturnType<() => number> // number
+// ReturnType 实现
+type ReturnType<T> = T extends (
+  ...args: any[]
+) => infer R ? R : any;
 
 // Parameters 获取函数参数类型
 interface A11 {
@@ -968,7 +1147,7 @@ declare namespace Express {
 }
 ```
 
-# TIPS
+# 实用技巧
 
 ## 对象惰性初始化
 
@@ -983,90 +1162,61 @@ foo.bar = 123;
 foo.bas = 'Hello World';
 ```
 
-# TSLint
+## 脚本、模块模式
 
-参考：https://tech.meituan.com/2019/01/17/exploring-the-tslint-static-checking-tool-on-the-react-native-project.html
+- 脚本模式所有变量定义、类型声明是全局的，多个文件定义同一个变量会报错，同名 interface 会进行合并
+- 模块模式所有定义的声明都是模块内有效，模块模式 ts 文件内存在 `export` 关键词
 
-## 规则包
+```ts
+// 脚本模式
+GlobalStore.foo = "foo";
+GlobalStore.bar = "bar"; // Error
 
-| 规则包                      | 内容                     |
-| --------------------------- | ------------------------ |
-| tslint                      | 官方标准包               |
-| tslint-react                | 官方 React 包            |
-| tslint-consistent-codestyle | 统一代码风格             |
-| tslint-config-airbnb        | 严格的风格               |
-| tslint-eslint-rules         | 补充 TSLint 中缺失的部分 |
-
-```sh
-yarn add tslint tslint-config-airbnb tslint-react -D
+declare var GlobalStore: {
+  foo: string;
+};
 ```
 
-```js
-// tslint.json
-{
-  "extends": [
-    "tslint-config-airbnb",
-    "tslint-react"
-  ],
-  "rules": {
-    "no-increment-decrement": false
-  }
+```ts
+// 模块模式
+GlobalStore.foo = "foo";
+GlobalStore.bar = "bar";
+
+declare global {
+  var GlobalStore: {
+    foo: string;
+    bar: string;
+  };
 }
+
+export {}; // export 关键字改变文件的模式
 ```
 
-## 禁用 TS Lint
+## extends 的多种用途
 
-```js
-/* tslint:disable */
-eval(code);
-/* tslint:enable */
+```ts
+// 表示类型扩展
+interface A {
+  a: string
+}
 
-// tslint:disable-next-line
-eval(code);
+interface B extends A { // { a: string, b: string }
+  b: string
+}
 
-eval(code); // tslint:disable-line
+// 条件类型中起到三目运算符功能
+type Bar<T> = T extends string ? 'string' : never
+type C = Bar<number> // never
+type D = Bar<string> // string
+type E = Bar<'fooo'> // string
+
+// 起到类型限制的作用
+type Foo<T extends object> = T
+type F = Foo<number> // 类型“number”不满足约束“object”。
+type G = Foo<string> // 类型“string”不满足约束“object”。
+type H = Foo<{}> // OK
+
+// 类继承
+class I {}
+class J extends I {}
 ```
-
-## 自定义规则
-
-### 需求
-
-- 团队中的个性化需求难以满足。例如，saga中的异步函数需要在最外层加try-catch，且catch块中需要加异常上报
-- 官方规则的开启与配置不符合当前团队情况
-
-### 步骤
-
-- 编写规则信息
-    - 文件命名
-        - 驼峰命名
-        - 以 Rule 为后缀
-    - 类命名
-        - 继承自 `Lint.Rules.AbstractRule`
-    - 填写 metadata 信息
-        - ruleName 是规则名，使用烤串命名法，一般是将类名转为烤串命名格式
-        - description 一个简短的规则说明
-        - descriptionDetails 详细的规则说明
-        - rationale 理论基础
-        - options 配置参数形式，如果没有可以配置为 null
-        - optionExamples 参数范例 ，如没有参数无需配置
-        - typescriptOnly true/false 是否只适用于 TypeScript
-        - hasFix true/false 是否带有修复方式
-        - requiresTypeInfo 是否需要类型信息
-        - optionsDescrition options 的介绍
-        - type 规则的类型
-        - functionality ： 针对于语句问题以及功能问题。
-        - maintainability：主要以代码简洁、可读、可维护为目标的规则。
-        - style：以维护代码风格基本统一的规则。
-        - typescript：针对于TypeScript进行提示。
-    - 定义错误提示信息
-        - `public static FAILURE_STRING = 'Class name must be in pascal case'`
-- 编写检查逻辑
-    - 实现 apply 方法
-        - 返回 `applyWithFunction`、`applyWithWalker`，区别在于可以通过 IWalker 实现一个自定义的 IWalker 类
-    - 语法树解析
-        - AST Explorer：https://github.com/fkling/astexplorer
-        - TypeScript AST Viewer：https://github.com/dsherret/ts-ast-viewer
-    - 检查规则代码编写
-- 规则配置使用
-
-参考：https://github.com/palantir/tslint/blob/master/src/rules/classNameRule.ts

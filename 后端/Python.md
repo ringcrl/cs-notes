@@ -8,8 +8,12 @@ pyenv 教程: https://github.com/pyenv/pyenv
 # 使用代理安装
 https_proxy=127.0.0.1:1081 pyenv install 2.7.16
 
+# 查看所有版本
+pyenv versions
 # 全局设置版本
 pyenv global 2.7.16
+# 编辑当前 shell 使用的 python 版本
+vim ~/.python-version
 ```
 
 ## pip 代理

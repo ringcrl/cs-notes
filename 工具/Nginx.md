@@ -28,6 +28,11 @@ https://segmentfault.com/a/1190000002963355
 
 http://blog.51cto.com/zhouxinyu1991/1827474
 
+## 更新证书
+
+- 腾讯云证书管理申请免费证书
+- 万网为域名 chenng.cn 添加解析记录
+
 # 模板
 
 - MacOS 路径 `/usr/local/etc/nginx/include`
