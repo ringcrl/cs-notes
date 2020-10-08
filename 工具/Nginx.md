@@ -30,8 +30,9 @@ http://blog.51cto.com/zhouxinyu1991/1827474
 
 ## 更新证书
 
-- 腾讯云证书管理申请免费证书
-- 万网为域名 chenng.cn 添加解析记录
+- 腾讯云证书管理申请免费证书：https://console.cloud.tencent.com/ssl/
+- 万网为域名 chenng.cn 添加解析记录：https://dc.console.aliyun.com
+- 登录服务器，`locate nginx.conf` 找到放置证书的位置，`rz` 命令上传证书，为证书添加 755 权限 `chmod 755 <certs>`
 
 # 模板
 

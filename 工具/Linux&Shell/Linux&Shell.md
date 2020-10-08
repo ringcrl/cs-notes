@@ -234,11 +234,17 @@ Chrome 前进后退
 
 sudo spctl --master-disable
 
-## iTrem、rz/sz
+## iTrem、rz/sz 传文件
 
 https://www.iterm2.com
 
 http://www.jianshu.com/p/52ff25407621
+
+```sh
+rz # 上传命令
+
+sz # 下载命令
+```
 
 ## Homebrew
 
