@@ -81,18 +81,65 @@ git log --stat
 
 # git submodule
 
-## .gitmodules
+ 是工作目录中的一个子目录，但 Git 还是会将它视作一个子模块。当你不在那个目录中时，Git 并不会跟踪它的内容， 而是将它看作子模块仓库中的某个具体的提交
+
+## 添加 submodule
 
 ```sh
-[submodule "DbConnector"]
-	path = DbConnector
-	url = https://github.com/chaconinc/DbConnector
+git submodule add <repository_url> <path_to_directory>
 ```
 
-## 拉取更新
+## 子模块切换分支
 
 ```sh
-git submodule update
+git submodule foreach git checkout master
+```
+
+## 初始化
+
+```sh
+# clone 的时候初始化
+git clone --recurse-submodules <repository_url>
+
+# clone 后初始化
+git submodule update --init
+# 等价于下面两行
+git submodule init # 用来初始化本地配置文件
+git submodule update # 则从该项目中抓取所有数据并检出父项目中列出的合适的提交
+```
+
+## 删除子模块
+
+```sh
+git ls-files --stage | grep 160000
+git rm --cached <file_name>
+
+# 删除 .gitmodules 条目
+# 删除 .git/config 中关于 submodule 条目
+# 删除 .git/modules/ 目录下对应的 submodule 文件夹目录
+# git rm --cached <modulename>
+# 删除 submodules 文件夹内容
+
+
+# --------------
+
+git submodule deinit <module_name>
+git rm --cached <module_name>
+```
+
+## 修改子模块
+
+```sh
+# 修改 .gitmodules 里面的属性
+git submodule sync # 同步 .gitmodules 配置到 .git/config
+```
+
+## 子模块更新
+
+```sh
+git submodule sync --recursive # 将新的URL复制到本地配置中
+
+git submodule update --init --recursive # 从新URL更新子模块
 ```
 
 ## 解决 submodule 冲突
@@ -100,11 +147,11 @@ git submodule update
 http://coderec.cn/2016/02/27/%E8%A7%A3%E5%86%B3%E7%94%B1Git-Submodule%E5%BC%95%E8%B5%B7%E7%9A%84merge%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/
 
 ```sh
-git submodule foreach git checkout master # 所有子工程切换到master分支
+git submodule foreach git checkout master # 所有子工程切换到 master 分支
 git submodule foreach git pull # 所有子工程更新代码
-git add 所有子工程目录
-git commit -m "update submodule" # 这里的提交应该是更新commit id
-# 使其保持最新，与master相同
+git add <所有子工程目录>
+git commit -m "update submodule" # 这里的提交应该是更新 commit id
+# 使其保持最新，与 master 相同
 ```
 
 # git clone

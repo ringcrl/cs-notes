@@ -240,6 +240,10 @@ print('First four: ', a[:4]) # First four:  ['a', 'b', 'c', 'd']
 print('Last four:  ', a[-4:]) # Last four:   ['e', 'f', 'g', 'h']
 print('Middle two: ', a[3:-3]) # Middle two:  ['d', 'e']
 
+# 添加元素
+a = []
+a.append('a')
+
 # 遍历
 for item in data_list: # 不需要 index
     pass
