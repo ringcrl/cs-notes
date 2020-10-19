@@ -6,8 +6,6 @@
     * [JS](前端/JS/JS.md)
     * [SVG](前端/SVG/SVG.md)
     * [TS](前端/TS/TS.md)
-    * [Video](前端/Video/Video.md)
-* 后端
     * [GO](后端/Go.md)
     * [NodeJS](后端/NodeJS/NodeJS.md)
     * [Python](后端/Python.md)
