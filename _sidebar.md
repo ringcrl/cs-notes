@@ -22,6 +22,7 @@
     * [Babel](工具/Babel.md)
     * [Chrome](工具/Chrome.md)
     * [Docker](工具/Docker.md)
+    * [Eslint](工具/Eslint.md)
     * [Git](工具/Git.md)
     * [Gulp](工具/Gulp.md)
     * [js-libs](工具/js-libs.md)
