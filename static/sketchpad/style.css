@@ -1,0 +1,104 @@
+ul,
+ol {
+  list-style: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+#sketchpad {
+  display: block;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.actions {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+
+.actions svg {
+  width: 1.5em;
+  height: 1.5em;
+  transition: all 0.3s;
+  margin: 0 10px;
+}
+
+.actions svg.active {
+  fill: red;
+  transform: scale(1.2);
+}
+
+.colors {
+  position: fixed;
+  top: 60px;
+  left: 28px;
+}
+
+.colors>li {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  margin: 10px 0;
+  transition: all 0.3s;
+}
+
+.colors>li.red {
+  background: red;
+}
+
+.colors>li.green {
+  background: green;
+}
+
+.colors>li.blue {
+  background: blue;
+}
+
+.colors>li.active {
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.95);
+  transform: scale(1.2);
+}
+
+.sizes {
+  position: fixed;
+  right: 20px;
+  top: 10px;
+}
+
+.sizes>li {
+  margin: 20px 0;
+}
+
+.sizes>.thin {
+  height: 0;
+  width: 20px;
+  border-top: 3px solid black;
+  cursor: pointer;
+}
+
+.sizes>.thick {
+  height: 0;
+  width: 20px;
+  border-top: 6px solid black;
+  cursor: pointer;
+}

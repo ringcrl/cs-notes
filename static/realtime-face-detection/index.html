@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      position: absolute;
+    }
+
+    .tips {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%);
+    }
+
+    .wrapper {
+      text-align: center;
+    }
+
+    .expression {
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      justify-content: space-around;
+    }
+    .expression li {
+      text-align: center;
+      border: 1px solid #ccc;
+      margin: 0 10px;
+      width: 50px;
+    }
+    .expression li img{
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="tips">
+      <div>识别以下四种情绪并播放相应的音频</div>
+      <ul class="expression">
+        <li>
+          <!-- <p>happy</p> -->
+          <img src="./imgs/happy.jpeg" alt="">
+        </li>
+        <li>
+          <!-- <p>sad</p> -->
+          <img src="./imgs/sad.jpeg" alt="">
+        </li>
+        <li>
+          <!-- <p>angry</p> -->
+          <img src="./imgs/angry.jpeg" alt="">
+        </li>
+        <li>
+          <!-- <p>fearful</p> -->
+          <img src="./imgs/fearful.jpeg" alt="">
+        </li>
+      </ul>
+    </div>
+    <video id="video" width="720" height="560" autoplay muted></video>
+  </div>
+</body>
+
+<script src="./face-api.min.js"></script>
+<script src="./howler.min.js"></script>
+<script src="./main.js"></script>
+
+</html>

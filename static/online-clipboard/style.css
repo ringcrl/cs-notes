@@ -1,0 +1,29 @@
+.clipboard-wrapper {
+  padding: 10px;
+}
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button {
+  margin: 0 5px;
+}
+ul {
+  margin-top: 10px;
+}
+li {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+.clipboard-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

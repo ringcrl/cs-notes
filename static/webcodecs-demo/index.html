@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    canvas {
+      padding: 10px;
+      background: gold;
+    }
+
+    button {
+      background-color: #555555;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      width: 150px;
+      text-align: center;
+      display: block;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="playPause()">Pause</button>
+  <canvas id="dst" width="640" height="480"></canvas>
+  <canvas style="visibility: hidden;" id="src" width="640" height="480"></canvas>
+  <script src="./main.js"></script>
+
+</body>
+
+</html>
