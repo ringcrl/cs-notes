@@ -18,13 +18,14 @@ npx install-peerdeps --dev eslint-config-airbnb-base
 ```
 
 ```js
-{
-  "extends": "airbnb-base",
-  "env": {
-    "browser": true,
-    "node": true
-  }
-}
+// .eslintrc.js
+module.exports = {
+  extends: 'airbnb-base',
+  env: {
+    browser: true,
+    node: true,
+  },
+};
 ```
 
 ## Prettier
@@ -41,22 +42,11 @@ yarn add prettier eslint-config-prettier -D
 // .eslintrc.js
 {
   "extends": [
-    // ...
-    // 用于关闭 ESLint 相关的格式规则集，具体可查看 https://github.com/prettier/eslint-config-prettier/blob/master/index.js
+    // 用于关闭 ESLint 相关的格式规则集：https://github.com/prettier/eslint-config-prettier/blob/master/index.js
     "prettier",
-    // 用于关闭 @typescript-eslint/eslint-plugin 插件相关的格式规则集，具体可查看 https://github.com/prettier/eslint-config-prettier/blob/master/%40typescript-eslint.js
+    // 用于关闭 @typescript-eslint/eslint-plugin 插件相关的格式规则集：https://github.com/prettier/eslint-config-prettier/blob/master/%40typescript-eslint.js
     "prettier/@typescript-eslint",
   ]
-}
-```
-
-```json
-// .vscode
-// Set the default
-"editor.formatOnSave": false,
-// Enable per-language
-"[javascript]": {
-    "editor.formatOnSave": true
 }
 ```
 
@@ -68,6 +58,16 @@ module.exports = {
   trailingComma: 'es5', // Trailing commas where valid in ES5 (objects, arrays, etc)
   printWidth: 100, // 100字符换行
   tabWidth: 2, // 缩进空格数
+}
+```
+
+```json
+// .vscode
+// Set the default
+"editor.formatOnSave": false,
+// Enable per-language
+"[javascript]": {
+    "editor.formatOnSave": true
 }
 ```
 

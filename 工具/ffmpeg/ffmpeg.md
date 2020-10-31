@@ -83,7 +83,20 @@ output.webm # 输出文件
 
 ## 常见用法
 
-### 转换编码格式
+### 大小裁剪
+
+```sh
+# 转为 480p
+ffmpeg -i input.mp4 -vf scale=480:-1 output.mp4
+
+# Crop to width 360, height 640
+ffmpeg -i input.mov -filter:v 'crop=360:640:0:0' -codec:a copy output.mov
+
+# Crop to width 360, height 640, starting from coordinates (10, 20)
+ffmpeg -i input.mov -filter:v 'crop=360:640:10:20' -codec:a copy output.mov
+```
+
+### 格式转换
 
 ```sh
 # 转成 H.264 编码，一般使用编码器libx264
@@ -91,11 +104,19 @@ ffmpeg -i [input.file] -c:v libx264 output.mp4
 
 # 转成 H.265 编码
 ffmpeg -i [input.file] -c:v libx265 output.mp4
-```
 
-### 转换容器格式
+# Convert to GIF
+ffmpeg -i input.mov output.gif
 
-```sh
+# -ss 00:00:03 表示从第 00 分钟 03 秒开始制作 GIF
+# -t 3 表示把持续 3 秒的视频转换为 GIF
+# -s 640x360 是 GIF 的分辨率
+# -r 15 表示帧率，网上下载的视频帧率通常为 24，设为 15 效果挺好了
+ffmpeg -i /input/01.mp4 -ss 00:00:02 -t 3 -s 360x640 -r 15 /output/foo.gif
+
+# Convert from GIF
+ffmpeg -i input.gif output.mov
+
 # 内部的编码格式不变，所以使用 -c copy 指定直接拷贝，不经过转码，这样比较快
 ffmpeg -i input.mp4 -c copy output.webm
 ```
@@ -109,16 +130,6 @@ ffmpeg -i input.mp4 -c copy output.webm
 ffmpeg \
 -i input.mp4 \
 -minrate 964K -maxrate 3856K -bufsize 2000K \
-output.mp4
-```
-
-### 改变分辨率
-
-```sh
-# 转为 480p
-ffmpeg \
--i input.mp4 \
--vf scale=480:-1 \
 output.mp4
 ```
 
@@ -148,22 +159,25 @@ ffmpeg -ss <start> -i <input> -t <duration> -c copy <output>
 ffmpeg -ss <start> -i <input> -to <end> -c copy <output>
 ```
 
+- ss 指定剪裁的开头部分
+- t 指定视频总时长
+- output_ts_offset 指定输出 start_time
+
 ```sh
 # 将文件从 50 秒开始剪切 20 秒,输入到新文件,-ss 是指定开始时间,-t 是指定时长
 ffmpeg -i input.mp4 -ss 00:00:50.0 -codec copy -t 20 output.mp4
+
+# ss 从 8s 开始截取后面的内容
+ffmpeg -ss 8 -i input.mp4 -c copy output.ts
+
+# t 截取视频前10秒
+ffmpeg -i input.mp4 -c copy -t 10 -copyts output.ts
+
+# 指定输出文件的 start_time
+ffmpeg -i input.mp4 -c copy -t 10 -output_ts_offset 120 output.mp4
 ```
 
-### mp4 导出 gif
-
-```sh
-# -ss 00:00:03 表示从第 00 分钟 03 秒开始制作 GIF
-# -t 3 表示把持续 3 秒的视频转换为 GIF
-# -s 640x360 是 GIF 的分辨率
-# -r 15 表示帧率，网上下载的视频帧率通常为 24，设为 15 效果挺好了
-ffmpeg -i /input/01.mp4 -ss 00:00:02 -t 3 -s 360x640 -r 15 /output/foo.gif
-```
-
-### 截图
+### 图片截取
 
 ```sh
 # 截取单图
@@ -176,30 +190,13 @@ ffmpeg -i /input/01.mp4 -r 0.25 /output/prefix_%03d.jpg
 ffmpeg -i /input/01.mp4 -y -f image2 -vf fps=fps=1 /output/prefix_%03d.jpeg
 ```
 
-### ss 与 t 进行切片
-
-- ss 指定剪裁的开头部分
-- t 指定视频总时长
-- output_ts_offset 指定输出 start_time
-
-```sh
-# ss 从 8s 开始截取后面的内容
-ffmpeg -ss 8 -i input.mp4 -c copy output.ts
-
-# t 截取视频前10秒
-ffmpeg -i input.mp4 -c copy -t 10 -copyts output.ts
-
-# 指定输出文件的 start_time
-ffmpeg -i input.mp4 -c copy -t 10 -output_ts_offset 120 output.mp4
-```
-
-### 音视频文件音频流提取
+### 音频流提取
 
 ```sh
 ffmpeg -i input.mp4 -vn -acodec copy output.aac
 ```
 
-### 音视频文件中视频流提取
+### 视频流提取
 
 ```sh
 ffmpeg -i input.mp4 -vcodec copy -an output.h264

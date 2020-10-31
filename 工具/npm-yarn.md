@@ -97,7 +97,7 @@ npm owner add xxx
 
 # yarn
 
-## 更换源
+## 基础操作
 
 ```sh
 # 查看所有可用的源
@@ -112,6 +112,14 @@ yarn config set registry https://registry.npm.taobao.org
 
 # 设置原生源
 yarn config set registry https://registry.yarnpkg.com
+
+# 设置代理
+yarn config set proxy <http-proxy>
+yarn confit set https-proxy <https-proxy>
+
+# 取消代理
+yarn config delete proxy
+yarn config delete https-proxy
 ```
 
 ## peerDependencies
