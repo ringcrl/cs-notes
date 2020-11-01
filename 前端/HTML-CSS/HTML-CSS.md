@@ -1,5 +1,70 @@
 # HTML
 
+## HTML 模板
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- 文档使用的字符编码 -->
+  <meta charset="utf-8">
+  <!-- 添加到主屏幕时隐藏地址栏和状态栏（即全屏）-->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- 添加到主屏幕的 Web App 标题 -->
+  <meta name="apple-mobile-web-app-title" content="Web App 名称" />
+  <!--
+    通知搜索引擎文档是否需要被索引
+      - all（默认值，索引当前页并跟踪链接，相当于：index, follow
+      - none（忽略当前页，相当于：noindex, nofollow）
+      - index（索引当前页）
+      - noindex（不索引当前页）
+      - follow（跟踪当前页链接，不论当前页是否被索引）
+      - nofollow（不跟踪当前页链接，不论当前页是否被索引）
+  -->
+  <meta name="robots" content="index" />
+  <!-- 搜索引擎抓取间隔 -->
+  <meta name="revisit-after" content="10 days" />
+  <!-- 文档描述 -->
+  <meta name="description" content="这是一份 meta 列表" />
+  <!-- 文档关键字 -->
+  <meta name="keywords" content="CSS, HTML, JavaScript, 前端" />
+  <!-- 作者信息 -->
+  <meta name="author" content="chenng, ringcrl@foxmail.com" />
+  <!-- 页面是否缓存 -->
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta http-equiv="cache-control" content="no-cache" />
+  <!-- 指定页面的过期时间，一旦网页过期，从服务器上重新请求，其中时间必须使用 GMT 格式，或者直接是 0（即不缓存） -->
+  <meta http-equiv="expires" content="0" />
+  <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
+  <!-- 页面自刷新或自跳转 -->
+  <meta http-equiv="refresh" content="10" />
+  <meta http-equiv="refresh" content="10; url=https://www.chenng.cn" />
+  <!-- 禁止缩放 -->
+  <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no">
+  <!-- X5 浏览器强制竖屏显示 -->
+  <meta name="x5-orientation" content="portrait">
+  <!-- X5 浏览器全屏显示 -->
+  <meta name="x5-fullscreen" content="true">
+  <!-- UC 浏览器强制竖屏显示 -->
+  <meta name="screen-orientation" content="portrait">
+  <!-- UC 浏览器全屏显示 -->
+  <meta name="full-screen" content="yes">
+  <!-- 
+    禁止电话号码和邮箱的识别
+      - 电话：<a href="tel:13333333333">拨打电话13333333333</a>
+      - 邮件：<a href="mailto:ringcrl@foxmail.com">发送邮件</a>
+  -->
+  <!-- telephone=no, -->
+  <meta name="format-detection" content="telephone=yes" />
+  <!-- 在 Safari 中添加 APP 标识 -->
+  <!-- <meta name="apple-itunes-app" content="app-id=637381980"> -->
+  <title>index.html</title>
+</head>
+
+</html>
+```
+
 ## 语义化
 
 - abbr：缩写
@@ -192,71 +257,6 @@ iphone6 plus / iphone 7 plus
 - 对于传统 script 需要跨域获取的 js 资源，控制暴露出其报错的详细信息
 - 对于跨域 JS 来说，只会给出很少的报错信息：'error: script error'，通过使用 crossorigin 属性可以使跨域 JS 暴露出跟同域 JS 同样的报错信息。
 - 资源服务器必须返回一个 `Access-Control-Allow-Origin 的 header`，否则资源无法访问
-
-## HTML 模板
-
-```html
-<!DOCTYPE html>
-<html>
-
-<head>
-  <!-- 文档使用的字符编码 -->
-  <meta charset="utf-8">
-  <!-- 添加到主屏幕时隐藏地址栏和状态栏（即全屏）-->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <!-- 添加到主屏幕的 Web App 标题 -->
-  <meta name="apple-mobile-web-app-title" content="Web App 名称" />
-  <!--
-    通知搜索引擎文档是否需要被索引
-      - all（默认值，索引当前页并跟踪链接，相当于：index, follow
-      - none（忽略当前页，相当于：noindex, nofollow）
-      - index（索引当前页）
-      - noindex（不索引当前页）
-      - follow（跟踪当前页链接，不论当前页是否被索引）
-      - nofollow（不跟踪当前页链接，不论当前页是否被索引）
-  -->
-  <meta name="robots" content="index" />
-  <!-- 搜索引擎抓取间隔 -->
-  <meta name="revisit-after" content="10 days" />
-  <!-- 文档描述 -->
-  <meta name="description" content="这是一份 meta 列表" />
-  <!-- 文档关键字 -->
-  <meta name="keywords" content="CSS, HTML, JavaScript, 前端" />
-  <!-- 作者信息 -->
-  <meta name="author" content="chenng, ringcrl@foxmail.com" />
-  <!-- 页面是否缓存 -->
-  <meta http-equiv="pragma" content="no-cache" />
-  <meta http-equiv="cache-control" content="no-cache" />
-  <!-- 指定页面的过期时间，一旦网页过期，从服务器上重新请求，其中时间必须使用 GMT 格式，或者直接是 0（即不缓存） -->
-  <meta http-equiv="expires" content="0" />
-  <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
-  <!-- 页面自刷新或自跳转 -->
-  <meta http-equiv="refresh" content="10" />
-  <meta http-equiv="refresh" content="10; url=https://www.chenng.cn" />
-  <!-- 禁止缩放 -->
-  <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no">
-  <!-- X5 浏览器强制竖屏显示 -->
-  <meta name="x5-orientation" content="portrait">
-  <!-- X5 浏览器全屏显示 -->
-  <meta name="x5-fullscreen" content="true">
-  <!-- UC 浏览器强制竖屏显示 -->
-  <meta name="screen-orientation" content="portrait">
-  <!-- UC 浏览器全屏显示 -->
-  <meta name="full-screen" content="yes">
-  <!-- 
-    禁止电话号码和邮箱的识别
-      - 电话：<a href="tel:13333333333">拨打电话13333333333</a>
-      - 邮件：<a href="mailto:ringcrl@foxmail.com">发送邮件</a>
-  -->
-  <!-- telephone=no, -->
-  <meta name="format-detection" content="telephone=yes" />
-  <!-- 在 Safari 中添加 APP 标识 -->
-  <!-- <meta name="apple-itunes-app" content="app-id=637381980"> -->
-  <title>index.html</title>
-</head>
-
-</html>
-```
 
 ## DOMContentLoaded、Load
 
