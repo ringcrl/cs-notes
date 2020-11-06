@@ -529,6 +529,18 @@ time.sleep(5)  # Let the user actually see something!
 driver.quit()
 ```
 
+## csv
+
+```py
+import csv
+
+# csv.reader
+with open('eggs.csv', newline='') as csvfile:
+     spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+     for row in spamreader:
+         print(', '.join(row))
+```
+
 ## pandas 存储 csv 文件
 
 ```py
@@ -748,6 +760,26 @@ for arg in sys.argv[1:]:
     else:
         print(arg, 'has', len(f.readlines()), 'lines')
         f.close()
+```
+
+## re 正则
+
+```python
+# 匹配数字
+num = int(re.findall(r"\d+", searchText)[0])
+
+# 多个重复字符替换为一个
+import re
+source = '|||as|aaa|'
+res = re.sub(r'(\|)(\1+)', '|', source) # '|as|aaa|'
+
+# 正则内容匹配
+import re
+string = 'aerial-view-1866742.jpg'
+res = re.match(r'(.+?)(-\d+.+)', string)
+# res.group(0) 'aerial-view-1866742.jpg'
+# res.group(1) 'aerial-view'
+# res.group(2) '-1866742.jpg'
 ```
 
 # 应用
