@@ -1195,11 +1195,10 @@ export {}; // export 关键字改变文件的模式
 ## extends 的多种用途
 
 ```ts
-// 表示类型扩展
+// 类型扩展
 interface A {
   a: string
 }
-
 interface B extends A { // { a: string, b: string }
   b: string
 }
@@ -1210,13 +1209,17 @@ type C = Bar<number> // never
 type D = Bar<string> // string
 type E = Bar<'fooo'> // string
 
-// 起到类型限制的作用
+// 类型约束1
 type Foo<T extends object> = T
 type F = Foo<number> // 类型“number”不满足约束“object”。
 type G = Foo<string> // 类型“string”不满足约束“object”。
 type H = Foo<{}> // OK
 
-// 类继承
-class I {}
-class J extends I {}
+// 类型约束2
+interface ILengthy {
+  length: number;
+}
+function logLength<T extends ILengthy>(arg: T) {
+  console.log(arg.length)
+}
 ```
