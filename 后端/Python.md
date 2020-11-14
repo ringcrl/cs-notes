@@ -40,6 +40,25 @@ pipreqs ./ # 在项目根目录执行
 pip freeze > requirements.txt
 ```
 
+## 运行
+
+```sh
+# 前台运行
+python xxx.py
+
+# 后台运行不打印日志
+nohup python -u xxx.py >/dev/null 2>&1 &
+# 后台运行打印日志
+nohup python -u xxx.py &
+# 查看 nohup 日志
+tail -fn 50 nohup.out
+# 查看关闭后台进程
+ps aux | head -1 # 显示标题
+ps aux | grep xxx.py
+# USER PID ...
+kill <pid>
+```
+
 # 语法
 
 ## 类型与运算
@@ -765,21 +784,25 @@ for arg in sys.argv[1:]:
 ## re 正则
 
 ```python
+import re
+
 # 匹配数字
 num = int(re.findall(r"\d+", searchText)[0])
 
 # 多个重复字符替换为一个
-import re
 source = '|||as|aaa|'
 res = re.sub(r'(\|)(\1+)', '|', source) # '|as|aaa|'
 
-# 正则内容匹配
-import re
+# match 尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match()就返回 None
 string = 'aerial-view-1866742.jpg'
 res = re.match(r'(.+?)(-\d+.+)', string)
 # res.group(0) 'aerial-view-1866742.jpg'
 # res.group(1) 'aerial-view'
 # res.group(2) '-1866742.jpg'
+
+# re.search 扫描整个字符串并返回第一个成功的匹配
+originUrl = 'https://xxx.com/preview/filename-small.mp4'
+fileName = re.search(r'([^/]+?)-small', originUrl)
 ```
 
 # 应用
