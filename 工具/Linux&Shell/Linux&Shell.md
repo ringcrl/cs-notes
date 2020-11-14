@@ -354,6 +354,13 @@ https://support.apple.com/zh-cn/HT201065
 
 # shell 命令
 
+## ls
+
+```sh
+# 统计某个目录下所有文件的个数
+ls -lR <dir_path> | grep "^-" | wc -l
+```
+
 ## wc 统计数量
 
 ```sh
