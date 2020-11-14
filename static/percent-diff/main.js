@@ -13,9 +13,16 @@ const app = new Vue({
       const MID = 50
       const diff = range - 50
       const percent = diff / MID
-      const money = (Number(this.inputVal * percent) + Number(this.inputVal)).toFixed(3)
+      const sourceMoney = this.inputVal || 0
+      const distMoney = (Number(sourceMoney * percent) + Number(sourceMoney)).toFixed(3)
+      const diffMoney = (distMoney - sourceMoney).toFixed(3)
       const strPercent = (percent * 100).toFixed(2)
-      return `金额：${money}；百分比：${strPercent}%`
+      return `
+        原始金额：${sourceMoney}
+        结果金额：${distMoney}
+        涨跌额：${diffMoney}
+        涨跌百分比：${strPercent}%
+      `
     },
   },
   mounted() {

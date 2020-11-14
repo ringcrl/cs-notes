@@ -449,6 +449,12 @@ git config core.hooksPath
 git config core.hooksPath .git/hooks
 ```
 
+# git conflict
+
+https://stackoverflow.com/questions/42174485/git-how-dangerous-is-deleted-by-us-conflict
+
+https://stackoverflow.com/questions/21025314/who-is-us-and-who-is-them-according-to-git
+
 # fork 与 PR
 
 - fork 
