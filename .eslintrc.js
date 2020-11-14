@@ -18,5 +18,8 @@ module.exports = {
     // https://github.com/typescript-eslint/typescript-eslint/issues/967
     createDefaultProgram: true,
   },
-  rules: {},
+  rules: {
+    'no-undef': 0,
+    '@typescript-eslint/no-use-before-define': 0,
+  },
 }
