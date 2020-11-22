@@ -122,36 +122,27 @@ docker image prune -a
 
 # 容器
 
-## 生命周期
-
 - Created：容器已经被创建，容器所需的相关资源已经准备就绪，但容器中的程序还未处于运行状态
 - Running：容器正在运行，也就是容器中的应用正在运行
 - Paused：容器已暂停，表示容器中的所有程序都处于暂停 ( 不是停止 ) 状态
 - Stopped：容器处于停止状态，占用的资源和沙盒环境都依然存在，只是容器中的应用程序均已停止
 - Deleted：容器已删除，相关占用的资源及存储在 Docker 中的管理信息也都已释放和移除
 
-## 启动容器
+## 容器管理
 
 ```sh
 # 拉取镜像
 docker pull nginx:1.12
-
 # 创建容器
 docker create --name nginx nginx:1.12
-
 # 启动容器
 docker start nginx
-
 # run 同时创建和启动，-d 是在后台运行
 docker run \
   -d \ # 后台运行
   --name nginx \ # 为容器命名
   nginx:1.12
-```
 
-## 管理容器
-
-```sh
 # 查看所有容器
 docker container ls -a
 
@@ -169,11 +160,8 @@ docker inspect <NAME>
 
 # 快速清理所有容器
 docker container rm $(docker container ls -aq) -f
-```
 
-## 进入容器
-
-```sh
+# 进入容器
 docker exec -it nginx bash
 ```
 
