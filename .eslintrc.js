@@ -20,6 +20,12 @@ module.exports = {
   },
   rules: {
     'no-undef': 0,
+    'no-underscore-dangle': 0,
+    'no-plusplus': 0,
+    'class-methods-use-this': 0,
+    'no-useless-escape': 0,
+    'no-restricted-syntax': 0,
+    'guard-for-in': 0,
     '@typescript-eslint/no-use-before-define': 0,
   },
 }
