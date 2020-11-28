@@ -9,7 +9,7 @@
 
 静态网页托管：`https://ringcrl.github.io/cs-notes/static/<path>`
 
-# 项目配置
+# 项目快速配置
 
 ## ESLint
 
@@ -71,7 +71,7 @@ module.exports = {
 }
 ```
 
-## husky
+## Husky
 
 Husky can prevent bad git commit, git push and more
 
@@ -90,7 +90,7 @@ yarn add husky -D
 }
 ```
 
-## commitlint
+## Commitlint
 
 Lint commit messages
 
@@ -110,3 +110,7 @@ echo "module.exports = { extends: ['@commitlint/config-angular'] };" > commitlin
   }
 }
 ```
+
+## Typescript
+
+https://www.webpackjs.com/guides/typescript/
