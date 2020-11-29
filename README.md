@@ -5,10 +5,6 @@
 - [LeetCode 刷题记录](https://github.com/ringcrl/LeetCode)
 - [CodeWars 刷题记录](https://github.com/ringcrl/CodeWars)
 
-# static
-
-静态网页托管：`https://ringcrl.github.io/cs-notes/static/<path>`
-
 # 项目快速配置
 
 ## ESLint
