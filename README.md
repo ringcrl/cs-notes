@@ -16,13 +16,18 @@ npx install-peerdeps --dev eslint-config-airbnb-base
 ```js
 // .eslintrc.js
 module.exports = {
-  extends: 'airbnb-base',
   env: {
     browser: true,
     node: true,
+    es6: true,
   },
+  extends: [
+    'airbnb-base',
+  ],
 };
 ```
+
+TypeScript：https://www.npmjs.com/package/eslint-config-airbnb-typescript
 
 ## Prettier
 
@@ -31,7 +36,7 @@ module.exports = {
 - eslint-config-prettier: 用于解决 ESLint 和 Prettier 配合使用时容易产生的格式规则冲突问题，其作用就是关闭 ESLint 中配置的一些格式规则
 
 ```sh
-yarn add prettier eslint-config-prettier -D
+npm install prettier eslint-config-prettier -D
 ```
 
 ```js
