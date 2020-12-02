@@ -9,6 +9,8 @@
 
 ## ESLint
 
+### JS
+
 ```sh
 npx install-peerdeps --dev eslint-config-airbnb-base
 ```
@@ -27,7 +29,24 @@ module.exports = {
 };
 ```
 
+### TS
+
 TypeScript：https://www.npmjs.com/package/eslint-config-airbnb-typescript
+
+```sh
+npm install eslint-config-airbnb-typescript eslint-plugin-import @typescript-eslint/eslint-plugin -D
+```
+
+```js
+// .eslintrc.js
+module.exports = {
+  extends: ['airbnb-typescript/base'],
+  parserOptions: {
+    createDefaultProgram: true,
+    project: './tsconfig.json',
+  },
+};
+```
 
 ## Prettier
 
