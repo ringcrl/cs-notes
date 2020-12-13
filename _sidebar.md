@@ -1,6 +1,6 @@
 * 前端
     * [性能优化](前端/性能优化/性能优化.md)
-    * [Canvas](前端/Canvas/Canvas.md)
+    * [Canvas&Pixi](前端/Canvas&Pixi/Canvas&Pixi.md)
     * [Event-loop](前端/Event-loop/Event-loop.md)
     * [HTML-CSS](前端/HTML-CSS/HTML-CSS.md)
     * [JS](前端/JS/JS.md)
