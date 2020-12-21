@@ -2,6 +2,7 @@
     * [性能优化](前端/性能优化/性能优化.md)
     * [Canvas&Pixi](前端/Canvas&Pixi/Canvas&Pixi.md)
     * [Event-loop](前端/Event-loop/Event-loop.md)
+    * [GLSL](前端/GLSL/GLSL.md)
     * [HTML-CSS](前端/HTML-CSS/HTML-CSS.md)
     * [JS](前端/JS/JS.md)
     * [SVG](前端/SVG/SVG.md)
