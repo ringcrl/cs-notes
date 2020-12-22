@@ -12,7 +12,7 @@
 
 ## 变量
 
-```glsl
+```cpp
 int age = 18; // 声明并赋值
 
 float money; // 声明不赋值
@@ -29,7 +29,7 @@ AGE = 20; // error! 常量不可以更改
 - 如果函数有返回值，就需要指定返回值的类型，如果没有返回值，必须指定为空 void
 - 如果函数有参数，那么也需要指定参数的类型
 
-```glsl
+```cpp
 // 没有返回值没有参数的 main 函数
 void main() {
     // ...
@@ -52,7 +52,7 @@ void foo(float value1, int value2) { ... }
 
 ## 作用域
 
-```glsl
+```cpp
 // 使用一对花括号{}包裹的区域即为一个作用域
 void foo() {
     int a = 0;
@@ -75,4 +75,170 @@ void foo(int a) {
 int age; // 声明为整型
 float age; // Error! 冲突
 void age(); // Error! 冲突
+```
+
+## 运算符
+
+- `++` `--`：自增、自减
+- `+` `-` `~` `!` ：一元运算
+- `*` `%` `/`：乘、取余、除
+- `+` `-`：	加、减
+- `<` `>` `<=` `>=` `==` `!=`：关系运算
+- `&&` `^^` `||`：逻辑与、逻辑异或、逻辑同或
+- `?:`：三目运算
+
+## 限定符
+
+### 储存限定符
+
+声明变量时可以在类型前面添加一个储存限定符
+
+```cpp
+// const
+
+// 使用 const 限定符修饰的变量即为常量，常量一但定义就不可再修改
+// 适用于标量、向量、矩阵、数组和结构体，但不适用于采样器
+
+const int age = 18;
+const vec4 color = vec4(0.5, 0.5, 0.5, 0.5);
+// 也可以用于限定函数的参数
+void doSomething(const float param) {
+    param = 0.1; // Error! 不可！
+    // ...
+}
+```
+
+```cpp
+// in
+
+// in 限定符常用于接收从上一阶段输出的变量
+
+in vec3 a_position; // 接收一个顶点坐标向量
+in vec2 a_uv0; // 接收一个纹理坐标向量
+in vec4 a_color; // 接受一个颜色向量
+```
+
+```cpp
+// out
+
+// out 限定符常用于将当前着色器中的变量输出到下一阶段
+
+out vec2 v_uv0; // 输出一个纹理坐标向量
+out vec4 v_color; // 输出一个颜色向量
+```
+
+```cpp
+// uniform
+
+// 使用 uniform 限定符来表示一个统一且只读的全局变量，该变量为所有着色器所共用
+// 声明了却没有使用的 uniform 变量会在编译时被静默移除
+
+uniform sampler2D texture;
+
+// uniform 变量只能在程序中使用 OpenGL ES 的一系列 glUniform API 进行赋值
+// 程序代码
+int location = glGetUniformLocation(shaderProgram, "color"); // 查找 color 的位置（索引）
+glUniform4f(location, 0.0f, 0.1f, 0.0f, 1.0f); // 给 color 赋值
+// 着色器代码
+uniform vec4 color; // vec4(0.0, 0.1, 0.0, 1.0)
+```
+
+### 参数限定符
+
+```cpp
+// in
+// 表示复制进函数体内的参数（值传递，不影响原来的值）
+void doo(in float param) { ... } // 和普通不加限定词的参数一样
+
+// out 
+// 表示函数向外复制的参数，必须是之前未被初始化的变量（引用传递，会影响原来的值）
+void foo(out int param) {
+    param = 666;
+}
+int a; // 声明了但是没有初始化
+foo(a); // a = 666
+ 
+// inout
+// 表示参数将在函数内外保持一致（引用传递，会影响原来的值）
+void goo(inout int param) {
+    param = param++;
+}
+int b = 1;
+goo(b); // b = 2
+```
+
+### 精度限定符
+
+浮点数、整数和采样器类型声明可以添加精度限定词来设置精度范围（精度控制可以扩展至向量和矩阵）
+
+```cpp
+// highp 满足顶点语言的最低要求（使用 highp 可以获得最大的范围和精度，但是也有可能会降低运行速度）
+// mediump 范围和精度介于 highp 和 lowp 之间（通常用于储存高范围的颜色数据和低精度的几何数据）
+// lowp 范围和精度比 meduimp 小，但是足以储存所有 8-bit 颜色数据
+
+// 变量声明
+lowp float a;
+mediump vec2 p;
+highp mat4 m;
+
+// 函数声明（返回值和参数）也适用
+highp float foo(highp param);
+
+// 用 precision 关键字来声明指定类型的默认精度
+// 声明 float 类型的默认精度为 highp
+precision highp float;
+
+// 在「未主动声明精度」的情况下
+// 在顶点着色器中有以下默认精度声明
+precision highp float;
+precision highp int;
+precision lowp sampler2D;
+precision lowp samplerCube;
+// 片段着色器中有以下默认精度声明
+precision mediump int;
+precision lowp sampler2D;
+precision lowp samplerCube;
+// 在片段着色器中浮点类型、浮点向量和浮点矩阵都没有默认的精度，所以使用时就必须声明其精度，或者事先声明默认精度
+```
+
+## 数据类型
+
+### 标量
+
+标量表示只有大小没有方向的量
+
+```cpp
+// 整型
+int age = 18;
+// 无符号整型，在数字后面加 u
+uint hello = 3u;
+// 浮点型
+float pi = 3.14;
+// 布尔型
+bool isMe = true;
+```
+
+```cpp
+// 类型转换
+
+int a = 1;
+
+float b = float(a); // 1.0
+
+// float 类型的值转换为 int 和 uint 时小数点后面的值将会被忽略
+// 负的 float 类型的值不能转换为 uint 类型
+int c = int(b); // 1
+
+uint d = uint(c); // 1u
+// 当 int、uint 或 float 类型的值转换为 bool 类型时
+// 0 或 0.0 将会被转换为 false，所有非零的值都会被转换为 true
+bool e = bool(d); // true
+
+// 当 bool 类型的值转换为 int、uint 或 float 类型时
+// false 将会被转换为 0 或 0.0，true 会被转换为 1 或 1.0
+int f = int(e); // 1
+
+// 将非标量值转换为标量值时，实际处理的将会是非标量值的第一个元素
+vec3 a = vec3(0.1, 0.2, 0.3);
+float b = float(a); // 0.1
 ```
