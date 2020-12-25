@@ -203,7 +203,7 @@ precision lowp samplerCube;
 
 ## 数据类型
 
-### 标量
+### 标量（Scalar）
 
 标量表示只有大小没有方向的量
 
@@ -242,3 +242,155 @@ int f = int(e); // 1
 vec3 a = vec3(0.1, 0.2, 0.3);
 float b = float(a); // 0.1
 ```
+
+### 向量（Vector）
+
+在 GLSL 中向量一般用于储存顶点坐标、颜色或纹理坐标数据，一个向量可以包含 2 到 4 个分量（Component）
+
+#### 创建向量
+
+一般情况下使用浮点（float）型 `vecn`，n 为分量的个数
+
+```cpp
+// 含有 2 个 float 类型分量的向量
+vec2 coord = vec2(0.5, 0.5);
+// 含有 3 个 int 类型分量的向量
+ivec3 police = ivec3(1, 1, 0);
+// 含有 4 个 bool 类型分量的向量
+bvec4 hello = bvec4(true, false, true, false);
+
+// 只传入一个参数的情况下会自动将其他值也设为第一个参数
+vec3 three = vec3(0.1); // 等同于 vec3(0.1, 0.1, 0.1)
+
+// 使用一个向量作为参数传给另一个向量构造函数
+vec2 two = vec2(0.1, 0.2);
+vec3 three = vec3(two, 0.3); // vec3(0.1, 0.2, 0.3)
+
+// 将“大”向量作为参数来创建“小”向量（降维）会自动抛弃多余的值
+vec4 four = vec4(0.1, 0.2, 0.3, 0.4);
+vec3 three = vec3(four); // 等同于 vec3(0.1, 0.2, 0.3)，抛弃了 0.4
+```
+
+#### 使用分量
+
+通过分量名来获取向量中的第 1 到第 4 个分量，所有向量都可以使用：
+
+- xyzw（顶点坐标向量）
+- rgba（颜色向量）
+- stpq （纹理坐标向量）
+
+为了代码的严谨性和可读性，使用相应的分量名
+
+```cpp
+// 顶点坐标
+vec2 coord = vec2(1.0, 0.5);
+float x = coord.x; // 1.0
+float y = coord.y; // 0.5
+float z = coord.z; // Error! 不存在
+
+// 颜色
+vec4 color = vec4(0.6, 0.8, 1,0, 0.5);
+float r = color.r; // 0.6
+float a = color.a; // 0.5
+// 纹理坐标
+vec4 texCoord = vec4(0.2, 0.4, 0.6, 0.8);
+float t = texCoord.t; // 0.4
+float p = texCoord.p; // 0.6
+```
+
+#### 重组分量
+
+使用同一组分量名的任意组合来创建一个新的向量
+
+```cpp
+vec4 coord = vec4(0.1, 0.2, 0.3, 0.4);
+vec2 one = coord.xx; // vec2(0.1, 0.1)
+vec2 two = coord.xy; // vec2(0.1, 0.2)
+vec3 three = coord.xzw; // vec3(0.1, 0.3, 0.4)
+vec4 four = coord.wzyx; // vec4(0.4, 0.3, 0.2, 0.1)
+vec4 boom = coord.xyzw + coord.wzyx; // vec4(0.5, 0.5, 0.5, 0.5)
+vec4 hello = vec4(coord.zyx, 0.0); // vec4(0.3, 0.2, 0.1, 0.0)
+```
+
+### 矩阵（Matrix）
+
+矩阵最多能够支持 4 列 4 行的数据，最少 2 行 2 列，且其元素只能够为 float 类型
+
+- `matn` 表示  n 列 n 行的浮点型矩阵，例如 `mat2`、`mat3`、`mat4`
+- `matmxn` 表示 m 列 n 行的浮点型矩阵，例如 `mat2x3`、`mat4x3`
+
+```cpp
+// 创建一个 2x2 的矩阵
+mat2 two = mat2(
+    0.1, 0.2, // 第一列
+    0.3, 0.4); // 第二列
+
+// 创建一个 3x3 的矩阵
+mat3 three = mat3(0.1, 0.2, 0.3, // 第一列
+                  0.4, 0.5, 0.6, // 第二列
+                  0.7, 0.8, 0.9); // 第三列
+
+// 只传入一个参数的情况下会自动补零
+mat2 two = mat2(1.0); // 等同于 mat2(1.0, 0.0, 0.0, 0.0)
+
+// 传入向量来创建矩阵
+vec2 a = vec2(1.0, 0.0);
+vec2 b = vec2(0.5, 0.1);
+mat2 four = mat2(a, b); // 等同于 mat2(1.0, 0.0, 0.5, 0.1)
+```
+
+```cpp
+mat3 three = mat3(0.1, 0.2, 0.3, // 第一列
+                  0.4, 0.5, 0.6, // 第二列
+                  0.7, 0.8, 0.9); // 第三列
+float el = three[0][2]; // 获取第一列第三行的元素：0.3
+```
+
+### 采样器（Sampler）
+
+通过采样器来获取纹理的信息
+
+采样器只能在 Shader 外部的宿主语言中通过 OpenGL 的 API 来进行赋值
+
+- smapler2D：用来访问 2D 纹理的句柄
+- sampler3D：用来访问 3D 纹理的句柄
+
+```cpp
+// 采样器必须使用 uniform 关键字来修饰
+uniform sampler2D myTexture;
+
+// 通过内置的 texture 函数获取 myTexture 纹理 uv_0 坐标处的颜色
+vec4 color = texture(myTexture, uv_0);
+```
+
+### 结构体（Structure）
+
+使用 struct 关键字来自定义一个新的类型，新的自定义类型可以包含其他已经定义的类型
+
+```cpp
+// 定义一个名为 circle 的类型，包含一个浮点型成员和一个四维向量成员
+struct circle {
+    float radius;
+    vec4 color;
+};
+// 创建一个 circle 类型的变量
+circle myCircle;
+// 单独给 radius 赋值
+myCircle.radius = 0.5;
+```
+
+### 数组（Array）
+
+在变量名称后面接上一对方括号 `[]` 就是数组
+
+```cpp
+// 字面量数组
+float a[3] = float[3](0.1, 0.2, 0.3);
+float b = a[1]; // 0.2
+
+// 返回值类型
+float[5] getValues() { ... }
+// 参数类型
+void setValues(float[2] values) { ... }
+```
+
