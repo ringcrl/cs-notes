@@ -394,3 +394,137 @@ float[5] getValues() { ... }
 void setValues(float[2] values) { ... }
 ```
 
+## 迭代
+
+### 循环语句
+
+```cpp
+// for
+
+int a = 0;
+for (int i = 0; i < 10; i++) {
+    a++;
+}
+// a = 10
+```
+
+```cpp
+// while
+
+int a = 0;
+while (a < 10) {
+    a++;
+}
+// a = 10
+```
+
+```cpp
+// do-while
+// 先执行一次循环体，之后只要条件表达式为 true 就继续执行循环体，直到条件表达式为 false 时结束循环
+
+int a = 0;
+do {
+    a++;
+} while (a < 0)
+// a = 1;
+```
+
+### 选择语句
+
+```cpp
+// if
+
+int a = 0;
+if (a == 0) {
+    a++;
+}
+// a = 1
+```
+
+```cpp
+// if-else
+
+int a = 0;
+if (a == 1) {
+    a++;
+} else {
+    a += 2;
+}
+// a = 2
+```
+
+```cpp
+// switch
+// switch 语句中的初始化表达式必须为整数，如果 case 标签的值与之相等，则执行标签后面的语句
+
+int a = 2;
+switch (a) {
+    case 1:
+        a += 1;
+        break;
+    case 2:
+        a += 2;
+        break;
+    default:
+        a += 10;
+}
+// a = 4
+```
+
+### 跳转语句
+
+```cpp
+// continue
+// 只可用于循环中，执行该语句时会跳过最内层循环，然后执行下一次循环
+
+int a = 0;
+for (int i = 0; i < 10; i++) {
+    if (i == 6) {
+        continue;
+        // 当 i 为 6 时不会执行后面的语句
+    }
+    a++;
+}
+// a = 9
+```
+
+```cpp
+// break
+// 可用于循环和 switch 语句中，执行该语句时将立即退出最内层循环，不再继续执行循环
+
+int a = 0;
+for (int i = 0; i < 10; i++) {
+    if (i == 6) {
+        break;
+        // 当 i 为 6 时直接跳出循环
+    }
+    a++;
+}
+// a = 6
+```
+
+```cpp
+// return
+// 可以用在函数（Function）里的任何位置，执行该语句会直接跳出当前函数
+
+int plus(int a, int b) {
+    return a + b;
+}
+int c = plus(1, 2);
+// c = 3
+```
+
+```cpp
+// discard
+// 只能在片元着色器（Fragment Shader）中使用，执行该语句将会直接跳出片元着色器，丢弃当前片元
+
+void main() {
+    if (v_FragColor.a < 0.1) {
+        discard;
+        // 不透明度小于 0.1 时丢弃当前片元
+        // 不执行后面的语句
+    }
+    gl_FragColor = v_FragColor; 
+}
+```
+
