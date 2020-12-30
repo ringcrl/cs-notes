@@ -34,37 +34,42 @@ https://github.com/Microsoft/vscode-recipes
 }
 ```
 
-## code-setting-sync
+```json
+// 支持参数启动
 
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "JS",
+      "type": "node",
+      // linux下需要这样运行：xvfb-run -s "-ac -screen 0 1280x1024x24" node test/pixi.js
+      // https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_launch-configuration-support-for-npm-and-other-tools
+      "runtimeExecutable": "xvfb-run",
+      "runtimeArgs": [
+        "-s", "-ac -screen 0 1280x1024x24", "node"
+      ],
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "outputCapture" : "std",
+    },
+  ]
+}
 ```
-GitHub Token: 秘钥备忘
-GitHub Gist: 秘钥备忘
-```
 
-### 上传配置
+# 使用技巧
 
-shift + alt + u
-
-### 下载配置
-
-shift + alt + d
-# 快捷键
-
-## Peek References
+## 侧边栏查看引用
 
 shift + alt + F12 可以在侧边栏查看引用
 
-## Explorer 键盘导航
-
-可以在目录区输入进行导航，点击后筛选
-
-## Explorer 全选
+## 资源管理器同级全选
 
 选中文件后 cmd + a 全选
-
-## Word Wrap
-
-对于超出一屏的文字是否换行，View => Toggle Word Wrap
 
 ## 多行转一行
 
@@ -134,7 +139,7 @@ option + shift + H
 
 ## 跳到上一次/下一次光标曾经停留过的地方
 
-`alt + ←/→` 跳到上一次/下一次光标曾经停留过的地方
+`ctrl + alt + ←/→` 跳到上一次/下一次光标曾经停留过的地方
 
 ## 快速修复类型错误
 

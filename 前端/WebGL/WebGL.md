@@ -1,16 +1,74 @@
-# 基本概念
+# WebGL 基础
+
+## 顶点着色器、片元着色器
+
+- 顶点着色器：处理顶点的 GPU 程序代码，它可以改变顶点的信息（如顶点的坐标、法线方向、材质等等），从而改变我们绘制出来的图形的形状或者大小等等
+- 片元着色器：用于处理光栅化后的像素信息，无论有多少个像素点，片元着色器都可以同时处理。从顶点着色器和图元提取像素点给片元着色器执行代码的过程，生成光栅信息的过程
+
+顶点着色器大体上可以总结为两个作用：一是通过 gl_Position 设置顶点，二是通过定义 varying 变量，向片元着色器传递数据
+
+```js
+// 通过 gl_Position 设置顶点
+
+// 对 position * 0.5，可将三角型周长缩小为一半，而不用更改 points 数组值
+const vertex = `
+  attribute vec2 position;
+
+  void main() {
+    gl_PointSize = 1.0;
+    gl_Position = vec4(position * 0.5, 1.0, 1.0);
+  }
+`;
+```
+
+```js
+// 定义 varying 变量，向片元着色器传递数据
+
+const vsrtex = `
+  attribute vec2 position;
+  varying vec3 color;
+
+  void main() {
+    gl_PointSize = 1.0;
+    color = vec3(0.5 + position * 0.5, 0.0);
+    gl_Position = vec4(position * 0.5, 1.0, 1.0);
+  }
+`;
+
+const fragment = `
+  precision mediump float;
+  varying vec3 color;
+
+  void main()
+  {
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+```
+
+## 坐标系
+
+x向右、y向上、z向屏幕外
+
+## 绘制流程
+
+![01.jpg](imgs/01.jpg)
+
+# GLSL
+
+## 基本概念
 
 - OpenGL：全称为 Open Graphics Library（开放图形库）。是用于渲染 2D 或 3D 图像的跨语言跨平台的应用程序编程接口
 - OpenGL ES：全称为 OpenGL for Embedded Systems（嵌入式系统开放图形库）。OpenGL ES 是 OpenGL 的子集，主要针对嵌入式系统（设备）设计，去除了 Open GL 中非必要的特性
 - GLSL：全称为 OpenGL Shading Language（OpenGL 着色语言），是一款在 OpenGL 着色器（Shader）中使用的编程语言
 - GLSL ES：全称为 OpenGL ES Shading Language（OpenGL ES 着色语言），就是用于 OpenGL ES 着色器的编程语言
 
-# 基本语法
+## 基本语法
 
 - 大小写敏感
 - 表达式后面必须以;结束
 
-## 变量
+### 变量
 
 ```cpp
 int age = 18; // 声明并赋值
@@ -24,7 +82,7 @@ const int AGE = 18; // 声明常量必须赋值
 AGE = 20; // error! 常量不可以更改
 ```
 
-## 函数
+### 函数
 
 - 如果函数有返回值，就需要指定返回值的类型，如果没有返回值，必须指定为空 void
 - 如果函数有参数，那么也需要指定参数的类型
@@ -50,7 +108,7 @@ void foo(float value) { ... }
 void foo(float value1, int value2) { ... }
 ```
 
-## 作用域
+### 作用域
 
 ```cpp
 // 使用一对花括号{}包裹的区域即为一个作用域
@@ -77,7 +135,7 @@ float age; // Error! 冲突
 void age(); // Error! 冲突
 ```
 
-## 运算符
+### 运算符
 
 - `++` `--`：自增、自减
 - `+` `-` `~` `!` ：一元运算
@@ -87,9 +145,9 @@ void age(); // Error! 冲突
 - `&&` `^^` `||`：逻辑与、逻辑异或、逻辑同或
 - `?:`：三目运算
 
-## 限定符
+### 限定符
 
-### 储存限定符
+#### 储存限定符
 
 声明变量时可以在类型前面添加一个储存限定符
 
@@ -143,7 +201,7 @@ glUniform4f(location, 0.0f, 0.1f, 0.0f, 1.0f); // 给 color 赋值
 uniform vec4 color; // vec4(0.0, 0.1, 0.0, 1.0)
 ```
 
-### 参数限定符
+#### 参数限定符
 
 ```cpp
 // in
@@ -167,7 +225,7 @@ int b = 1;
 goo(b); // b = 2
 ```
 
-### 精度限定符
+#### 精度限定符
 
 浮点数、整数和采样器类型声明可以添加精度限定词来设置精度范围（精度控制可以扩展至向量和矩阵）
 
@@ -201,9 +259,9 @@ precision lowp samplerCube;
 // 在片段着色器中浮点类型、浮点向量和浮点矩阵都没有默认的精度，所以使用时就必须声明其精度，或者事先声明默认精度
 ```
 
-## 数据类型
+### 数据类型
 
-### 标量（Scalar）
+#### 标量（Scalar）
 
 标量表示只有大小没有方向的量
 
@@ -243,11 +301,11 @@ vec3 a = vec3(0.1, 0.2, 0.3);
 float b = float(a); // 0.1
 ```
 
-### 向量（Vector）
+#### 向量（Vector）
 
 在 GLSL 中向量一般用于储存顶点坐标、颜色或纹理坐标数据，一个向量可以包含 2 到 4 个分量（Component）
 
-#### 创建向量
+##### 创建向量
 
 一般情况下使用浮点（float）型 `vecn`，n 为分量的个数
 
@@ -271,7 +329,7 @@ vec4 four = vec4(0.1, 0.2, 0.3, 0.4);
 vec3 three = vec3(four); // 等同于 vec3(0.1, 0.2, 0.3)，抛弃了 0.4
 ```
 
-#### 使用分量
+##### 使用分量
 
 通过分量名来获取向量中的第 1 到第 4 个分量，所有向量都可以使用：
 
@@ -298,7 +356,7 @@ float t = texCoord.t; // 0.4
 float p = texCoord.p; // 0.6
 ```
 
-#### 重组分量
+##### 重组分量
 
 使用同一组分量名的任意组合来创建一个新的向量
 
@@ -312,7 +370,7 @@ vec4 boom = coord.xyzw + coord.wzyx; // vec4(0.5, 0.5, 0.5, 0.5)
 vec4 hello = vec4(coord.zyx, 0.0); // vec4(0.3, 0.2, 0.1, 0.0)
 ```
 
-### 矩阵（Matrix）
+#### 矩阵（Matrix）
 
 矩阵最多能够支持 4 列 4 行的数据，最少 2 行 2 列，且其元素只能够为 float 类型
 
@@ -346,7 +404,7 @@ mat3 three = mat3(0.1, 0.2, 0.3, // 第一列
 float el = three[0][2]; // 获取第一列第三行的元素：0.3
 ```
 
-### 采样器（Sampler）
+#### 采样器（Sampler）
 
 通过采样器来获取纹理的信息
 
@@ -363,7 +421,7 @@ uniform sampler2D myTexture;
 vec4 color = texture(myTexture, uv_0);
 ```
 
-### 结构体（Structure）
+#### 结构体（Structure）
 
 使用 struct 关键字来自定义一个新的类型，新的自定义类型可以包含其他已经定义的类型
 
@@ -379,7 +437,7 @@ circle myCircle;
 myCircle.radius = 0.5;
 ```
 
-### 数组（Array）
+#### 数组（Array）
 
 在变量名称后面接上一对方括号 `[]` 就是数组
 
@@ -394,9 +452,9 @@ float[5] getValues() { ... }
 void setValues(float[2] values) { ... }
 ```
 
-## 迭代
+### 迭代
 
-### 循环语句
+#### 循环语句
 
 ```cpp
 // for
@@ -429,7 +487,7 @@ do {
 // a = 1;
 ```
 
-### 选择语句
+#### 选择语句
 
 ```cpp
 // if
@@ -471,7 +529,7 @@ switch (a) {
 // a = 4
 ```
 
-### 跳转语句
+#### 跳转语句
 
 ```cpp
 // continue
