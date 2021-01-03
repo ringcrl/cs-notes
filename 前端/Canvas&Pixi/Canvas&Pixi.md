@@ -4,15 +4,15 @@
 
 ```js
 function getEventPosition(ev) {
-  let x, y
+  let x, y;
   if (ev.layerX || ev.layerX == 0) {
-    x = ev.layerX
-    y = ev.layerY
+    x = ev.layerX;
+    y = ev.layerY;
   } else if (ev.offsetX || ev.offsetX == 0) {
-    x = ev.offsetX
-    y = ev.offsetY
+    x = ev.offsetX;
+    y = ev.offsetY;
   }
-  return { x: x, y: y }
+  return { x: x, y: y };
 }
 ```
 
@@ -26,23 +26,23 @@ ctx = canvas.getContext('2d');
 ctx.beginPath();
 ctx.rect(10, 10, 100, 100);
 ctx.stroke();
-ctx.isPointInPath(20, 20);     //true
+ctx.isPointInPath(20, 20); //true
 ctx.beginPath();
 ctx.rect(110, 110, 100, 100);
 ctx.stroke();
-ctx.isPointInPath(150, 150);     //true
-ctx.isPointInPath(20, 20);     //false
+ctx.isPointInPath(150, 150); //true
+ctx.isPointInPath(20, 20); //false
 ```
 
 ## 加载图片
 
 ```js
-ctx.clearRect(0, 0, canvas.width, canvas.height)
-const image = new Image()
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+const image = new Image();
 image.onload = () => {
-  ctx.drawImage(image, left, top, width, height)
-}
-image.src = src
+  ctx.drawImage(image, left, top, width, height);
+};
+image.src = src;
 ```
 
 ## 计算文字宽度长度
@@ -72,12 +72,12 @@ function measureText(fontSize, fontFamily, fontWeight, text) {
 
 ```js
 function getCanvasFinger() {
-  const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')
-  ctx.font = '18pt Arial'
-  ctx.textBaseline = 'top'
-  ctx.fillText('canvas-fingerprint', 2, 2)
-  return canvas.toDataURL('image/jpeg')
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.font = '18pt Arial';
+  ctx.textBaseline = 'top';
+  ctx.fillText('canvas-fingerprint', 2, 2);
+  return canvas.toDataURL('image/jpeg');
 }
 ```
 
@@ -85,25 +85,41 @@ function getCanvasFinger() {
 
 ## Renderer
 
-antialias：默认 false，反锯齿
+```ts
+// 创建 renderer
+const renderer = PIXI.autoDetectRenderer({
+  width: 256,
+  height: 256,
+  antialias: false, // antialias：默认 false，反锯齿
+  transparent: false, // transparent：默认 false，背景透明
+  preserveDrawingBuffer: true, // 默认 false，需要 HTMLCanvasElement.toDataURL() 保存图片的时候，使用默认预设会没有画面
+  resolution: 1,
+});
 
-preserveDrawingBuffer：默认 false，需要 HTMLCanvasElement.toDataURL() 保存图片的时候，使用默认预设会没有画面
+const canvas = renderer.view; // canvas 元素
 
-backgroundColor：0x000000~0xffffff，背景颜色
+// https://github.com/kittykatattack/scaleToWindow
+// 使用 scaleToWindow 可以让 canvas 画面最大化
+```
 
-transparent：默认 false，背景透明
+## Stage
 
-## Container
-
-```js
+```ts
+// 创建舞台，渲染舞台
 const container = new PIXI.Container();
+renderer.render(container);
 
-// 属性
-container.rotation = 90 * (Math.PI / 180); // 角度转弧度
+// 改变位置
+container.position.x = 0; // 默认左上角 0，0 位置
 
-container.position.x = 0 // 默认左上角 0，0 位置
+// 改变中心点
+container.anchor.set(0.5, 0.5); // 50%、50%
+container.pivot.set(32, 32); // 32px、32px
 
-container.pivot = 1 // 改变 piviot，子 container 的显示位置会改变
+// 角度弧度转换
+container.rotation = 0.5;
+radians = degrees * (Math.PI / 180); // 角度转弧度
+degrees = radians * (180 / Math.PI); // 弧度转角度
 
 // 方法
 container.addChild(child); // 插入子 container
@@ -115,17 +131,27 @@ container.getChildIndex(child); // 根据子 container 获取层级
 container.setChildIndex(child, index); // 设置 container 层级
 ```
 
+## Sprite
+
+```js
+// 加载图片，创建精灵
+PIXI.Loader.shared.add('image.png').load(setup);
+function setup() {
+  const sprite = new PIXI.Sprite(PIXI.Loader.shared.resources['image.png'].texture);
+}
+```
+
 ### 设置互动
 
 ```js
-const bunny = PIXI.Sprite.fromImage('assets/basics/bunny.png')
-app.stage.addChild(bunny)
+const bunny = PIXI.Sprite.fromImage('assets/basics/bunny.png');
+app.stage.addChild(bunny);
 
-bunny.interactive = true // 设置可以互动
-bunny.buttonMode = true // 鼠标滑过的时候显示手指
+bunny.interactive = true; // 设置可以互动
+bunny.buttonMode = true; // 鼠标滑过的时候显示手指
 bunny.click = function () {
-  alert('click bunny')
-}
+  alert('click bunny');
+};
 ```
 
 ## Graphics
@@ -136,13 +162,13 @@ PIXI.Graphics 继承自 PixiJS.Container
 const testGraphics = new PIXI.Graphics();
 
 // 方法
-testGraphics.moveTo() // 设置起点
-testGraphics.lineTo() // 画线
-testGraphics.beginFill() // 设置填满的颜色与透明度
-testGraphics.endFill() // 取消颜色填充
-testGraphics.lineStyle() // 设置线段宽度、颜色、透明度
-testGraphics.clear() // 会清除掉 graphicsData，但不会影响本身的 children
-testGraphics.clone() // 会复制 graphicsData，但不会包含本身的 children
+testGraphics.moveTo(); // 设置起点
+testGraphics.lineTo(); // 画线
+testGraphics.beginFill(); // 设置填满的颜色与透明度
+testGraphics.endFill(); // 取消颜色填充
+testGraphics.lineStyle(); // 设置线段宽度、颜色、透明度
+testGraphics.clear(); // 会清除掉 graphicsData，但不会影响本身的 children
+testGraphics.clone(); // 会复制 graphicsData，但不会包含本身的 children
 
 // 画两个方块
 testGraphics.beginFill(0xff0000);
@@ -155,12 +181,12 @@ testGraphics.endFill();
 console.log(testGraphics.graphicsData); // [t, t]
 
 // 预置形状
-testGraphics.drawCircle()
-testGraphics.drawEllipse()
-testGraphics.drawPolygon()
-testGraphics.drawRect()
-testGraphics.drawRoundedRect()
-testGraphics.drawShape()
+testGraphics.drawCircle();
+testGraphics.drawEllipse();
+testGraphics.drawPolygon();
+testGraphics.drawRect();
+testGraphics.drawRoundedRect();
+testGraphics.drawShape();
 ```
 
 ## Ticker
@@ -169,13 +195,12 @@ testGraphics.drawShape()
 const ticker = PIXI.Ticker.shared;
 
 // 属性
-ticker.started = false // ticker 是否开启
+ticker.started = false; // ticker 是否开启
 ticker.speed = 2; // 大约 120 FPS
 
 // 方法
-ticker.add()
-ticker.addOnce()
-ticker.start()
-ticker.stop()
+ticker.add();
+ticker.addOnce();
+ticker.start();
+ticker.stop();
 ```
-

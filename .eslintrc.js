@@ -27,6 +27,7 @@ module.exports = {
     'no-restricted-syntax': 0,
     'guard-for-in': 0,
     '@typescript-eslint/no-use-before-define': 0,
+    'import/prefer-default-export': 0,
     complexity: [
       'error',
       {
@@ -34,4 +35,4 @@ module.exports = {
       },
     ],
   },
-}
+};

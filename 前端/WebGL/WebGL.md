@@ -1,4 +1,170 @@
-# WebGL 基础
+# 数学
+
+## 三角函数
+
+https://zh.wikipedia.org/wiki/%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0
+
+## 向量描述点和线
+
+向量 v 有两个含义
+
+- 可以表示该坐标系下位于 (x, y) 处的一个点
+- 可以表示从原点 (0,0) 到坐标 (x,y) 的一根线段
+
+```js
+export class Vector2D extends Array {
+  constructor(x = 1, y = 0) {
+    super(x, y);
+  }
+
+  set x(v) {
+    this[0] = v;
+  }
+
+  set y(v) {
+    this[1] = v;
+  }
+
+  get x() {
+    return this[0];
+  }
+
+  get y() {
+    return this[1];
+  }
+
+  get length() {
+    return Math.hypot(this.x, this.y);
+  }
+
+  get dir() {
+    return Math.atan2(this.y, this.x);
+  }
+
+  copy() {
+    return new Vector2D(this.x, this.y);
+  }
+
+  add(v) {
+    this.x += v.x;
+    this.y += v.y;
+    return this;
+  }
+
+  sub(v) {
+    this.x -= v.x;
+    this.y -= v.y;
+    return this;
+  }
+
+  scale(a) {
+    this.x *= a;
+    this.y *= a;
+    return this;
+  }
+
+  cross(v) {
+    return this.x * v.y - v.x * this.y;
+  }
+
+  dot(v) {
+    return this.x * v.x + v.y * this.y;
+  }
+
+  normalize() {
+    return this.scale(1 / this.length);
+  }
+
+  rotate(rad) {
+    const c = Math.cos(rad);
+    const s = Math.sin(rad);
+    const [x, y] = this;
+
+    this.x = x * c + y * -s;
+    this.y = x * s + y * c;
+
+    return this;
+  }
+}
+```
+
+## 向量的乘法
+
+![02.png](./imgs/02.png)
+
+```js
+// 伪代码
+// a · b = a.x * b.x + a.y * b.y;
+// a · b = |a||b|cos(θ)
+
+// a、b 向量平行
+a.x * b.x + a.y * b.y === a.length * b.length;
+
+// a、b 向量垂直
+a.x * b.x + a.y * b.y === 0;
+```
+
+## 仿射变换
+
+CSS 的 transform 就是对元素应用仿射变换，仿射变换具有两个性质：
+
+- 仿射变换前是直线段的，仿射变换后依然是直线段对两条直线段
+- a 和 b 应用同样的仿射变换，变换前后线段长度比例保持不变
+
+### 平移
+
+```js
+export class Vector2D extends Array {
+  // ...
+  add(v) {
+    this.x += v.x;
+    this.y += v.y;
+    return this;
+  }
+}
+```
+
+### 旋转
+
+![03.jpg](./imgs/03.jpg)
+
+![04.jpeg](./imgs/04.jpeg)
+
+rcos⍺、rsin⍺ 是向量 P 原始的坐标 x0、y0，所以，我们可以把坐标代入到上面的公式中，就会得到如下的公式
+
+![05.jpeg](./imgs/05.jpeg)
+
+写成矩阵形式，得到旋转矩阵
+
+![06.jpeg](./imgs/06.jpeg)
+
+```js
+export class Vector2D extends Array {
+  // ...
+  rotate(rad) {
+    const c = Math.cos(rad);
+    const s = Math.sin(rad);
+    const [x, y] = this;
+
+    this.x = x * c + y * -s;
+    this.y = x * s + y * c;
+
+    return this;
+  }
+}
+```
+
+### 缩放
+
+直接让向量与标量（标量只有大小、没有方向）相乘
+
+![07.jpeg](./imgs/07.jpeg)
+
+也可以把它写成矩阵形式
+
+![08.jpg](./imgs/08.jpg)
+
+# WebGL
 
 ## 顶点着色器、片元着色器
 
@@ -48,11 +214,37 @@ const fragment = `
 
 ## 坐标系
 
-x向右、y向上、z向屏幕外
+x 向右、y 向上、z 向屏幕外
 
 ## 绘制流程
 
 ![01.jpg](imgs/01.jpg)
+
+## 创建三角型
+
+```js
+const position = new Float32Array([-1, -1, 0, 1, 1, -1]);
+const bufferId = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+gl.bufferData(gl.ARRAY_BUFFER, position, gl.STATIC_DRAW);
+
+const vPosition = gl.getAttribLocation(program, 'position');
+gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(vPosition);
+```
+
+## attribute
+
+attribute 变量是对应于顶点的。也就是说，几何图形有几个顶点就要提供几份 attribute 数据。并且，attribute 变量只能在顶点着色器中使用，如果要在片元着色器中使用，需要我们通过 varying 变量将它传给片元着色器才行
+
+## uniform
+
+- uniform 变量既可以在顶点着色器中使用，也可以在片元着色器中使用
+- 在 WebGL 中，我们可以通过 gl.uniformXXX(loc, u_color); 的方法将数据传给 shader 的 uniform 变量
+  - `gl.uniform1f` 传入一个浮点数，对应的 uniform 变量的类型为 float
+  - `gl.uniform4f` 传入四个浮点数，对应的 uniform 变量类型为 `float[4]`
+  - `gl.uniform3fv` 传入一个三维向量，对应的 uniform 变量类型为 vec3
+  - `gl.uniformMatrix4fv` 传入一个 4x4 的矩阵，对应的 uniform 变量类型为 mat4
 
 # GLSL
 
@@ -140,7 +332,7 @@ void age(); // Error! 冲突
 - `++` `--`：自增、自减
 - `+` `-` `~` `!` ：一元运算
 - `*` `%` `/`：乘、取余、除
-- `+` `-`：	加、减
+- `+` `-`： 加、减
 - `<` `>` `<=` `>=` `==` `!=`：关系运算
 - `&&` `^^` `||`：逻辑与、逻辑异或、逻辑同或
 - `?:`：三目运算
@@ -208,14 +400,14 @@ uniform vec4 color; // vec4(0.0, 0.1, 0.0, 1.0)
 // 表示复制进函数体内的参数（值传递，不影响原来的值）
 void doo(in float param) { ... } // 和普通不加限定词的参数一样
 
-// out 
+// out
 // 表示函数向外复制的参数，必须是之前未被初始化的变量（引用传递，会影响原来的值）
 void foo(out int param) {
     param = 666;
 }
 int a; // 声明了但是没有初始化
 foo(a); // a = 666
- 
+
 // inout
 // 表示参数将在函数内外保持一致（引用传递，会影响原来的值）
 void goo(inout int param) {
@@ -374,7 +566,7 @@ vec4 hello = vec4(coord.zyx, 0.0); // vec4(0.3, 0.2, 0.1, 0.0)
 
 矩阵最多能够支持 4 列 4 行的数据，最少 2 行 2 列，且其元素只能够为 float 类型
 
-- `matn` 表示  n 列 n 行的浮点型矩阵，例如 `mat2`、`mat3`、`mat4`
+- `matn` 表示 n 列 n 行的浮点型矩阵，例如 `mat2`、`mat3`、`mat4`
 - `matmxn` 表示 m 列 n 行的浮点型矩阵，例如 `mat2x3`、`mat4x3`
 
 ```cpp
@@ -582,7 +774,6 @@ void main() {
         // 不透明度小于 0.1 时丢弃当前片元
         // 不执行后面的语句
     }
-    gl_FragColor = v_FragColor; 
+    gl_FragColor = v_FragColor;
 }
 ```
-
