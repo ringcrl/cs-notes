@@ -116,6 +116,7 @@ make
 # 安装
 make install
 ```
+
 ## firewalld 防火墙
 
 ```sh
@@ -187,6 +188,29 @@ sqlite3 books.db
 > SELECT * FROM books;
 ```
 
+## 安装字体
+
+```sh
+# 安装依赖
+yum install -y fontconfig mkfontscale
+
+# 查看系统字体
+fc-list
+
+# 查看系统中文字体
+fc-list :lang=zh
+
+# 下载字体：https://www.fonts.net.cn/fonts-zh/tag-heiti-1.html
+
+# 放入字体
+cd /usr/share/fonts/
+
+# 建立索引，更新字体缓存
+mkfontscale
+mkfontdir
+fc-cache
+```
+
 # Mac
 
 ## 轻点确认设置
@@ -195,7 +219,7 @@ sqlite3 books.db
 
 ## 将 F1、F2 作标准键
 
-系统偏好设置 => 键盘 => 将F1、F2等键作标准功能键
+系统偏好设置 => 键盘 => 将 F1、F2 等键作标准功能键
 
 ## 全键盘控制
 
@@ -488,16 +512,16 @@ curl -I https://www.chenng.cn
 ls | grep '^doc'
 
 # $ 以 js 结尾
-ls | grep 'js$' 
+ls | grep 'js$'
 
 # . 匹配一个非换行符的字符
-ls | grep 'REA.ME' 
+ls | grep 'REA.ME'
 
 # .* 匹配任意字符
 ls | grep '.*'
 
 # [vd] 匹配 vue 或 due
-ls | grep '[vd]ue' 
+ls | grep '[vd]ue'
 
 # [^d] 匹配除了 due 外所有的 .ue
 ls | grep '[^d]ue'
@@ -512,20 +536,20 @@ ls -a | grep 'l\{2\}'
 ls | grep '^[^x]'
 
 # 包含 cron 或 syslog 的进程
-ps -ef | grep '(cron|syslog)' 
+ps -ef | grep '(cron|syslog)'
 
 # -E 使用扩展正则表达式，-o 只输出匹配的文本
 echo this is a line. | grep -E -o "[a-z]+\."
 
 # -v 反转匹配结果
-ls | grep -v 'README.md' 
+ls | grep -v 'README.md'
 ```
 
 ## sed 字符串操作
 
 ![](./imgs/01.png)
 
-- 1、5部分可以省略
+- 1、5 部分可以省略
 - 界定符 / 可以换成任意符如 : |
 - flat：g 全文替换、p 当使用了 -n，p 将仅输出匹配行内容、i 忽略大小写
 
@@ -624,7 +648,6 @@ userdel -r jzmb(会删除个人文件夹文件)
 passwd chenng
 ```
 
-
 ## chmod 文件与权限
 
 属主权限-属组权限-其他用户权限
@@ -672,7 +695,7 @@ systemctl disable crond
 systemctl status crond
 
 # 启动某个服务
-systemctl start crond 
+systemctl start crond
 
 # 停止某个服务
 systemctl stop crond
@@ -681,12 +704,11 @@ systemctl stop crond
 systemctl restart crond
 
 # 重新加载服务配置文件
-systemctl reload * 
+systemctl reload *
 
 # 查询服务是否开机启动
 systemctl is-enabled crond
 ```
-
 
 ## rm 删除文件
 
@@ -918,7 +940,7 @@ name="chenng"
 
 # 最好加 {}，直接写 $name 嵌入字符串会出问题
 echo $name
-echo ${name} 
+echo ${name}
 
 # 删除变量
 unset name
@@ -1282,7 +1304,7 @@ fi
 if [ -x $filepath ]
 then
    # pass
-else 
+else
    echo "文件不可执行"
 fi
 
@@ -1326,7 +1348,7 @@ cd ../
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
 if [ "$branch" = "master" ]; then
-    echo "不允许直接提交代码到 master。" 
+    echo "不允许直接提交代码到 master。"
     exit 1
 fi
 
