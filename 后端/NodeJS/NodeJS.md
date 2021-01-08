@@ -4,7 +4,7 @@
 
 这篇文章主要知识点来自：
 
-- [《Node.js硬实战：115个核心技巧》](https://www.amazon.cn/dp/B01MYX8XG1)
+- [《Node.js 硬实战：115 个核心技巧》](https://www.amazon.cn/dp/B01MYX8XG1)
 - [i0natan/nodebestpractices](https://github.com/i0natan/nodebestpractices)
 - 后续学习的一些知识点
 
@@ -93,11 +93,11 @@ sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*
 
 ```js
 // module-2.js
-exports.method = function() {
+exports.method = function () {
   return 'Hello';
 };
 
-exports.method2 = function() {
+exports.method2 = function () {
   return 'Hello again';
 };
 
@@ -116,7 +116,7 @@ console.log('__filename:', __filename); // 文件
 path.join(__dirname, 'views', 'view.html'); // 如果不希望自己手动处理 / 的问题，使用 path.join
 
 // HOME 目录
-const homeDir =  require('os').homedir();
+const homeDir = require('os').homedir();
 ```
 
 ## console
@@ -133,13 +133,13 @@ const homeDir =  require('os').homedir();
 
 ```js
 // PORT=3000 node 01-server.js
-process.env.PORT === 3000
+process.env.PORT === 3000;
 ```
 
 ### 查看 PATH
 
 ```js
-node
+node;
 
 console.log(process.env.PATH.split(':').join('\n'));
 ```
@@ -154,14 +154,14 @@ process.env.PATH += ':/a_new_path_to_executables';
 
 ```js
 // 获取平台信息
-process.arch // x64
-process.platform // darwin
+process.arch; // x64
+process.platform; // darwin
 
 // 获取内存使用情况
 process.memoryUsage();
 
 // 获取命令行参数
-process.argv
+process.argv;
 ```
 
 ### nextTick
@@ -230,7 +230,7 @@ const AudioDevice = {
 class MusicPlayer extends EventEmitter {
   constructor() {
     super();
-    this.playing = false; 
+    this.playing = false;
   }
 }
 
@@ -270,7 +270,7 @@ async function init() {
   try {
     let data = await readAsync('./package.json');
 
-    data  =JSON.parse(data);
+    data = JSON.parse(data);
 
     console.log(data.name);
   } catch (err) {
@@ -316,17 +316,19 @@ async function init() {
 const http = require('http');
 const fs = require('fs');
 
-http.createServer((req, res) => {
-  fs.readFile(`${__dirname}/index.html`, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.end(String(err));
-      return;
-    }
+http
+  .createServer((req, res) => {
+    fs.readFile(`${__dirname}/index.html`, (err, data) => {
+      if (err) {
+        res.statusCode = 500;
+        res.end(String(err));
+        return;
+      }
 
-    res.end(data);
-  });
-}).listen(8000);
+      res.end(data);
+    });
+  })
+  .listen(8000);
 ```
 
 #### 使用流
@@ -335,9 +337,11 @@ http.createServer((req, res) => {
 const http = require('http');
 const fs = require('fs');
 
-http.createServer((req, res) => {
-  fs.createReadStream(`${__dirname}/index.html`).pipe(res);
-}).listen(8000);
+http
+  .createServer((req, res) => {
+    fs.createReadStream(`${__dirname}/index.html`).pipe(res);
+  })
+  .listen(8000);
 ```
 
 - 更少代码，更加高效
@@ -350,14 +354,14 @@ const http = require('http');
 const fs = require('fs');
 const zlib = require('zlib');
 
-http.createServer((req, res) => {
-  res.writeHead(200, {
-    'content-encoding': 'gzip',
-  });
-  fs.createReadStream(`${__dirname}/index.html`)
-    .pipe(zlib.createGzip())
-    .pipe(res);
-}).listen(8000);
+http
+  .createServer((req, res) => {
+    res.writeHead(200, {
+      'content-encoding': 'gzip',
+    });
+    fs.createReadStream(`${__dirname}/index.html`).pipe(zlib.createGzip()).pipe(res);
+  })
+  .listen(8000);
 ```
 
 ### 流的错误处理
@@ -509,8 +513,7 @@ const CSVParser = require('./csvparser');
 const parser = new CSVParser();
 const actual = [];
 
-fs.createReadStream(`${__dirname}/sample.csv`)
-  .pipe(parser);
+fs.createReadStream(`${__dirname}/sample.csv`).pipe(parser);
 
 process.on('exit', function () {
   actual.push(parser.read());
@@ -637,11 +640,11 @@ console.log(typeof fd === 'number'); // true
 
 - 强制锁（在内核级别执行）
 - 咨询锁（非强制，只在涉及到进程订阅了相同的锁机制）
-    - `node-fs-ext` 通过 `flock` 锁住一个文件
+  - `node-fs-ext` 通过 `flock` 锁住一个文件
 - 使用锁文件
-    - 进程 A 尝试创建一个锁文件，并且成功了
-    - 进程 A 已经获得了这个锁，可以修改共享的资源
-    - 进程 B 尝试创建一个锁文件，但失败了，无法修改共享的资源
+  - 进程 A 尝试创建一个锁文件，并且成功了
+  - 进程 A 已经获得了这个锁，可以修改共享的资源
+  - 进程 B 尝试创建一个锁文件，但失败了，无法修改共享的资源
 
 Node 实现锁文件
 
@@ -654,19 +657,18 @@ Node 实现锁文件
 // 所有需要打开文件的方法，fs.writeFile、fs.createWriteStream、fs.open 都有一个 x 标记
 // 这个文件应该已独占打开，若这个文件存在，文件不能被打开
 fs.open('config.lock', 'wx', (err) => {
-  if (err) { return console.err(err); }
+  if (err) {
+    return console.err(err);
+  }
 });
 
 // 最好将当前进程号写进文件锁中
 // 当有异常的时候就知道最后这个锁的进程
-fs.writeFile(
-  'config.lock',
-  process.pid,
-  { flogs: 'wx' },
-  (err) => {
-    if (err) { return console.error(err) };
-  },
-);
+fs.writeFile('config.lock', process.pid, { flogs: 'wx' }, (err) => {
+  if (err) {
+    return console.error(err);
+  }
+});
 ```
 
 ### mkdir 文件锁
@@ -675,9 +677,13 @@ fs.writeFile(
 
 ```js
 fs.mkidr('config.lock', (err) => {
-  if (err) { return console.error(err); }
+  if (err) {
+    return console.error(err);
+  }
   fs.writeFile(`/config.lock/${process.pid}`, (err) => {
-    if (err) { return console.error(err); }
+    if (err) {
+      return console.error(err);
+    }
   });
 });
 ```
@@ -691,23 +697,36 @@ const fs = require('fs');
 const lockDir = 'config.lock';
 let hasLock = false;
 
-exports.lock = function (cb) { // 获取锁
-  if (hasLock) { return cb(); } // 已经获取了一个锁
+exports.lock = function (cb) {
+  // 获取锁
+  if (hasLock) {
+    return cb();
+  } // 已经获取了一个锁
   fs.mkdir(lockDir, function (err) {
-    if (err) { return cb(err); } // 无法创建锁
+    if (err) {
+      return cb(err);
+    } // 无法创建锁
 
-    fs.writeFile(lockDir + '/' + process.pid, function (err) { // 把 PID写入到目录中以便调试
-      if (err) { console.error(err); } // 无法写入 PID，继续运行
+    fs.writeFile(lockDir + '/' + process.pid, function (err) {
+      // 把 PID写入到目录中以便调试
+      if (err) {
+        console.error(err);
+      } // 无法写入 PID，继续运行
       hasLock = true; // 锁创建了
       return cb();
     });
   });
 };
 
-exports.unlock = function (cb) { // 解锁方法
-  if (!hasLock) { return cb(); } // 如果没有需要解开的锁
+exports.unlock = function (cb) {
+  // 解锁方法
+  if (!hasLock) {
+    return cb();
+  } // 如果没有需要解开的锁
   fs.unlink(lockDir + '/' + process.pid, function (err) {
-    if (err) { return cb(err); }
+    if (err) {
+      return cb(err);
+    }
 
     fs.rmdir(lockDir, function (err) {
       if (err) return cb(err);
@@ -755,7 +774,7 @@ dir-a
   'dir-a/dir-b/file-d.txt',
   'dir-a/file-a.js',
   'dir-a/file-b.txt',
-]
+];
 ```
 
 ```js
@@ -773,7 +792,9 @@ exports.findSync = function (nameRe, startPath) {
       const fpath = join(path, files[i]);
       const stats = fs.statSync(fpath);
 
-      if (stats.isDirectory()) { finder(fpath); }
+      if (stats.isDirectory()) {
+        finder(fpath);
+      }
 
       if (stats.isFile() && nameRe.test(files[i])) {
         results.push(fpath);
@@ -786,21 +807,26 @@ exports.findSync = function (nameRe, startPath) {
 };
 
 // 异步查找
-exports.find = function (nameRe, startPath, cb) { // cb 可以传入 console.log，灵活
+exports.find = function (nameRe, startPath, cb) {
+  // cb 可以传入 console.log，灵活
   const results = [];
   let asyncOps = 0; // 2
 
   function finder(path) {
     asyncOps++;
     fs.readdir(path, function (er, files) {
-      if (er) { return cb(er); }
+      if (er) {
+        return cb(er);
+      }
 
       files.forEach(function (file) {
         const fpath = join(path, file);
 
         asyncOps++;
         fs.stat(fpath, function (er, stats) {
-          if (er) { return cb(er); }
+          if (er) {
+            return cb(er);
+          }
 
           if (stats.isDirectory()) finder(fpath);
 
@@ -891,7 +917,7 @@ const readline = require('readline');
 
 const rl = readline.createInterface({
   input: fs.createReadStream('/etc/hosts'),
-  crlfDelay: Infinity
+  crlfDelay: Infinity,
 });
 
 rl.on('line', (line) => {
@@ -1001,9 +1027,8 @@ function Client(remoteIP) {
 
     // 发送数据到服务器
     socket.send(message, 0, message.length, port, remoteIP, function () {
-        sendData();
-      }
-    );
+      sendData();
+    });
   }
 }
 
@@ -1021,7 +1046,8 @@ function Server() {
   socket.bind(port);
 }
 
-if (process.argv[2] === 'client') { // 根据命令行选项确定运行客户端还是服务端
+if (process.argv[2] === 'client') {
+  // 根据命令行选项确定运行客户端还是服务端
   new Client(process.argv[3]);
 } else {
   new Server();
@@ -1038,19 +1064,21 @@ if (process.argv[2] === 'client') { // 根据命令行选项确定运行客户�
 const assert = require('assert');
 const http = require('http');
 
-const server = http.createServer(function(req, res) {
+const server = http.createServer(function (req, res) {
   res.writeHead(200, { 'Content-Type': 'text/plain' }); // 写入基于文本的响应头
   res.write('Hello, world.'); // 发送消息回客户端
   res.end();
 });
 
-server.listen(8000, function() {
+server.listen(8000, function () {
   console.log('Listening on port 8000');
 });
 
-const req = http.request({ port: 8000}, function(res) { // 创建请求
+const req = http.request({ port: 8000 }, function (res) {
+  // 创建请求
   console.log('HTTP headers:', res.headers);
-  res.on('data', function(data) { // 给 data 事件创建监听，确保和期望值一致
+  res.on('data', function (data) {
+    // 给 data 事件创建监听，确保和期望值一致
     console.log('Body:', data.toString());
     assert.equal('Hello, world.', data.toString());
     assert.equal(200, res.statusCode);
@@ -1085,7 +1113,7 @@ function Request() {
   this.redirects = 0;
 }
 
-Request.prototype.get = function(href, callback) {
+Request.prototype.get = function (href, callback) {
   const uri = url.parse(href); // 解析 URLs 成为 Node http 模块使用的格式，确定是否使用 HTTPS
   const options = { host: uri.host, path: uri.path };
   const httpGet = uri.protocol === 'http:' ? http.get : https.get;
@@ -1093,7 +1121,8 @@ Request.prototype.get = function(href, callback) {
   console.log('GET:', href);
 
   function processResponse(response) {
-    if (response.statusCode >= 300 && response.statusCode < 400) { // 检查状态码是否在 HTTP 重定向范围
+    if (response.statusCode >= 300 && response.statusCode < 400) {
+      // 检查状态码是否在 HTTP 重定向范围
       if (this.redirects >= this.maxRedirects) {
         this.error = new Error('Too many redirects for: ' + href);
       } else {
@@ -1113,21 +1142,20 @@ Request.prototype.get = function(href, callback) {
       callback(this.error, response);
     }
 
-    response.on('data', function(data) {
+    response.on('data', function (data) {
       console.log('Got data, length:', data.length);
     });
 
     response.on('end', end.bind(this)); // 绑定回调到 Request 实例，确保能拿到实例属性
   }
 
-  httpGet(options, processResponse.bind(this))
-    .on('error', function(err) {
-      callback(err);
-    });
+  httpGet(options, processResponse.bind(this)).on('error', function (err) {
+    callback(err);
+  });
 };
 
 const request = new Request();
-request.get('http://google.com/', function(err, res) {
+request.get('http://google.com/', function (err, res) {
   if (err) {
     console.error(err);
   } else {
@@ -1149,35 +1177,42 @@ request.get('http://google.com/', function(err, res) {
 const http = require('http');
 const url = require('url');
 
-http.createServer(function(req, res) {
-  console.log('start request:', req.url);
-  const options = url.parse(req.url);
-  console.log(options);
-  options.headers = req.headers;
-  const proxyRequest = http.request(options, function(proxyResponse) { // 创建请求来复制原始的请求
-    proxyResponse.on('data', function(chunk) { // 监听数据，返回给浏览器
-      console.log('proxyResponse length:', chunk.length);
-      res.write(chunk, 'binary');
+http
+  .createServer(function (req, res) {
+    console.log('start request:', req.url);
+    const options = url.parse(req.url);
+    console.log(options);
+    options.headers = req.headers;
+    const proxyRequest = http.request(options, function (proxyResponse) {
+      // 创建请求来复制原始的请求
+      proxyResponse.on('data', function (chunk) {
+        // 监听数据，返回给浏览器
+        console.log('proxyResponse length:', chunk.length);
+        res.write(chunk, 'binary');
+      });
+
+      proxyResponse.on('end', function () {
+        // 追踪代理请求完成
+        console.log('proxied request ended');
+        res.end();
+      });
+
+      res.writeHead(proxyResponse.statusCode, proxyResponse.headers); // 发送头部信息给服务器
     });
 
-    proxyResponse.on('end', function() { // 追踪代理请求完成
-      console.log('proxied request ended');
-      res.end();
+    req.on('data', function (chunk) {
+      // 捕获从浏览器发送到服务器的数据
+      console.log('in request length:', chunk.length);
+      proxyRequest.write(chunk, 'binary');
     });
 
-    res.writeHead(proxyResponse.statusCode, proxyResponse.headers); // 发送头部信息给服务器
-  });
-
-  req.on('data', function(chunk) { // 捕获从浏览器发送到服务器的数据
-    console.log('in request length:', chunk.length);
-    proxyRequest.write(chunk, 'binary');
-  });
-
-  req.on('end', function() { // 追踪原始的请求什么时候结束
-    console.log('original request ended');
-    proxyRequest.end();
-  });
-}).listen(8888); // 监听来自本地浏览器的连接
+    req.on('end', function () {
+      // 追踪原始的请求什么时候结束
+      console.log('original request ended');
+      proxyRequest.end();
+    });
+  })
+  .listen(8888); // 监听来自本地浏览器的连接
 ```
 
 ### 封装 request-promise
@@ -1188,10 +1223,12 @@ const promisify = require('util').promisify;
 
 https.get[promisify.custom] = function getAsync(options) {
   return new Promise((resolve, reject) => {
-    https.get(options, (response) => {
-      response.end = new Promise((resolve) => response.on('end', resolve));
-      resolve(response);
-    }).on('error', reject);
+    https
+      .get(options, (response) => {
+        response.end = new Promise((resolve) => response.on('end', resolve));
+        resolve(response);
+      })
+      .on('error', reject);
   });
 };
 const rp = promisify(https.get);
@@ -1199,7 +1236,7 @@ const rp = promisify(https.get);
 (async () => {
   const res = await rp('https://jsonmock.hackerrank.com/api/movies/search/?Title=Spiderman&page=1');
   let body = '';
-  res.on('data', (chunk) => body += chunk);
+  res.on('data', (chunk) => (body += chunk));
   await res.end;
 
   console.log(body);
@@ -1231,39 +1268,39 @@ dns.resolve('www.chenng.cn', function (err, addresses) {
 ## crypto 库加密解密
 
 ```js
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 function aesEncrypt(data, key = 'key') {
-  const cipher = crypto.createCipher('aes192', key)
-  let crypted = cipher.update(data, 'utf8', 'hex')
-  crypted += cipher.final('hex')
-  return crypted
+  const cipher = crypto.createCipher('aes192', key);
+  let crypted = cipher.update(data, 'utf8', 'hex');
+  crypted += cipher.final('hex');
+  return crypted;
 }
 
 function aesDecrypt(encrypted, key = 'key') {
-  const decipher = crypto.createDecipher('aes192', key)
-  let decrypted = decipher.update(encrypted, 'hex', 'utf8')
-  decrypted += decipher.final('utf8')
-  return decrypted
+  const decipher = crypto.createDecipher('aes192', key);
+  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
 }
 ```
 
 ## 发起 HTTP 请求的方法
 
 - HTTP 标准库
-    - 无需安装外部依赖
-    - 需要以块为单位接受数据，自己监听 end 事件
-    - HTTP 和 HTTPS 是两个模块，需要区分使用
+  - 无需安装外部依赖
+  - 需要以块为单位接受数据，自己监听 end 事件
+  - HTTP 和 HTTPS 是两个模块，需要区分使用
 - Request 库
-    - 使用方便
-    - 有 promise 版本 `request-promise`
+  - 使用方便
+  - 有 promise 版本 `request-promise`
 - Axios
-    - 既可以用在浏览器又可以用在 NodeJS
-    - 可以使用 axios.all 并发多个请求
+  - 既可以用在浏览器又可以用在 NodeJS
+  - 可以使用 axios.all 并发多个请求
 - SuperAgent
-    - 可以链式使用
+  - 可以链式使用
 - node-fetch
-    - 浏览器的 fetch 移植过来的
+  - 浏览器的 fetch 移植过来的
 
 # 子进程
 
@@ -1271,14 +1308,14 @@ function aesDecrypt(encrypted, key = 'key') {
 
 ### 基本概念
 
-- 4个异步方法：exec、execFile、fork、spawn
-    - Node
-        - fork：想将一个 Node 进程作为一个独立的进程来运行的时候使用，是的计算处理和文件描述器脱离 Node 主进程
-    - 非 Node
-        - spawn：处理一些会有很多子进程 I/O 时、进程会有大量输出时使用
-        - execFile：只需执行一个外部程序的时候使用，执行速度快，处理用户输入相对安全
-        - exec：想直接访问线程的 shell 命令时使用，一定要注意用户输入
-- 3个同步方法：execSync、execFileSync、spawnSync
+- 4 个异步方法：exec、execFile、fork、spawn
+  - Node
+    - fork：想将一个 Node 进程作为一个独立的进程来运行的时候使用，是的计算处理和文件描述器脱离 Node 主进程
+  - 非 Node
+    - spawn：处理一些会有很多子进程 I/O 时、进程会有大量输出时使用
+    - execFile：只需执行一个外部程序的时候使用，执行速度快，处理用户输入相对安全
+    - exec：想直接访问线程的 shell 命令时使用，一定要注意用户输入
+- 3 个同步方法：execSync、execFileSync、spawnSync
 - 通过 API 创建出来的子进程和父进程没有任何必然联系
 
 ### execFile
@@ -1289,7 +1326,9 @@ function aesDecrypt(encrypted, key = 'key') {
 const cp = require('child_process');
 
 cp.execFile('echo', ['hello', 'world'], (err, stdout, stderr) => {
-  if (err) { console.error(err); }
+  if (err) {
+    console.error(err);
+  }
   console.log('stdout: ', stdout);
   console.log('stderr: ', stderr);
 });
@@ -1357,7 +1396,7 @@ const child = cp.fork('./child', { silent: true });
 child.send('monkeys');
 child.on('message', function (message) {
   console.log('got message from child', message, typeof message);
-})
+});
 child.stdout.pipe(process.stdout);
 
 setTimeout(function () {
@@ -1400,7 +1439,9 @@ children.push(spawn('/bin/sleep', ['10']));
 children.push(spawn('/bin/sleep', ['10']));
 children.push(spawn('/bin/sleep', ['10']));
 
-setTimeout(function () { process.exit(0); }, 3000);
+setTimeout(function () {
+  process.exit(0);
+}, 3000);
 ```
 
 ## Cluster 的理解
@@ -1421,10 +1462,10 @@ setTimeout(function () { process.exit(0); }, 3000);
 
 - Node 进程占用了 7 个线程
 - Node 中最核心的是 v8 引擎，在 Node 启动后，会创建 v8 的实例，这个实例是多线程的
-    - 主线程：编译、执行代码
-    - 编译/优化线程：在主线程执行的时候，可以优化代码
-    - 分析器线程：记录分析代码运行时间，为 Crankshaft 优化代码执行提供依据
-    - 垃圾回收的几个线程
+  - 主线程：编译、执行代码
+  - 编译/优化线程：在主线程执行的时候，可以优化代码
+  - 分析器线程：记录分析代码运行时间，为 Crankshaft 优化代码执行提供依据
+  - 垃圾回收的几个线程
 - JavaScript 的执行是单线程的，但 Javascript 的宿主环境，无论是 Node 还是浏览器都是多线程的
 
 ## 异步 IO
@@ -1433,7 +1474,7 @@ setTimeout(function () { process.exit(0); }, 3000);
 - 线程池默认大小为 4，可以手动更改线程池默认大小
 
 ```js
-process.env.UV_THREADPOOL_SIZE = 64
+process.env.UV_THREADPOOL_SIZE = 64;
 ```
 
 ## cluster 多进程
@@ -1455,10 +1496,12 @@ if (cluster.isMaster) {
 } else {
   // 工作进程可以共享任何 TCP 连接。
   // 在本例子中，共享的是 HTTP 服务器。
-  http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('Hello World');
-  }).listen(8000);
+  http
+    .createServer((req, res) => {
+      res.writeHead(200);
+      res.end('Hello World');
+    })
+    .listen(8000);
   console.log(`工作进程 ${process.pid} 已启动`);
 }
 ```
@@ -1471,13 +1514,13 @@ if (cluster.isMaster) {
 
 - Node 10.5.0 的发布，给出了一个实验性质的模块 worker_threads 给 Node 提供真正的多线程能力
 - worker_thread 模块中有 4 个对象和 2 个类
-    - isMainThread: 是否是主线程，源码中是通过 threadId === 0 进行判断的。
-    - MessagePort: 用于线程之间的通信，继承自 EventEmitter。
-    - MessageChannel: 用于创建异步、双向通信的通道实例。
-    - threadId: 线程 ID。
-    - Worker: 用于在主线程中创建子线程。第一个参数为 filename，表示子线程执行的入口。
-    - parentPort: 在 worker 线程里是表示父进程的 MessagePort 类型的对象，在主线程里为 null
-    - workerData: 用于在主进程中向子进程传递数据（data 副本）
+  - isMainThread: 是否是主线程，源码中是通过 threadId === 0 进行判断的。
+  - MessagePort: 用于线程之间的通信，继承自 EventEmitter。
+  - MessageChannel: 用于创建异步、双向通信的通道实例。
+  - threadId: 线程 ID。
+  - Worker: 用于在主线程中创建子线程。第一个参数为 filename，表示子线程执行的入口。
+  - parentPort: 在 worker 线程里是表示父进程的 MessagePort 类型的对象，在主线程里为 null
+  - workerData: 用于在主进程中向子进程传递数据（data 副本）
 
 ```js
 const {
@@ -1487,14 +1530,16 @@ const {
   threadId,
   MessageChannel,
   MessagePort,
-  Worker
+  Worker,
 } = require('worker_threads');
 
 function mainThread() {
   for (let i = 0; i < 5; i++) {
     const worker = new Worker(__filename, { workerData: i });
-    worker.on('exit', code => { console.log(`main: worker stopped with exit code ${code}`); });
-    worker.on('message', msg => {
+    worker.on('exit', (code) => {
+      console.log(`main: worker stopped with exit code ${code}`);
+    });
+    worker.on('message', (msg) => {
       console.log(`main: receive ${msg}`);
       worker.postMessage(msg + 1);
     });
@@ -1503,10 +1548,10 @@ function mainThread() {
 
 function workerThread() {
   console.log(`worker: workerDate ${workerData}`);
-  parentPort.on('message', msg => {
+  parentPort.on('message', (msg) => {
     console.log(`worker: receive ${msg}`);
   }),
-  parentPort.postMessage(workerData);
+    parentPort.postMessage(workerData);
 }
 
 if (isMainThread) {
@@ -1520,13 +1565,7 @@ if (isMainThread) {
 
 ```js
 const assert = require('assert');
-const {
-  Worker,
-  MessageChannel,
-  MessagePort,
-  isMainThread,
-  parentPort
-} = require('worker_threads');
+const { Worker, MessageChannel, MessagePort, isMainThread, parentPort } = require('worker_threads');
 if (isMainThread) {
   const worker = new Worker(__filename);
   const subChannel = new MessageChannel();
@@ -1545,7 +1584,7 @@ if (isMainThread) {
 
 ## 多进程 vs 多线程
 
-进程是资源分配的最小单位，线程是CPU调度的最小单位
+进程是资源分配的最小单位，线程是 CPU 调度的最小单位
 
 # 分布式
 
@@ -1600,7 +1639,7 @@ https://github.com/i0natan/nodebestpractices/blob/master/sections/projectstructr
 
 ## 处理未捕获的异常
 
-- 除非开发者记得添加.catch语句，在这些地方抛出的错误都不会被 uncaughtException 事件处理程序来处理，然后消失掉。
+- 除非开发者记得添加.catch 语句，在这些地方抛出的错误都不会被 uncaughtException 事件处理程序来处理，然后消失掉。
 - Node 应用不会奔溃，但可能导致内存泄露
 
 ```js
@@ -1632,11 +1671,11 @@ process.on('unhandledRejection', (reason, p) => {
 const domain = require('domain');
 const audioDomain = domain.create();
 
-audioDomain.on('error', function(err) {
+audioDomain.on('error', function (err) {
   console.log('audioDomain error:', err);
 });
 
-audioDomain.run(function() {
+audioDomain.run(function () {
   const musicPlayer = new MusicPlayer();
   musicPlayer.play();
 });
@@ -1646,16 +1685,16 @@ audioDomain.run(function() {
 
 ```js
 const memberSchema = Joi.object().keys({
- password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
- birthyear: Joi.number().integer().min(1900).max(2013),
- email: Joi.string().email(),
+  password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+  birthyear: Joi.number().integer().min(1900).max(2013),
+  email: Joi.string().email(),
 });
- 
+
 function addNewMember(newMember) {
- //assertions come first
- Joi.assert(newMember, memberSchema); //throws if validation fails
- 
- //other logic here
+  //assertions come first
+  Joi.assert(newMember, memberSchema); //throws if validation fails
+
+  //other logic here
 }
 ```
 
@@ -1671,36 +1710,42 @@ https://github.com/i0natan/nodebestpractices/blob/master/sections/production/sma
 var winston = require('winston');
 var moment = require('moment');
 
-const logger = new (winston.Logger)({
+const logger = new winston.Logger({
   transports: [
-    new (winston.transports.Console)({
-      timestamp: function() {
-        return moment().format('YYYY-MM-DD HH:mm:ss')
+    new winston.transports.Console({
+      timestamp: function () {
+        return moment().format('YYYY-MM-DD HH:mm:ss');
       },
-      formatter: function(params) {
-        let time = params.timestamp() // 时间
-        let message = params.message // 手动信息
-        let meta = params.meta && Object.keys(params.meta).length ? '\n\t'+ JSON.stringify(params.meta) : ''
-        return `${time} ${message}`
+      formatter: function (params) {
+        let time = params.timestamp(); // 时间
+        let message = params.message; // 手动信息
+        let meta =
+          params.meta && Object.keys(params.meta).length
+            ? '\n\t' + JSON.stringify(params.meta)
+            : '';
+        return `${time} ${message}`;
       },
     }),
-    new (winston.transports.File)({
+    new winston.transports.File({
       filename: `${__dirname}/../winston/winston.log`,
       json: false,
-      timestamp: function() {
-        return moment().format('YYYY-MM-DD HH:mm:ss')
+      timestamp: function () {
+        return moment().format('YYYY-MM-DD HH:mm:ss');
       },
-      formatter: function(params) {
-        let time = params.timestamp() // 时间
-        let message = params.message // 手动信息
-        let meta = params.meta && Object.keys(params.meta).length ? '\n\t'+ JSON.stringify(params.meta) : ''
-        return `${time} ${message}`
-      }
-    })
-  ]
-})
+      formatter: function (params) {
+        let time = params.timestamp(); // 时间
+        let message = params.message; // 手动信息
+        let meta =
+          params.meta && Object.keys(params.meta).length
+            ? '\n\t' + JSON.stringify(params.meta)
+            : '';
+        return `${time} ${message}`;
+      },
+    }),
+  ],
+});
 
-module.exports = logger
+module.exports = logger;
 
 // logger.error('error')
 // logger.warm('warm')
@@ -1763,7 +1808,7 @@ https://docs.npmjs.com/cli/audit
 
 ## V8 内存管理与垃圾回收
 
-- V8 的内存分为 New Space 和 Old Space，New Space 的大小默认为 8M，Old Space 的大小默认为 0.7G，64位系统这两个数值翻倍
+- V8 的内存分为 New Space 和 Old Space，New Space 的大小默认为 8M，Old Space 的大小默认为 0.7G，64 位系统这两个数值翻倍
 - 首先进入 New Space，New Space 被平均分为两份，每次 GC 都会将一份中的活着的对象复制到另一份，所以它的空间使用率是 50%，这个算法叫做 Cheney 算法，这个操作叫做 Scavenge
 - 过一段时间，如果 New Space 中的对象还活着，会被挪到 Old Space 中去，GC 会每隔一段时间遍历 Old Space 中死掉的对象，然后整理碎片
 - 如果缓存增加（比如使用对象缓存了很多用户信息），GC 是不知道这些缓存死了还是活着的，他们会不停地查看这个对象，以及这个对象中的子对象是否还存活，如果这个对象数特别大，那么 GC 遍历的时间也会特别长
@@ -1773,7 +1818,20 @@ https://docs.npmjs.com/cli/audit
 
 - 内存暴涨，尤其是 Old Space 内存的暴涨，会直接导致 GC 的次数和时间增长
 - 缓存增加，导致 GC 的时间增加，无用遍历过多
-- 密集型计算，导致 GC Now Space次数增加
+- 密集型计算，导致 GC Now Space 次数增加
+
+## 使用 prof 进行性能分析
+
+```sh
+# 生成 isolate-*.log
+node --prof test.js
+
+# 绑定刻度处理器，查看详情
+node --prof-process isolate-*.log > processed.txt
+
+# 生成火焰图，https://www.speedscope.app/
+node --prof-process --preprocess -j isolate*.log > processed.v8log.json
+```
 
 ## 使用 headdump 堆快照
 
@@ -1821,29 +1879,16 @@ const _ = require('lodash'),
   __ = require('underscore'),
   Suite = require('benchmark').Suite,
   opts = require('./utils');
-  //cf. https://github.com/Berkmann18/NativeVsUtils/blob/master/utils.js
+//cf. https://github.com/Berkmann18/NativeVsUtils/blob/master/utils.js
 
 const concatSuite = new Suite('concat', opts);
 const array = [0, 1, 2];
 
-concatSuite.add('lodash', () => _.concat(array, 3, 4, 5))
+concatSuite
+  .add('lodash', () => _.concat(array, 3, 4, 5))
   .add('underscore', () => __.concat(array, 3, 4, 5))
   .add('native', () => array.concat(3, 4, 5))
-  .run({ 'async': true });
-```
-
-## 使用 prof 进行性能分析
-
-- 使用 tick-processor 工具处理分析
-
-```sh
-node --prof profile-test.js
-```
-
-```sh
-npm install tick -g
-
-node-tick-processor
+  .run({ async: true });
 ```
 
 # 应用安全清单
@@ -1855,27 +1900,27 @@ node-tick-processor
 应用程序应该使用安全的 header 来防止攻击者使用常见的攻击方式，诸如跨站点脚本攻击(XSS)、跨站请求伪造(CSRF)。可以使用模块 [helmet](https://www.npmjs.com/package/helmet) 轻松进行配置。
 
 - 构造
-    - X-Frame-Options：sameorigin。提供点击劫持保护，iframe 只能同源。
+  - X-Frame-Options：sameorigin。提供点击劫持保护，iframe 只能同源。
 - 传输
-    - Strict-Transport-Security：max-age=31536000; includeSubDomains。强制 HTTPS，这减少了web 应用程序中错误通过 cookies 和外部链接，泄露会话数据，并防止中间人攻击
+  - Strict-Transport-Security：max-age=31536000; includeSubDomains。强制 HTTPS，这减少了 web 应用程序中错误通过 cookies 和外部链接，泄露会话数据，并防止中间人攻击
 - 内容
-    - X-Content-Type-Options：nosniff。阻止从声明的内容类型中嗅探响应，减少了用户上传恶意内容造成的风险
-    - Content-Type：text/html;charset=utf-8。指示浏览器将页面解释为特定的内容类型，而不是依赖浏览器进行假设
+  - X-Content-Type-Options：nosniff。阻止从声明的内容类型中嗅探响应，减少了用户上传恶意内容造成的风险
+  - Content-Type：text/html;charset=utf-8。指示浏览器将页面解释为特定的内容类型，而不是依赖浏览器进行假设
 - XSS
-    - X-XSS-Protection：1; mode=block。启用了内置于最新 web 浏览器中的跨站点脚本(XSS)过滤器
+  - X-XSS-Protection：1; mode=block。启用了内置于最新 web 浏览器中的跨站点脚本(XSS)过滤器
 - 下载
-    - X-Download-Options：noopen。
+  - X-Download-Options：noopen。
 - 缓存
-    - Cache-Control：no-cache。web 应中返回的数据可以由用户浏览器以及中间代理缓存。该指令指示他们不要保留页面内容，以免其他人从这些缓存中访问敏感内容
-    - Pragma：no-cache。同上
-    - Expires：-1。web 响应中返回的数据可以由用户浏览器以及中间代理缓存。该指令通过将到期时间设置为一个值来防止这种情况。
+  - Cache-Control：no-cache。web 应中返回的数据可以由用户浏览器以及中间代理缓存。该指令指示他们不要保留页面内容，以免其他人从这些缓存中访问敏感内容
+  - Pragma：no-cache。同上
+  - Expires：-1。web 响应中返回的数据可以由用户浏览器以及中间代理缓存。该指令通过将到期时间设置为一个值来防止这种情况。
 - 访问控制
-    - Access-Control-Allow-Origin：not *。'Access-Control-Allow-Origin: *' 默认在现代浏览器中禁用
-    - X-Permitted-Cross-Domain-Policies：master-only。指示只有指定的文件在此域中才被视为有效
+  - Access-Control-Allow-Origin：not _。'Access-Control-Allow-Origin: _' 默认在现代浏览器中禁用
+  - X-Permitted-Cross-Domain-Policies：master-only。指示只有指定的文件在此域中才被视为有效
 - 内容安全策略
-    - Content-Security-Policy：内容安全策略需要仔细调整并精确定义策略
+  - Content-Security-Policy：内容安全策略需要仔细调整并精确定义策略
 - 服务器信息
-    - Server：不显示。
+  - Server：不显示。
 
 ## 使用 security-linter 插件
 
@@ -1883,7 +1928,7 @@ node-tick-processor
 
 ## koa-ratelimit 限制并发请求
 
-DOS 攻击非常流行而且相对容易处理。使用外部服务，比如 cloud 负载均衡, cloud 防火墙, nginx, 或者（对于小的，不是那么重要的app）一个速率限制中间件(比如 [koa-ratelimit](https://github.com/koajs/ratelimit))，来实现速率限制。
+DOS 攻击非常流行而且相对容易处理。使用外部服务，比如 cloud 负载均衡, cloud 防火墙, nginx, 或者（对于小的，不是那么重要的 app）一个速率限制中间件(比如 [koa-ratelimit](https://github.com/koajs/ratelimit))，来实现速率限制。
 
 ## 纯文本机密信息放置
 
@@ -1908,17 +1953,17 @@ DOS 攻击非常流行而且相对容易处理。使用外部服务，比如 clo
 
 ```js
 // 使用10个哈希回合异步生成安全密码
-bcrypt.hash('myPassword', 10, function(err, hash) {
+bcrypt.hash('myPassword', 10, function (err, hash) {
   // 在用户记录中存储安全哈希
 });
 
 // 将提供的密码输入与已保存的哈希进行比较
-bcrypt.compare('somePassword', hash, function(err, match) {
-  if(match) {
-   // 密码匹配
+bcrypt.compare('somePassword', hash, function (err, match) {
+  if (match) {
+    // 密码匹配
   } else {
-   // 密码不匹配
-  } 
+    // 密码不匹配
+  }
 });
 ```
 
@@ -1937,14 +1982,16 @@ bcrypt.compare('somePassword', hash, function(err, match) {
 ```js
 const jwt = require('express-jwt');
 const blacklist = require('express-jwt-blacklist');
- 
-app.use(jwt({
-  secret: 'my-secret',
-  isRevoked: blacklist.isRevoked
-}));
- 
+
+app.use(
+  jwt({
+    secret: 'my-secret',
+    isRevoked: blacklist.isRevoked,
+  })
+);
+
 app.get('/logout', function (req, res) {
-  blacklist.revoke(req.user)
+  blacklist.revoke(req.user);
   res.sendStatus(200);
 });
 ```
@@ -1959,25 +2006,26 @@ const RedisStore = require('express-brute-redis');
 
 const redisStore = new RedisStore({
   host: '127.0.0.1',
-  port: 6379
+  port: 6379,
 });
 
-// Start slowing requests after 5 failed 
+// Start slowing requests after 5 failed
 // attempts to login for the same user
 const loginBruteforce = new ExpressBrute(redisStore, {
   freeRetries: 5,
   minWait: 5 * 60 * 1000, // 5 minutes
   maxWait: 60 * 60 * 1000, // 1 hour
   failCallback: failCallback,
-  handleStoreError: handleStoreErrorCallback
+  handleStoreError: handleStoreErrorCallback,
 });
 
-app.post('/login',
+app.post(
+  '/login',
   loginBruteforce.getMiddleware({
     key: function (req, res, next) {
       // prevent too many attempts for the same username
       next(req.body.username);
-    }
+    },
   }), // error 403 if we hit this route too often
   function (req, res, next) {
     if (User.isValidLogin(req.body.username, req.body.password)) {
@@ -2018,18 +2066,17 @@ const express = require('express');
 const app = express();
 
 // body-parser defaults to a body size limit of 300kb
-app.use(express.json({ limit: '300kb' })); 
+app.use(express.json({ limit: '300kb' }));
 
 // Request with json body
 app.post('/json', (req, res) => {
+  // Check if request payload content-type matches json
+  // because body-parser does not check for content types
+  if (!req.is('json')) {
+    return res.sendStatus(415); // Unsupported media type if request doesn't have JSON body
+  }
 
-    // Check if request payload content-type matches json
-    // because body-parser does not check for content types
-    if (!req.is('json')) {
-        return res.sendStatus(415); // Unsupported media type if request doesn't have JSON body
-    }
-
-    res.send('Hooray, it worked!');
+  res.send('Hooray, it worked!');
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
@@ -2059,7 +2106,7 @@ location /upload {
 
 ## 防止 RegEx 让 NodeJS 过载
 
-匹配文本的用户输入需要大量的 CPU 周期来处理。在某种程度上，正则处理是效率低下的，比如验证 10 个单词的单个请求可能阻止整个 event loop 长达6秒。由于这个原因，偏向第三方的验证包，比如[validator.js](https://github.com/chriso/validator.js)，而不是采用正则，或者使用 [safe-regex](https://github.com/substack/safe-regex) 来检测有问题的正则表达式。
+匹配文本的用户输入需要大量的 CPU 周期来处理。在某种程度上，正则处理是效率低下的，比如验证 10 个单词的单个请求可能阻止整个 event loop 长达 6 秒。由于这个原因，偏向第三方的验证包，比如[validator.js](https://github.com/chriso/validator.js)，而不是采用正则，或者使用 [safe-regex](https://github.com/substack/safe-regex) 来检测有问题的正则表达式。
 
 ```js
 const saferegex = require('safe-regex');
@@ -2078,29 +2125,29 @@ console.log(validator.isEmail('liran.tal@gmail.com'));
 当任务执行在运行时给出的外部代码时(例如, 插件), 使用任何类型的沙盒执行环境保护主代码，并隔离开主代码和插件。这可以通过一个专用的过程来实现 (例如:cluster.fork()), 无服务器环境或充当沙盒的专用 npm 包。
 
 - 一个专门的子进程 - 这提供了一个快速的信息隔离, 但要求制约子进程, 限制其执行时间, 并从错误中恢复
-- 一个基于云的无服务框架满足所有沙盒要求，但动态部署和调用Faas方法不是本部分的内容
+- 一个基于云的无服务框架满足所有沙盒要求，但动态部署和调用 Faas 方法不是本部分的内容
 - 一些 npm 库，比如 [sandbox](https://www.npmjs.com/package/sandbox) 和 [vm2](https://www.npmjs.com/package/vm2) 允许通过一行代码执行隔离代码。尽管后一种选择在简单中获胜, 但它提供了有限的保护。
 
 ```js
-const Sandbox = require("sandbox");
+const Sandbox = require('sandbox');
 const s = new Sandbox();
 
-s.run( "lol)hai", function( output ) {
+s.run('lol)hai', function (output) {
   console.log(output);
   //output='Synatx error'
 });
 
 // Example 4 - Restricted code
-s.run( "process.platform", function( output ) {
+s.run('process.platform', function (output) {
   console.log(output);
   //output=Null
-})
+});
 
 // Example 5 - Infinite loop
-s.run( "while (true) {}", function( output ) {
+s.run('while (true) {}', function (output) {
   console.log(output);
   //output='Timeout'
-})
+});
 ```
 
 ## 隐藏客户端的错误详细信息
@@ -2127,19 +2174,21 @@ https://itnext.io/eslint-backdoor-what-it-is-and-how-to-fix-the-issue-221f58f1a8
 
 ## session 中间件设置
 
-每个 web 框架和技术都有其已知的弱点，告诉攻击者我们使用的 web 框架对他们来说是很大的帮助。使用 session 中间件的默认设置, 可以以类似于 `X-Powered-Byheader` 的方式向模块和框架特定的劫持攻击公开您的应用。尝试隐藏识别和揭露技术栈的任何内容(例如:Nonde.js, express)。否则可以通过不安全的连接发送cookie, 攻击者可能会使用会话标识来标识web应用程序的基础框架以及特定于模块的漏洞。
+每个 web 框架和技术都有其已知的弱点，告诉攻击者我们使用的 web 框架对他们来说是很大的帮助。使用 session 中间件的默认设置, 可以以类似于 `X-Powered-Byheader` 的方式向模块和框架特定的劫持攻击公开您的应用。尝试隐藏识别和揭露技术栈的任何内容(例如:Nonde.js, express)。否则可以通过不安全的连接发送 cookie, 攻击者可能会使用会话标识来标识 web 应用程序的基础框架以及特定于模块的漏洞。
 
 ```js
 // using the express session middleware
-app.use(session({  
- secret: 'youruniquesecret', // secret string used in the signing of the session ID that is stored in the cookie
- name: 'youruniquename', // set a unique name to remove the default connect.sid
- cookie: {
-   httpOnly: true, // minimize risk of XSS attacks by restricting the client from reading the cookie
-   secure: true, // only send cookie over https
-   maxAge: 60000*60*24 // set cookie expiry length in ms
- }
-}));
+app.use(
+  session({
+    secret: 'youruniquesecret', // secret string used in the signing of the session ID that is stored in the cookie
+    name: 'youruniquename', // set a unique name to remove the default connect.sid
+    cookie: {
+      httpOnly: true, // minimize risk of XSS attacks by restricting the client from reading the cookie
+      secure: true, // only send cookie over https
+      maxAge: 60000 * 60 * 24, // set cookie expiry length in ms
+    },
+  })
+);
 ```
 
 ## csurf 防止 CSRF
@@ -2147,13 +2196,13 @@ app.use(session({
 路由层：
 
 ```js
-var cookieParser = require('cookie-parser');  
-var csrf = require('csurf');  
-var bodyParser = require('body-parser');  
+var cookieParser = require('cookie-parser');
+var csrf = require('csurf');
+var bodyParser = require('body-parser');
 var express = require('express');
 
 // 设置路由中间件
-var csrfProtection = csrf({ cookie: true });  
+var csrfProtection = csrf({ cookie: true });
 var parseForm = bodyParser.urlencoded({ extended: false });
 
 var app = express();
@@ -2161,12 +2210,12 @@ var app = express();
 // 我们需要这个，因为在 csrfProtection 中 “cookie” 是正确的
 app.use(cookieParser());
 
-app.get('/form', csrfProtection, function(req, res) {  
+app.get('/form', csrfProtection, function (req, res) {
   // 将 CSRFToken 传递给视图
   res.render('send', { csrfToken: req.csrfToken() });
 });
 
-app.post('/process', parseForm, csrfProtection, function(req, res) {  
+app.post('/process', parseForm, csrfProtection, function (req, res) {
   res.send('data is being processed');
 });
 ```
@@ -2174,12 +2223,12 @@ app.post('/process', parseForm, csrfProtection, function(req, res) {
 展示层：
 
 ```html
-<form action="/process" method="POST">  
-  <input type="hidden" name="_csrf" value="{{csrfToken}}">
+<form action="/process" method="POST">
+  <input type="hidden" name="_csrf" value="{{csrfToken}}" />
 
-  Favorite color: <input type="text" name="favoriteColor">
+  Favorite color: <input type="text" name="favoriteColor" />
   <button type="submit">Submit</button>
-</form>  
+</form>
 ```
 
 # 综合应用
@@ -2250,17 +2299,20 @@ const Page = new Schema();
 
 Page.path('title').type('string').required(); // 数据校验确保页面有标题
 
-function ValidatorError(errors) { // 从错误对象继承，校验出现的错误在错误中间件处理
+function ValidatorError(errors) {
+  // 从错误对象继承，校验出现的错误在错误中间件处理
   this.statusCode = 400;
   this.message = errors.join(', ');
 }
 util.inherits(ValidatorError, Error);
 
-function xmlMiddleware(req, res, next) { // 处理 xml 的中间件
+function xmlMiddleware(req, res, next) {
+  // 处理 xml 的中间件
   if (!req.is('xml')) return next();
 
   let body = '';
-  req.on('data', function (str) { // 从客户端读到数据时触发
+  req.on('data', function (str) {
+    // 从客户端读到数据时触发
     body += str;
   });
 
@@ -2273,7 +2325,8 @@ function xmlMiddleware(req, res, next) { // 处理 xml 的中间件
   });
 }
 
-function checkValidXml(req, res, next) { // 数据校验中间件
+function checkValidXml(req, res, next) {
+  // 数据校验中间件
   const page = Page.validate(req.body.page);
   if (page.errors.length) {
     next(new ValidatorError(page.errors)); // 传递错误给 next 阻止路由继续运行
@@ -2282,14 +2335,16 @@ function checkValidXml(req, res, next) { // 数据校验中间件
   }
 }
 
-function errorHandler(err, req, res, next) { // 错误处理中间件
+function errorHandler(err, req, res, next) {
+  // 错误处理中间件
   console.error('errorHandler', err);
   res.send(err.statusCode || 500, err.message);
 }
 
 app.use(xmlMiddleware); // 应用 XML 中间件到所有的请求中
 
-app.post('/pages', checkValidXml, function (req, res) { // 特定的请求校验 xml
+app.post('/pages', checkValidXml, function (req, res) {
+  // 特定的请求校验 xml
   console.log('Valid page:', req.body.page);
   res.send(req.body);
 });
@@ -2347,7 +2402,8 @@ app.use(parseCookie);
 app.use(express.session({ store: store, secret: 'some secret' })); // 告知 Express 使用会话存储和设置密码(使用 session 中间件)
 app.use(express.static(__dirname + '/public'));
 
-app.get('/random', function (req, res) { // 测试测试用的会话值
+app.get('/random', function (req, res) {
+  // 测试测试用的会话值
   req.session.random = Math.random().toString();
   res.send(200);
 });
@@ -2391,27 +2447,26 @@ webSocketServer.on('connection', function (ws) {
 ```html
 <!DOCTYPE html>
 <html>
+  <head>
+    <script>
+      const host = window.document.location.host.replace(/:.*/, '');
+      const ws = new WebSocket('ws://' + host + ':3000');
 
-<head>
-  <script>
-    const host = window.document.location.host.replace(/:.*/, '');
-    const ws = new WebSocket('ws://' + host + ':3000');
+      setInterval(function () {
+        ws.send('{ "type": "getSession" }'); // 定期向服务器发送消息
+      }, 1000);
 
-    setInterval(function () {
-      ws.send('{ "type": "getSession" }'); // 定期向服务器发送消息
-    }, 1000);
+      ws.onmessage = function (event) {
+        document.getElementById('message').innerHTML = event.data;
+      };
+    </script>
+  </head>
 
-    ws.onmessage = function (event) {
-      document.getElementById('message').innerHTML = event.data;
-    };
-  </script>
-</head>
-
-<body>
-  <h1>WebSocket sessions</h1>
-  <div id='message'></div><br>
-</body>
-
+  <body>
+    <h1>WebSocket sessions</h1>
+    <div id="message"></div>
+    <br />
+  </body>
 </html>
 ```
 
@@ -2427,7 +2482,7 @@ webSocketServer.on('connection', function (ws) {
 | csurf           | 在会话中添加 token，防御 CSRF 攻击                               |
 | errorhandler    | Connect 中使用的默认错误处理                                     |
 | express-session | 简单的会话处理，使用 stores 扩展来吧会话信息写入到数据库或文件中 |
-| method-override | 映射新的 HTTP 动词到请求变量中的 _method                         |
+| method-override | 映射新的 HTTP 动词到请求变量中的 \_method                        |
 | morgan          | 日志格式化                                                       |
 | response-time   | 跟踪响应时间                                                     |
 | serve-favicon   | 发送网站图标                                                     |
@@ -2493,7 +2548,7 @@ Header（头部）.Payload（负载）.Signature（签名）：
   "iat": "签发时间",
   "jti": "编号",
   // 定义私有字段
-  "name": "Chenng" 
+  "name": "Chenng"
 }
 ```
 
@@ -2505,7 +2560,6 @@ HMACSHA256(
   base64UrlEncode(payload),
   secret) # secret 秘钥只有服务器知道
 ```
-
 
 #### 使用方式
 
@@ -2565,12 +2619,12 @@ app.listen(2333);
 ### 返回媒体资源
 
 ```js
-router
-  .get('/api/dynamic_image/codewars', async (ctx, next) => {
-    const res = await axios.get('https://www.codewars.com/users/ringcrl');
-    const [, kyu, score] = res.data
-      .match(/<div class="stat"><b>Rank:<\/b>(.+?)<\/div><div class="stat"><b>Honor:<\/b>(.+?)<\/div>/);
-    const svg = `
+router.get('/api/dynamic_image/codewars', async (ctx, next) => {
+  const res = await axios.get('https://www.codewars.com/users/ringcrl');
+  const [, kyu, score] = res.data.match(
+    /<div class="stat"><b>Rank:<\/b>(.+?)<\/div><div class="stat"><b>Honor:<\/b>(.+?)<\/div>/
+  );
+  const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="20">
         <rect x="0" y="0" width="80" height="20" fill="#fff" stroke-width="2" stroke="#cccccc"></rect>
         <rect x="0" y="0" width="50" height="20" fill="#5b5b5b"></rect>
@@ -2579,10 +2633,10 @@ router
         <text x="53" y="15" class="small" fill="#fff" style="font-size: 14px">${score}</text>
       </svg>
     `;
-    ctx.set('Content-Type', 'image/svg+xml');
-    ctx.body = Buffer.from(svg);
-    await next();
-  });
+  ctx.set('Content-Type', 'image/svg+xml');
+  ctx.body = Buffer.from(svg);
+  await next();
+});
 ```
 
 ## Web API 设计
@@ -2608,8 +2662,8 @@ API 通用资源网站 ProgrammableWeb（<http://www.programmableweb.com>）中�
 ### 生成公钥私钥
 
 ```
-利用 openssl 生成公钥私钥 
-生成公钥：openssl genrsa -out rsa_private_key.pem 1024 
+利用 openssl 生成公钥私钥
+生成公钥：openssl genrsa -out rsa_private_key.pem 1024
 生成私钥：openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
 ```
 
@@ -2627,17 +2681,11 @@ const data = 'Chenng';
 console.log('content: ', data);
 
 //公钥加密
-const encodeData = crypto.publicEncrypt(
-  publicKey,
-  Buffer.from(data),
-).toString('base64');
+const encodeData = crypto.publicEncrypt(publicKey, Buffer.from(data)).toString('base64');
 console.log('encode: ', encodeData);
 
 //私钥解密
-const decodeData = crypto.privateDecrypt(
-  privateKey,
-  Buffer.from(encodeData, 'base64'),
-);
+const decodeData = crypto.privateDecrypt(privateKey, Buffer.from(encodeData, 'base64'));
 console.log('decode: ', decodeData.toString());
 ```
 
@@ -2645,7 +2693,6 @@ console.log('decode: ', decodeData.toString());
 
 - 部分不用实时更新的数据使用 redis 进行缓存
 - 使用 node-schedule 在每晚定时调用接口
-
 
 ### redis 使用
 
@@ -2680,15 +2727,17 @@ schedule.scheduleJob('* 23 59 * *', function () {
 ### 二级域名共享 Cookie
 
 ```js
-app.use(express.session({
-  secret: conf.secret,
-  maxAge: new Date(Date.now() + 3600000),
-  cookie: {
-    path: '/',
-    domain: '.yourdomain.com',
-  },
-  store: new MongoStore(conf.sessiondb),
-}));
+app.use(
+  express.session({
+    secret: conf.secret,
+    maxAge: new Date(Date.now() + 3600000),
+    cookie: {
+      path: '/',
+      domain: '.yourdomain.com',
+    },
+    store: new MongoStore(conf.sessiondb),
+  })
+);
 ```
 
 ### 淘宝天猫共享 Cookie
@@ -2698,8 +2747,8 @@ app.use(express.session({
 
 # 参考地址
 
-- [《Node.js硬实战：115个核心技巧》](https://www.amazon.cn/dp/B01MYX8XG1)
+- [《Node.js 硬实战：115 个核心技巧》](https://www.amazon.cn/dp/B01MYX8XG1)
 - [i0natan/nodebestpractices](https://github.com/i0natan/nodebestpractices)
-- [真-Node多线程](https://juejin.im/post/5c63b5676fb9a049ac79a798?utm_source=gold_browser_extension)
+- [真-Node 多线程](https://juejin.im/post/5c63b5676fb9a049ac79a798?utm_source=gold_browser_extension)
 - [CS-Notes](https://github.com/CyC2018/CS-Notes)
-- [NodeJS的代码调试和性能调优](https://www.barretlee.com/blog/2015/10/07/debug-nodejs-in-command-line/)
+- [NodeJS 的代码调试和性能调优](https://www.barretlee.com/blog/2015/10/07/debug-nodejs-in-command-line/)

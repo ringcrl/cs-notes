@@ -5,15 +5,14 @@
 ```html
 <!DOCTYPE html>
 <html>
-
-<head>
-  <!-- 文档使用的字符编码 -->
-  <meta charset="utf-8">
-  <!-- 添加到主屏幕时隐藏地址栏和状态栏（即全屏）-->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <!-- 添加到主屏幕的 Web App 标题 -->
-  <meta name="apple-mobile-web-app-title" content="Web App 名称" />
-  <!--
+  <head>
+    <!-- 文档使用的字符编码 -->
+    <meta charset="utf-8" />
+    <!-- 添加到主屏幕时隐藏地址栏和状态栏（即全屏）-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- 添加到主屏幕的 Web App 标题 -->
+    <meta name="apple-mobile-web-app-title" content="Web App 名称" />
+    <!--
     通知搜索引擎文档是否需要被索引
       - all（默认值，索引当前页并跟踪链接，相当于：index, follow
       - none（忽略当前页，相当于：noindex, nofollow）
@@ -22,55 +21,57 @@
       - follow（跟踪当前页链接，不论当前页是否被索引）
       - nofollow（不跟踪当前页链接，不论当前页是否被索引）
   -->
-  <meta name="robots" content="index" />
-  <!-- 搜索引擎抓取间隔 -->
-  <meta name="revisit-after" content="10 days" />
-  <!-- 文档描述 -->
-  <meta name="description" content="这是一份 meta 列表" />
-  <!-- 文档关键字 -->
-  <meta name="keywords" content="CSS, HTML, JavaScript, 前端" />
-  <!-- 作者信息 -->
-  <meta name="author" content="chenng, ringcrl@foxmail.com" />
-  <!-- 页面是否缓存 -->
-  <meta http-equiv="pragma" content="no-cache" />
-  <meta http-equiv="cache-control" content="no-cache" />
-  <!-- 指定页面的过期时间，一旦网页过期，从服务器上重新请求，其中时间必须使用 GMT 格式，或者直接是 0（即不缓存） -->
-  <meta http-equiv="expires" content="0" />
-  <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
-  <!-- 页面自刷新或自跳转 -->
-  <meta http-equiv="refresh" content="10" />
-  <meta http-equiv="refresh" content="10; url=https://www.chenng.cn" />
-  <!-- 禁止缩放 -->
-  <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no">
-  <!-- X5 浏览器强制竖屏显示 -->
-  <meta name="x5-orientation" content="portrait">
-  <!-- X5 浏览器全屏显示 -->
-  <meta name="x5-fullscreen" content="true">
-  <!-- UC 浏览器强制竖屏显示 -->
-  <meta name="screen-orientation" content="portrait">
-  <!-- UC 浏览器全屏显示 -->
-  <meta name="full-screen" content="yes">
-  <!-- 
+    <meta name="robots" content="index" />
+    <!-- 搜索引擎抓取间隔 -->
+    <meta name="revisit-after" content="10 days" />
+    <!-- 文档描述 -->
+    <meta name="description" content="这是一份 meta 列表" />
+    <!-- 文档关键字 -->
+    <meta name="keywords" content="CSS, HTML, JavaScript, 前端" />
+    <!-- 作者信息 -->
+    <meta name="author" content="chenng, ringcrl@foxmail.com" />
+    <!-- 页面是否缓存 -->
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <!-- 指定页面的过期时间，一旦网页过期，从服务器上重新请求，其中时间必须使用 GMT 格式，或者直接是 0（即不缓存） -->
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
+    <!-- 页面自刷新或自跳转 -->
+    <meta http-equiv="refresh" content="10" />
+    <meta http-equiv="refresh" content="10; url=https://www.chenng.cn" />
+    <!-- 禁止缩放 -->
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no"
+    />
+    <!-- X5 浏览器强制竖屏显示 -->
+    <meta name="x5-orientation" content="portrait" />
+    <!-- X5 浏览器全屏显示 -->
+    <meta name="x5-fullscreen" content="true" />
+    <!-- UC 浏览器强制竖屏显示 -->
+    <meta name="screen-orientation" content="portrait" />
+    <!-- UC 浏览器全屏显示 -->
+    <meta name="full-screen" content="yes" />
+    <!-- 
     禁止电话号码和邮箱的识别
       - 电话：<a href="tel:13333333333">拨打电话13333333333</a>
       - 邮件：<a href="mailto:ringcrl@foxmail.com">发送邮件</a>
   -->
-  <!-- telephone=no, -->
-  <meta name="format-detection" content="telephone=yes" />
-  <!-- 在 Safari 中添加 APP 标识 -->
-  <!-- <meta name="apple-itunes-app" content="app-id=637381980"> -->
-  <title>index.html</title>
-</head>
-
+    <!-- telephone=no, -->
+    <meta name="format-detection" content="telephone=yes" />
+    <!-- 在 Safari 中添加 APP 标识 -->
+    <!-- <meta name="apple-itunes-app" content="app-id=637381980"> -->
+    <title>index.html</title>
+  </head>
 </html>
 ```
 
 ## 语义化
 
 - abbr：缩写
-    - `<abbr title="World Wide Web">WWW</abbr>.`
+  - `<abbr title="World Wide Web">WWW</abbr>.`
 - blockquote, q, cite：引用
-    - `<cite>"What is the difference between the Web and the Internet?"</cite>.`
+  - `<cite>"What is the difference between the Web and the Internet?"</cite>.`
 - pre, samp, code：表示这部分内容是预先排版过的，不需要浏览器进行排版
 
 ## 元素类型
@@ -145,7 +146,7 @@ br hr link meta
 
 #### 改变 DOM 元素的几何属性
 
-- 当一个DOM元素的几何属性发生变化时，所有和它相关的节点（比如父子节点、兄弟节点等）的几何属性都需要进行重新计算，它会带来巨大的计算量。
+- 当一个 DOM 元素的几何属性发生变化时，所有和它相关的节点（比如父子节点、兄弟节点等）的几何属性都需要进行重新计算，它会带来巨大的计算量。
 - 常见的几何属性有 width、height、padding、margin、left、top、border 等等。
 
 #### 改变 DOM 树的结构
@@ -164,46 +165,47 @@ br hr link meta
 
 ```js
 // 缓存 offsetLeft 与 offsetTop 的值
-const el = document.getElementById('el') 
-let offLeft = el.offsetLeft, offTop = el.offsetTop
+const el = document.getElementById('el');
+let offLeft = el.offsetLeft,
+  offTop = el.offsetTop;
 
 // 在 JS 层面进行计算
-for(let i=0;i<10;i++) {
-  offLeft += 10
-  offTop  += 10
+for (let i = 0; i < 10; i++) {
+  offLeft += 10;
+  offTop += 10;
 }
 
 // 一次性将计算结果应用到 DOM 上
-el.style.left = offLeft + "px"
-el.style.top = offTop  + "px"
+el.style.left = offLeft + 'px';
+el.style.top = offTop + 'px';
 ```
 
 #### 使用类名去合并样式
 
 ```js
 // bad
-const container = document.getElementById('container')
-container.style.width = '100px'
-container.style.height = '200px'
-container.style.border = '10px solid red'
-container.style.color = 'red'
+const container = document.getElementById('container');
+container.style.width = '100px';
+container.style.height = '200px';
+container.style.border = '10px solid red';
+container.style.color = 'red';
 
 // good
-const container = document.getElementById('container')
-container.classList.add('basic_style')
+const container = document.getElementById('container');
+container.classList.add('basic_style');
 ```
 
 #### 将 DOM 离线
 
 ```js
-let container = document.getElementById('container')
-container.style.display = 'none'
-container.style.width = '100px'
-container.style.height = '200px'
-container.style.border = '10px solid red'
-container.style.color = 'red'
+let container = document.getElementById('container');
+container.style.display = 'none';
+container.style.width = '100px';
+container.style.height = '200px';
+container.style.border = '10px solid red';
+container.style.color = 'red';
 // ...（省略了许多类似的后续操作）
-container.style.display = 'block'
+container.style.display = 'block';
 ```
 
 ## 微信可视区域
@@ -267,7 +269,7 @@ iphone6 plus / iphone 7 plus
 
 - width：将布局视口设置为固定的值，比如 375px 或者 device-width（设备宽度）
 - initial-scale：设置页面的初始缩放
-    - width 与 initial-scale 都会初始化布局视口，但浏览器会取其最大值
+  - width 与 initial-scale 都会初始化布局视口，但浏览器会取其最大值
 - minimum-scale：设置最小的缩小程度
 - maximum-scale：设置最大的放大程度
 - user-scalable：设置为 no 时禁用缩放
@@ -281,8 +283,8 @@ iphone6 plus / iphone 7 plus
 - 当元素在屏幕内，表现为 relative，就要滚出显示器屏幕的时候，表现为 fixed
 - 特别适合导航的跟随定位效果
 - sticky 元素效果完全受制于父级元素们
-    - 父级元素不能有任何 `overflow:visible` 以外的 `overflow` 设置，否则没有粘滞效果
-    - 父级元素设置和粘性定位元素等高的固定的 height 高度值，或者高度计算值和粘性定位元素高度一样，也没有粘滞效果
+  - 父级元素不能有任何 `overflow:visible` 以外的 `overflow` 设置，否则没有粘滞效果
+  - 父级元素设置和粘性定位元素等高的固定的 height 高度值，或者高度计算值和粘性定位元素高度一样，也没有粘滞效果
 - sticky 定位，不仅可以设置 top，基于滚动容器上边缘定位；还可以设置 bottom，也就是相对底部粘滞。如果是水平滚动，也可以设置 left 和 right 值
 
 ```css
@@ -307,31 +309,39 @@ nav {
 ## @ 规则
 
 - @charset ： https://www.w3.org/TR/css-syntax-3/
-    - charset 用于提示 CSS 文件使用的字符编码方式，`@charset "utf-8";`
+
+  - charset 用于提示 CSS 文件使用的字符编码方式，`@charset "utf-8";`
 
 - @import ：https://www.w3.org/TR/css-cascade-4/
-    - @import 用于引入一个 CSS 文件，`@import "mystyle.css";` 或 `@import url("mystyle.css");`
+
+  - @import 用于引入一个 CSS 文件，`@import "mystyle.css";` 或 `@import url("mystyle.css");`
 
 - @media ：https://www.w3.org/TR/css3-conditional/
-    - 媒体查询：`@media print { body { font-size: 10pt } }`
+
+  - 媒体查询：`@media print { body { font-size: 10pt } }`
 
 - @page ： https://www.w3.org/TR/css-page-3/
-    - page 用于分页媒体访问网页时的表现设置
+
+  - page 用于分页媒体访问网页时的表现设置
 
 - @counter-style ：https://www.w3.org/TR/css-counter-styles-3
-    - counter-style 产生一种数据，用于定义列表项的表现
+
+  - counter-style 产生一种数据，用于定义列表项的表现
 
 - @keyframes ：https://www.w3.org/TR/css-animations-1/
-    - keyframes 产生一种数据，用于定义动画关键帧
+
+  - keyframes 产生一种数据，用于定义动画关键帧
 
 - @fontface ：https://www.w3.org/TR/css-fonts-3/
-    - fontface 用于定义一种字体，icon font 技术就是利用这个特性来实现的
+
+  - fontface 用于定义一种字体，icon font 技术就是利用这个特性来实现的
 
 - @supports ：https://www.w3.org/TR/css3-conditional/
-    - support 检查环境的特性，它与 media 比较类似
+
+  - support 检查环境的特性，它与 media 比较类似
 
 - @namespace ：https://www.w3.org/TR/css-namespaces-3/
-    - 用于跟 XML 命名空间配合的一个规则，表示内部的 CSS 选择器全都带上特定命名空间
+  - 用于跟 XML 命名空间配合的一个规则，表示内部的 CSS 选择器全都带上特定命名空间
 
 ## @import 和 link 的理解
 
@@ -350,11 +360,11 @@ nav {
 ## 像素
 
 - 设备像素
-    - 设备像素也可以叫物理像素，由设备的屏幕决定，其实就是屏幕中控制显示的最小单位
+  - 设备像素也可以叫物理像素，由设备的屏幕决定，其实就是屏幕中控制显示的最小单位
 - 设备独立像素
-    - 设备独立像素是一种可以被程序所控制的虚拟像素，在 Web 开发中对应 CSS 像素
+  - 设备独立像素是一种可以被程序所控制的虚拟像素，在 Web 开发中对应 CSS 像素
 - DPR（设备像素比）
-    - 设备像素比 = 设备像素 / 设备独立像素
+  - 设备像素比 = 设备像素 / 设备独立像素
 
 ## IFC
 
@@ -363,7 +373,7 @@ Inline Formatting Contexts（行内级格式化上下文），IFC 只有在一�
 ### 作用
 
 - 水平居中：当一个块要在环境中水平居中时，设置其为 inline-block 则会在外层产生 IFC，通过设置父容器 text-align:center 则可以使其水平居中
-- 垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其 vertical-align:middle，其他行内元素则可以在此父元素下垂直居中
+- 垂直居中：创建一个 IFC，用其中一个元素撑开父元素的高度，然后设置其 vertical-align:middle，其他行内元素则可以在此父元素下垂直居中
 
 ## BFC
 
@@ -394,19 +404,19 @@ Inline Formatting Contexts（行内级格式化上下文），IFC 只有在一�
 - 自适应两栏布局
 - 可以阻止元素被浮动元素覆盖
 
-案例1：创建 BFC 以显示子元素超出了父元素部分的 margin 值
+案例 1：创建 BFC 以显示子元素超出了父元素部分的 margin 值
 
 ```html
 <style>
-#sec {
-  background: red;
-  overfloat: hidden;
-}
-.child {
-  height: 100px;
-  margin-top: 10px;
-  background: yellow;
-}
+  #sec {
+    background: red;
+    overfloat: hidden;
+  }
+  .child {
+    height: 100px;
+    margin-top: 10px;
+    background: yellow;
+  }
 </style>
 
 <section id="sec">
@@ -414,24 +424,24 @@ Inline Formatting Contexts（行内级格式化上下文），IFC 只有在一�
 </section>
 ```
 
-案例2：解决 float 布局右侧元素侵染问题，只需往右侧元素创建一个 BFC
+案例 2：解决 float 布局右侧元素侵染问题，只需往右侧元素创建一个 BFC
 
 ```html
 <style>
-#layout {
-  background: red;
-}
-#layout .left {
-  float: left;
-  width: 100px;
-  height: 100px;
-  background: pink;
-}
-#layout .right {
-  height: 110px;
-  background: #ccc;
-  overfloat: auto;
-}
+  #layout {
+    background: red;
+  }
+  #layout .left {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background: pink;
+  }
+  #layout .right {
+    height: 110px;
+    background: #ccc;
+    overfloat: auto;
+  }
 </style>
 
 <section id="layout">
@@ -440,18 +450,18 @@ Inline Formatting Contexts（行内级格式化上下文），IFC 只有在一�
 </section>
 ```
 
-案例3：清除浮动，为外层元素增加 BFC
+案例 3：清除浮动，为外层元素增加 BFC
 
 ```html
 <style>
-#float {
-  background: red;
-  overfloat: auto;
-}
-.float {
-  float: left;
-  background: #ccc;
-}
+  #float {
+    background: red;
+    overfloat: auto;
+  }
+  .float {
+    float: left;
+    background: #ccc;
+  }
 </style>
 
 <section id="float">
@@ -461,19 +471,21 @@ Inline Formatting Contexts（行内级格式化上下文），IFC 只有在一�
 
 ## CSS 盒模型
 
-box-sizing属性可以为三个值之一
+box-sizing 属性可以为三个值之一
 
 - content-box，默认值，border 和 padding 不计算入 width 之内
 - border-box，border 和 padding 计算入 width 之内
 - padding-box，padding 计算入 width 内
 
 ### content-box
+
 Width = width + padding-left + padding-right + border-left + border-right
 
 ### border-box
-Width = width(包含padding-left + padding-right + border-left + border-right)
 
-应用场景：设置 padding 或者 border 时，可能会撑破元素的尺寸，这时我就需要使用box-sizing: border-box 来将 border 包含进元素的尺寸中，这样更简单的把控布局，例如 50% 的宽度就是 50%，你在里面怎么折腾都行
+Width = width(包含 padding-left + padding-right + border-left + border-right)
+
+应用场景：设置 padding 或者 border 时，可能会撑破元素的尺寸，这时我就需要使用 box-sizing: border-box 来将 border 包含进元素的尺寸中，这样更简单的把控布局，例如 50% 的宽度就是 50%，你在里面怎么折腾都行
 
 ## CSS 优先级
 
@@ -492,7 +504,7 @@ L-V-H-A(link,visited,hover,active)
 
 ## rgba 和 opacity
 
-rgba()和opacity都能实现透明效果，但最大的不同是opacity作用于元素，以及元素内的 所有内容的透明度，而 rgba()只作用于元素的颜色或其背景色。(设置 rgba 透明的元素的子元素不会继承透明效果)。
+rgba()和 opacity 都能实现透明效果，但最大的不同是 opacity 作用于元素，以及元素内的 所有内容的透明度，而 rgba()只作用于元素的颜色或其背景色。(设置 rgba 透明的元素的子元素不会继承透明效果)。
 
 ## Flex
 
@@ -626,7 +638,6 @@ rgba()和opacity都能实现透明效果，但最大的不同是opacity作用于
 - `margin-left: auto;`
 - `margin-right: auto;`
 
-
 ## Gird
 
 http://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html
@@ -659,7 +670,7 @@ Flex 布局是轴线布局，只能指定"项目"针对轴线的位置，可以�
 #### 单元格
 
 - 行和列的交叉区域，称为"单元格"（cell）
-- n 行和 m 列会产生 n * m 个单元格。比如，3 行 3 列会产生 9 个单元格
+- n 行和 m 列会产生 n \* m 个单元格。比如，3 行 3 列会产生 9 个单元格
 
 #### 网格线
 
@@ -740,8 +751,8 @@ grid-template-columns: repeat(12, 1fr);
 
 #### grid-row-gap & grid-column-gap & grid-gap
 
-- grid-row-gap属性设置行与行的间隔（行间距）
-- grid-column-gap属性设置列与列的间隔（列间距）
+- grid-row-gap 属性设置行与行的间隔（行间距）
+- grid-column-gap 属性设置列与列的间隔（列间距）
 - grid-gap 属性是 grid-column-gap 和 grid-row-gap 的合并简写形式
 
 ```css
@@ -818,7 +829,7 @@ grid-template-columns: repeat(12, 1fr);
 }
 ```
 
-#### justify-self  & align-self & place-self
+#### justify-self & align-self & place-self
 
 - justify-self 属性设置单元格内容的水平位置（左中右），跟 justify-items 属性的用法完全一致，但只作用于单个项目
 - align-self 属性设置单元格内容的垂直位置（上中下），跟 align-items 属性的用法完全一致，也是只作用于单个项目
@@ -869,7 +880,7 @@ transition-duration: 1s, 15s;
 
 #### transition-timing-funciton（缓动公式）
 
-根据时间的推进去改变属性值的变换速率，有6个可能的值。
+根据时间的推进去改变属性值的变换速率，有 6 个可能的值。
 
 - ease：逐渐变慢
 - linear：匀速
@@ -891,7 +902,7 @@ transition-duration: 1s, 15s;
 ```css
 .turner_left:hover,
 .turner_right:hover {
-  background: rgb(255,244,213);
+  background: rgb(255, 244, 213);
   transition-property: background;
   transition-duration: 100ms;
   transition-timing-funciton: linear;
@@ -911,20 +922,44 @@ const $el = $('test');
 
 ### animation
 
-引入了 Flash 的关键帧概念，细分为8个更细的规则。
+#### 使用方法
+
+```css
+.shining {
+  animation-name: shining;
+  animation-duration: 1000ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+@keyframes shining {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(55, 102, 182, 0.1);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+```
+
+引入了 Flash 的关键帧概念，细分为 8 个更细的规则。
 
 - animation-name: 动画名称，对应@keyframes
 - animation-duration: 间隔
 - animation-timing-function: 曲线
 - animation-delay: 延迟
 - animation-iteration-count: 次数
-    - infinite: 循环动画
+  - infinite: 循环动画
 - animation-direction: 方向
-    - alternate: 反向播放
+  - alternate: 反向播放
 - animation-fill-mode: 静止模式
-    - forwards: 停止时，保留最后一帧
-    - backwards: 停止时，回到第一帧
-    - both: 同时运用 forwards / backwards
+  - forwards: 停止时，保留最后一帧
+  - backwards: 停止时，回到第一帧
+  - both: 同时运用 forwards / backwards
 - 常用钩子: animationend
 
 #### animation-name（关键帧样式规则的名字）
@@ -937,7 +972,7 @@ const $el = $('test');
 
 #### animation-timing-function（缓动公式）
 
-根据时间的推进去改变属性值的变换速率，有6个可能的值。
+根据时间的推进去改变属性值的变换速率，有 6 个可能的值。
 
 - ease：逐渐变慢
 - linear：匀速
@@ -969,33 +1004,6 @@ const $el = $('test');
 - forwards: 保持动画前的状态
 
 #### animation-play-state（暂停或继续动画）
-
-#### 使用方法
-
-```css
-.animation .click_circle {
-  animation-name: spring-out;
-  animation-duration: 300ms;
-  animation-timing-function: cubic-bezier(.13,1.68,0,.82);
-  animation-fill-mode: forwards;
-}
-.animation .action_item {
-  animation-name: spring-out;
-  animation-duration: 300ms;
-  animation-timing-function: cubic-bezier(.13,1.68,0,.82);
-  animation-fill-mode: forwards;
-}
-@keyframes spring-out {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-```
 
 ## 水平垂直居中的 10 种方式
 
@@ -1029,7 +1037,7 @@ https://segmentfault.com/q/1010000007962353/a-1020000007986863
 - ::-webkit-scrollbar-track — 滚动条轨道
 - ::-webkit-scrollbar-track-piece — 滚动条没有滑块的轨道部分
 - ::-webkit-scrollbar-corner — 当同时有垂直滚动条和水平滚动条时交汇的部分
-- ::-webkit-resizer — 某些元素的corner部分的部分样式(例:textarea的可拖动按钮)
+- ::-webkit-resizer — 某些元素的 corner 部分的部分样式(例:textarea 的可拖动按钮)
 
 ```css
 .custom-scrollbar {
@@ -1055,10 +1063,10 @@ https://segmentfault.com/q/1010000007962353/a-1020000007986863
 ## 响应式设计
 
 - 图片宽度
-    - `width: 100%` 在屏幕过宽的时候很难看
-    - `max-width: 100%` 在宽屏环境下最大只会到达图片自身宽度的100%。
+  - `width: 100%` 在屏幕过宽的时候很难看
+  - `max-width: 100%` 在宽屏环境下最大只会到达图片自身宽度的 100%。
 - 媒体查询
-    - 根据屏幕宽度来写不同的CSS代码：`@media (min-width: 50rem) {}`
+  - 根据屏幕宽度来写不同的 CSS 代码：`@media (min-width: 50rem) {}`
 
 ### 媒体查询
 
@@ -1158,16 +1166,16 @@ transform: rotateZ(45deg);
 ```
 
 ```css
-.box{
-    animation: rotate 3s infinite linear;
+.box {
+  animation: rotate 3s infinite linear;
 }
-@keyframes rotate{
-    0% {
-        transform:rotate3d(1, 1, 1, 0deg);
-    }
-    100% {
-        transform:rotate3d(1, 1, 1, 360deg);
-    }
+@keyframes rotate {
+  0% {
+    transform: rotate3d(1, 1, 1, 0deg);
+  }
+  100% {
+    transform: rotate3d(1, 1, 1, 360deg);
+  }
 }
 ```
 
@@ -1212,17 +1220,17 @@ transform: rotateX(60deg) rotateY(60deg);
 ### perspective
 
 - transform-style：子元素变换的表现形式
-    - 默认是 2D 平面展示
-    - transform-style 属性设置为 preserve-3d 为 3D
-    - 这个属性设立在元素所在的舞台上：`.img-wrapper{}`
+  - 默认是 2D 平面展示
+  - transform-style 属性设置为 preserve-3d 为 3D
+  - 这个属性设立在元素所在的舞台上：`.img-wrapper{}`
 - perspective：视距
-    - perspective 用来设置观察点在 Z 轴方向的位置，默认时观察点在元素中心，即 z = 0 位置
-    - 改变了观察点距离元素的 Z 轴距离
-    - 使得子元素的 3D 变换产生透视效果
-    - perspective 这个属性也是在舞台上设置的
+  - perspective 用来设置观察点在 Z 轴方向的位置，默认时观察点在元素中心，即 z = 0 位置
+  - 改变了观察点距离元素的 Z 轴距离
+  - 使得子元素的 3D 变换产生透视效果
+  - perspective 这个属性也是在舞台上设置的
 - perspective-origin：视点位置
-    - 设置观察点在 X、Y 轴的偏移，即屏幕的左右、上下方向
-    - 该属性的默认值是 （50%，50%），在舞台 DOM 的中心位置
+  - 设置观察点在 X、Y 轴的偏移，即屏幕的左右、上下方向
+  - 该属性的默认值是 （50%，50%），在舞台 DOM 的中心位置
 - backface-visibility：背面是否可见
 
 ## 径向渐变
@@ -1231,7 +1239,8 @@ transform: rotateX(60deg) rotateY(60deg);
 
 ```css
 .radial-gradient {
-  width: 400px; height: 200px;
+  width: 400px;
+  height: 200px;
   background: radial-gradient(yellow, red);
 }
 ```
@@ -1241,13 +1250,15 @@ transform: rotateX(60deg) rotateY(60deg);
 ```css
 /* 圆心是渐变起点，按照中心点到最远边角作为渐变半径 */
 .radial-gradient {
-  width: 400px; height: 200px;
+  width: 400px;
+  height: 200px;
   background: radial-gradient(circle, yellow, red);
 }
 
 /* 指定渐变圆心 */
 .radial-gradient {
-  width: 400px; height: 200px;
+  width: 400px;
+  height: 200px;
   background: radial-gradient(circle at 12.5% 25%, yellow, red);
 }
 
@@ -1257,7 +1268,8 @@ transform: rotateX(60deg) rotateY(60deg);
 /* farthest-side	渐变中心距离容器最远的边作为终止位置。 */
 /* farthest-corner	渐变中心距离容器最远的角作为终止位置。默认 */
 .radial-gradient {
-  width: 400px; height: 200px;
+  width: 400px;
+  height: 200px;
   background: radial-gradient(closest-side circle at 50px 50px, yellow, red);
 }
 ```
@@ -1272,8 +1284,8 @@ transform: rotateX(60deg) rotateY(60deg);
 ## 光标颜色
 
 ```css
-input{
-  color:  #fff;
+input {
+  color: #fff;
   caret-color: red;
 }
 ```
@@ -1323,9 +1335,12 @@ body {
 }
 
 /* 为 PDF 链接添加图标指示 */
-a.external[href$=".pdf"]::after, a.external[href$=".PDF"]::after,
-a.external[href*=".pdf?"]::after, a.external[href*=".PDF?"]::after,
-a.external[href*=".pdf#"]::after, a.external[href$=".PDF#"]::after {
+a.external[href$='.pdf']::after,
+a.external[href$='.PDF']::after,
+a.external[href*='.pdf?']::after,
+a.external[href*='.PDF?']::after,
+a.external[href*='.pdf#']::after,
+a.external[href$='.PDF#']::after {
   content: 'picture_as_pdf';
 }
 ```
@@ -1342,9 +1357,12 @@ a.external[href*=".pdf#"]::after, a.external[href$=".PDF#"]::after {
 }
 
 /* 为 PDF 链接添加图标指示 */
-a.external[href$=".pdf"], a.external[href$=".PDF"],
-a.external[href*=".pdf?"], a.external[href*=".PDF?"],
-a.external[href*=".pdf#"], a.external[href$=".PDF#"] {
+a.external[href$='.pdf'],
+a.external[href$='.PDF'],
+a.external[href*='.pdf?'],
+a.external[href*='.PDF?'],
+a.external[href*='.pdf#'],
+a.external[href$='.PDF#'] {
   /* 小图标的 url */
   background: url(/url/to/icon.png) center right no-repeat;
   /* 空出小图标的宽度 */
@@ -1355,11 +1373,11 @@ a.external[href*=".pdf#"], a.external[href$=".PDF#"] {
 ## CSS 的布局模型
 
 - Flow Model：流动模型
-    - 块状元素、内联元素以及父子元素的默认展示形式
+  - 块状元素、内联元素以及父子元素的默认展示形式
 - Float Model：浮动模型
-    - 父元素的高度无法自适应，因为浮动子元素脱离了文档流
+  - 父元素的高度无法自适应，因为浮动子元素脱离了文档流
 - Layer Model：层模型
-    - 层模型有 3 中形式，absolute、fixed 可以使元素脱离文档流
+  - 层模型有 3 中形式，absolute、fixed 可以使元素脱离文档流
 
 ## 开启硬件加速
 
@@ -1381,7 +1399,7 @@ box-shadow: 0 0 0 1000px #fff inset;
 
 ```css
 ::-webkit-input-placeholder {
-  font-size:10pt;
+  font-size: 10pt;
 }
 ```
 
@@ -1437,7 +1455,7 @@ user-select: none;
 如：img{vertical-align:top;}(vartical-align的值可选，text-top，bottom，text-bottom等，视情况而定。)
 ```
 
-3. 设置父对象的文字大小为0px
+3. 设置父对象的文字大小为 0px
 
 ```
 如：img 的父对象是 imgClass ，那么只需给 imgClass 加上一个属性 font-size:0px 即可。但是这个会使父对象里的文字无法正常显示。就算文字部分被子对像括起来，设置子对像文字大小依然可以显示，但在CSS效验的时候会提示文字过小的错误。
@@ -1465,7 +1483,7 @@ user-select: none;
 }
 ```
 
-## 移动端1px像素线
+## 移动端 1px 像素线
 
 ```scss
 .mod_grid_bottom {
@@ -1506,35 +1524,35 @@ user-select: none;
 ```css
 @mixin scrollbarStyle($width) {
   /* 设置滚动条的样式 */
-   ::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     width: $width;
   }
-   ::-webkit-scrollbar-track:vertical {
-    background-color: #FFF;
+  ::-webkit-scrollbar-track:vertical {
+    background-color: #fff;
     &:hover {
-      background-color: #E6E7E6;
+      background-color: #e6e7e6;
       -webkit-transition: background-color 1000ms linear;
       -ms-transition: background-color 1000ms linear;
       transition: background-color 1000ms linear;
     }
   }
   /* 滚动条的滑轨背景颜色 */
-   ::-webkit-scrollbar-thumb:vertical {
-    background-color: #DCDCDC;
+  ::-webkit-scrollbar-thumb:vertical {
+    background-color: #dcdcdc;
     &:hover {
-      background-color: #B4B4B4;
+      background-color: #b4b4b4;
       -webkit-transition: background-color 1000ms linear;
       -ms-transition: background-color 1000ms linear;
       transition: background-color 1000ms linear;
     }
   }
   /* 滑块颜色 */
-   ::-webkit-scrollbar-button:vertical {
-    background-color: #FFF;
+  ::-webkit-scrollbar-button:vertical {
+    background-color: #fff;
   }
   /* 滑轨两头的监听按钮颜色 */
-   ::-webkit-scrollbar-corner:vertical {
-    background-color: #FFF;
+  ::-webkit-scrollbar-corner:vertical {
+    background-color: #fff;
   }
   /* 横向滚动条和纵向滚动条相交处尖角的颜色 */
 }
@@ -1549,12 +1567,12 @@ user-select: none;
 
 ```html
 <style>
-div {
-  margin:10px 0; 
-  width:100px;
-  border:1px solid red;
-  text-align-last: justify;
-}
+  div {
+    margin: 10px 0;
+    width: 100px;
+    border: 1px solid red;
+    text-align-last: justify;
+  }
 </style>
 
 <div>姓名</div>
@@ -1568,25 +1586,25 @@ div {
 
 ```html
 <style>
-div {
-  width:100px;
-  border:1px solid red;
-  position:relative;
-}
-div:hover:after {
-  content:attr(data-msg);
-  position:absolute;
-  font-size: 12px;
-  width:200%;
-  line-height:30px;
-  text-align:center;
-  left:0;
-  top:25px;
-  border:1px solid green;
-}
+  div {
+    width: 100px;
+    border: 1px solid red;
+    position: relative;
+  }
+  div:hover:after {
+    content: attr(data-msg);
+    position: absolute;
+    font-size: 12px;
+    width: 200%;
+    line-height: 30px;
+    text-align: center;
+    left: 0;
+    top: 25px;
+    border: 1px solid green;
+  }
 </style>
 
-<div data-msg="Open this file in Github Desktop">  
+<div data-msg="Open this file in Github Desktop">
   hover
 </div>
 ```
@@ -1688,10 +1706,10 @@ div:hover:after {
 .wrap {
   width: 100%;
   overflow: hidden;
-  display: -webkit-box;   // 将对象作为弹性伸缩盒子模型显示  *必须结合的属性*
-  -webkit-box-orient: vertical;   // 设置伸缩盒对象的子元素的排列方式  *必须结合的属性*
-  -webkit-line-clamp: 3;   // 用来限制在一个块元素中显示的文本的行数
-  word-break: break-all;   // 让浏览器实现在任意位置的换行 *break-all为允许在单词内换行*
+  display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示  *必须结合的属性*
+  -webkit-box-orient: vertical; // 设置伸缩盒对象的子元素的排列方式  *必须结合的属性*
+  -webkit-line-clamp: 3; // 用来限制在一个块元素中显示的文本的行数
+  word-break: break-all; // 让浏览器实现在任意位置的换行 *break-all为允许在单词内换行*
 }
 ```
 
@@ -1812,7 +1830,6 @@ https://qishaoxuan.github.io/css_tricks/
 
 https://segmentfault.com/a/1190000010640099
 
-
 # 综合应用
 
 ## SVG 文字动效
@@ -1820,27 +1837,25 @@ https://segmentfault.com/a/1190000010640099
 ```html
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>SVG</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <svg version="1.1" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
-        <symbol id="text">
-            <text x="10%" y="60%" class="text">腾讯学院</text>
-        </symbol>
-        <g>
-            <use xlink:href="#text" class="use-text"></use>
-            <use xlink:href="#text" class="use-text"></use>
-            <use xlink:href="#text" class="use-text"></use>
-            <use xlink:href="#text" class="use-text"></use>
-            <use xlink:href="#text" class="use-text"></use>
-        </g>
+      <symbol id="text">
+        <text x="10%" y="60%" class="text">腾讯学院</text>
+      </symbol>
+      <g>
+        <use xlink:href="#text" class="use-text"></use>
+        <use xlink:href="#text" class="use-text"></use>
+        <use xlink:href="#text" class="use-text"></use>
+        <use xlink:href="#text" class="use-text"></use>
+        <use xlink:href="#text" class="use-text"></use>
+      </g>
     </svg>
-</body>
-
+  </body>
 </html>
 ```
 
@@ -1959,7 +1974,7 @@ svg {
 - 浮层显示时 body 设置 `overflow: hidden`，浮层关闭时去掉
 - 设置宽度 100% 可以根据视窗自动调整，设置 max-width 和 min-width 可以控制最大最小宽度
 
-## 60帧的动画
+## 60 帧的动画
 
 渲染和处理 HTML 的时候，有一个关键渲染路径：
 
@@ -1967,10 +1982,10 @@ svg {
 
 现代浏览器能够通过使用 transform 和 opacity 完美运行 4 种样式。
 
-位置 — transform: translateX(n) translateY(n) translateZ(n);
-缩放 — transform: scale(n);
-旋转 — transform: rotate(n deg);
-透明 — opacity: n;
+位置  — transform: translateX(n) translateY(n) translateZ(n);
+缩放  — transform: scale(n);
+旋转  — transform: rotate(n deg);
+透明  — opacity: n;
 
 流畅渲染的核心是：避免在 transitions 中使用 left、top、right、bottom 属性
 
@@ -1978,23 +1993,23 @@ svg {
 
 ## 两栏布局
 
-左边固定100px，右边自适应
+左边固定 100px，右边自适应
 
 ```html
 <style>
-* {
-  margin: 0;
-  padding: 0;
-}
-.left {
-  float: left;
-  width: 100px;
-  background: red;
-}
-.right {
-  margin-left: 100px;
-  background: blue;
-}
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  .left {
+    float: left;
+    width: 100px;
+    background: red;
+  }
+  .right {
+    margin-left: 100px;
+    background: blue;
+  }
 </style>
 
 <section class="layout">
@@ -2007,7 +2022,7 @@ svg {
 
 ## 三栏布局
 
-其中左栏、右栏宽度各位300px，中间自适应。浮动、绝对定位、flex、table、网格布局（grid）
+其中左栏、右栏宽度各位 300px，中间自适应。浮动、绝对定位、flex、table、网格布局（grid）
 
 各自的优缺点：
 
@@ -2028,26 +2043,26 @@ svg {
 
 ```html
 <style>
-* {
-  margin: 0;
-  padding: 0;
-}
-.layout article>div {
-  min-height: 100px;
-}
-.layout.float .left {
-  float: left;
-  width: 300px;
-  background: red;
-}
-.layout.float .right {
-  float: right;
-  width: 300px;
-  background: blue;
-}
-.layout.float .center {
-  background: yellow;
-}
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  .layout article > div {
+    min-height: 100px;
+  }
+  .layout.float .left {
+    float: left;
+    width: 300px;
+    background: red;
+  }
+  .layout.float .right {
+    float: right;
+    width: 300px;
+    background: blue;
+  }
+  .layout.float .center {
+    background: yellow;
+  }
 </style>
 
 <section class="layout float">
@@ -2063,24 +2078,24 @@ svg {
 
 ```html
 <style>
-.layout.absolute article>div {
-  position: absolute;
-}
-.layout.absolute .left {
-  left: 0;
-  width: 300px;
-  background: red;
-}
-.layout.absolute .center {
-  left: 300px;
-  right: 300px;
-  background: yellow;
-}
-.layout.absolute .right {
-  right: 0;
-  width: 300px;
-  background: blue;
-}
+  .layout.absolute article > div {
+    position: absolute;
+  }
+  .layout.absolute .left {
+    left: 0;
+    width: 300px;
+    background: red;
+  }
+  .layout.absolute .center {
+    left: 300px;
+    right: 300px;
+    background: yellow;
+  }
+  .layout.absolute .right {
+    right: 0;
+    width: 300px;
+    background: blue;
+  }
 </style>
 
 <section class="layout absolute">
@@ -2096,21 +2111,21 @@ svg {
 
 ```html
 <style>
-.layout.flexbox article {
-  display: flex;
-}
-.layout.flexbox .left {
-  width: 300px;
-  background: red;
-}
-.layout.flexbox .center {
-  flex: 1;
-  background: yellow;
-}
-.layout.flexbox .right {
-  width: 300px;
-  background: blue;
-}
+  .layout.flexbox article {
+    display: flex;
+  }
+  .layout.flexbox .left {
+    width: 300px;
+    background: red;
+  }
+  .layout.flexbox .center {
+    flex: 1;
+    background: yellow;
+  }
+  .layout.flexbox .right {
+    width: 300px;
+    background: blue;
+  }
 </style>
 
 <section class="layout flexbox">
@@ -2126,25 +2141,25 @@ svg {
 
 ```html
 <style>
-.layout.table article {
-  width: 100%;
-  display: table;
-  height: 100px;
-}
-.layout.table article>div {
-  dispaly: table-cell;
-}
-.layout.table .left {
-  width: 300px;
-  background: red;
-}
-.layout.table .center {
-  background: yellow;
-}
-.layout.table .left {
-  width: 300px;
-  background: blue;
-}
+  .layout.table article {
+    width: 100%;
+    display: table;
+    height: 100px;
+  }
+  .layout.table article > div {
+    dispaly: table-cell;
+  }
+  .layout.table .left {
+    width: 300px;
+    background: red;
+  }
+  .layout.table .center {
+    background: yellow;
+  }
+  .layout.table .left {
+    width: 300px;
+    background: blue;
+  }
 </style>
 
 <section class="layout table">
@@ -2160,21 +2175,21 @@ svg {
 
 ```html
 <style>
-.layout.grid article {
-  display: grid;
-  width: 100%;
-  grid-template-rows: 100px;
-  grid-template-columns: 300px auto 300px;
-}
-.layout.grid .left {
-  background: red;
-}
-.layout.grid .center {
-  background: yellow;
-}
-.layout.grid .left {
-  background: blue;
-}
+  .layout.grid article {
+    display: grid;
+    width: 100%;
+    grid-template-rows: 100px;
+    grid-template-columns: 300px auto 300px;
+  }
+  .layout.grid .left {
+    background: red;
+  }
+  .layout.grid .center {
+    background: yellow;
+  }
+  .layout.grid .left {
+    background: blue;
+  }
 </style>
 
 <section class="layout grid">
@@ -2190,81 +2205,89 @@ svg {
 
 ```html
 <style>
-$loader_blue: #5096eb;
+  $loader_blue: #5096eb;
 
-.loader-wrap {
-  text-align: center;
-  padding: 30px 0;
-  .loader {
-    position: relative;
-    margin: 0 auto;
-    width: 50px; // 默认大小，会根据业务需求被组件的 props 覆盖
-    &:before {
-      content: '';
-      display: block;
-      padding-top: 100%;
-    }
-    .circular {
-      animation: rotate 2s linear infinite;
-      height: 100%;
-      transform-origin: center center;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-      .path {
-        stroke-dasharray: 1, 200;
-        stroke-dashoffset: 0;
-        animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
-        stroke-linecap: round;
+  .loader-wrap {
+    text-align: center;
+    padding: 30px 0;
+    .loader {
+      position: relative;
+      margin: 0 auto;
+      width: 50px; // 默认大小，会根据业务需求被组件的 props 覆盖
+      &:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
       }
-    }
-    @keyframes rotate {
-      100% {
-        transform: rotate(360deg);
+      .circular {
+        animation: rotate 2s linear infinite;
+        height: 100%;
+        transform-origin: center center;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        .path {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+          animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+          stroke-linecap: round;
+        }
       }
-    }
-    @keyframes dash {
-      0% {
-        stroke-dasharray: 1, 200;
-        stroke-dashoffset: 0;
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
       }
-      50% {
-        stroke-dasharray: 89, 200;
-        stroke-dashoffset: -35px;
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -124px;
+        }
       }
-      100% {
-        stroke-dasharray: 89, 200;
-        stroke-dashoffset: -124px;
-      }
-    }
-    @keyframes color {
-      100%,
-      0% {
-        stroke: $loader_blue;
-      }
-      40% {
-        stroke: $loader_blue;
-      }
-      66% {
-        stroke: $loader_blue;
-      }
-      80%,
-      90% {
-        stroke: $loader_blue;
+      @keyframes color {
+        100%,
+        0% {
+          stroke: $loader_blue;
+        }
+        40% {
+          stroke: $loader_blue;
+        }
+        66% {
+          stroke: $loader_blue;
+        }
+        80%,
+        90% {
+          stroke: $loader_blue;
+        }
       }
     }
   }
-}
 </style>
 
 <div class="loader-wrap">
   <div class="loader">
     <svg class="circular" viewBox="25 25 50 50">
-      <circle class="path" cx="50" cy="50" r="20" fill="none" strokeWidth="8" strokeMiterlimit="10"/>
+      <circle
+        class="path"
+        cx="50"
+        cy="50"
+        r="20"
+        fill="none"
+        strokeWidth="8"
+        strokeMiterlimit="10"
+      />
     </svg>
   </div>
 </div>
@@ -2274,27 +2297,27 @@ $loader_blue: #5096eb;
 
 ```html
 <style>
-.loading {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  background: #fff;
-  .pic {
-    width: 64px;
-    height: 64px;
-    border: 1px solid red;
-    background: url('images/loading.gif');
-    position: absolute;
+  .loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
     top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
-    margin: auto;
+    z-index: 100;
+    background: #fff;
+    .pic {
+      width: 64px;
+      height: 64px;
+      border: 1px solid red;
+      background: url('images/loading.gif');
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
   }
-}
 </style>
 
 <div class="loading">
@@ -2306,22 +2329,22 @@ $loader_blue: #5096eb;
 
 ```html
 <body>
-    <div class="wrapper">
-      <header>
-        <span>Header</span>
-      </header>
-      <main>
-        <p>我是内容</p>
-      </main>
-    </div>
-    <footer>
-      <span>Fotter</span>
-    </footer>
+  <div class="wrapper">
+    <header>
+      <span>Header</span>
+    </header>
+    <main>
+      <p>我是内容</p>
+    </main>
+  </div>
+  <footer>
+    <span>Fotter</span>
+  </footer>
 </body>
 ```
 
 ```css
-*{
+* {
   padding: 0;
   margin: 0;
 }
@@ -2390,8 +2413,7 @@ body {
 ## iOS 开关
 
 ```html
-<input type="checkbox" id="toggle" class="offscreen" />
-<label for="toggle" class="switch"></label>
+<input type="checkbox" id="toggle" class="offscreen" /> <label for="toggle" class="switch"></label>
 ```
 
 ```css
@@ -2439,59 +2461,57 @@ input[type='checkbox']:checked + .switch {
   - 距离屏幕左右两边各 10px
   - 高度始终未宽度的 50%
 - DIV 中有文本 A
-    - fornt-size: 20px
-    - 文本水平垂直居中
+  - fornt-size: 20px
+  - 文本水平垂直居中
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>BOX-A</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>BOX-A</title>
-  <style>
-    * {
-      padding: 0;
-      margin: 0;
-    }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-    }
+      .box {
+        position: relative;
+        background: red;
+        width: 100%;
+        height: 100%;
+      }
 
-    .box {
-      position: relative;
-      background: red;
-      width: 100%;
-      height: 100%;
-    }
+      .Abox {
+        margin-left: 10px;
+        width: calc(100vw - 20px);
+        height: calc(50vw - 10px);
+        position: absolute;
+        background: yellow;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+    </style>
+  </head>
 
-    .Abox {
-      margin-left: 10px;
-      width: calc(100vw - 20px);
-      height: calc(50vw - 10px);
-      position: absolute;
-      background: yellow;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="box">
-    <div class="Abox">A</div>
-  </div>
-</body>
-
+  <body>
+    <div class="box">
+      <div class="Abox">A</div>
+    </div>
+  </body>
 </html>
 ```
 
@@ -2504,7 +2524,7 @@ input[type='checkbox']:checked + .switch {
   </filter>
 </svg>
 <a href="#" class="translucent">
-  <div class="text">Button</div> 
+  <div class="text">Button</div>
 </a>
 ```
 
@@ -2558,41 +2578,41 @@ body
 ## 浏览器渲染过程
 
 - 解析 HTML，构建 DOM Tree
-    - Bytes => characters => tokens => nodes => DOM
+  - Bytes => characters => tokens => nodes => DOM
 - 解析 CSS，生成 CSS Tree
-    - Bytes => characters => tokens => nodes => CSSOM
+  - Bytes => characters => tokens => nodes => CSSOM
 - 当遇到 JS 时，DOM 构建过程会被吊起，需要等待 JS 执行完毕，触发 DOMContentLoaded
 - 合并 DOM Tree 和 CSS Tree，生成 Render Tree
-    - Render Tree 和 DOM Tree 相对应的，但不是严格意义上的一一对应，不可见的 DOM 元素不会插入到 Render Tree 中 `display: none` 等
-    - CSS 下载时异步，不会阻塞浏览器构建 DOM 树，但是会阻塞 Render Tree 渲染
-    - 对 Render Tree 的计算通常只需要遍历一次就可以完成，但 table 及其内部元素除外，他们可能需要多次计算，通常要花3倍于同等元素的时间
+  - Render Tree 和 DOM Tree 相对应的，但不是严格意义上的一一对应，不可见的 DOM 元素不会插入到 Render Tree 中 `display: none` 等
+  - CSS 下载时异步，不会阻塞浏览器构建 DOM 树，但是会阻塞 Render Tree 渲染
+  - 对 Render Tree 的计算通常只需要遍历一次就可以完成，但 table 及其内部元素除外，他们可能需要多次计算，通常要花 3 倍于同等元素的时间
 - 回流，负责各元素尺寸、位置的计算
-    - 引发回流的原因
-        - 页面渲染初始化
-        - DOM 结构改变，比如删除了某个节点
-        - render 树变化，比如减少了 padding
-        - 窗口 resize
-        - 获取某些属性
-            - offsetTop、offsetLeft、offsetWidth、offsetHeight
-            - scrollTop、scrollLeft、scrollWidth、scrollHeight
-            - clientTop、clientLeft、clientWidth、clientHeight
-            - width、height
-            - getComputedStyle()
-            - getBoundingClientRect()
-    - 减少回流
-        - CSS
-            - 使用 transform 替代 top
-            - 使用 visibility 替换 display: none
-            - 避免使用 table 布局，可能很小的一个小改动会造成整个 table 的重新布局
-            - 将动画效果应用到 position 属性为 absolute 或 fixed 的元素上
-            - 将频繁重绘或者回流的节点设置为图层，例如 will-change、video、iframe 等
-            - CSS3 硬件加速 GPU 加速
-        - JS
-            - 将样式定义为 class 并一次性更新
-            - 避免频繁操作 DOM，创建一个 documentFragment，在它上面应用所有 DOM 操作，最后再把它添加到文档中
-            - 避免多次读取 offset 等属性，无法避免则将它们缓存到变量
+  - 引发回流的原因
+    - 页面渲染初始化
+    - DOM 结构改变，比如删除了某个节点
+    - render 树变化，比如减少了 padding
+    - 窗口 resize
+    - 获取某些属性
+      - offsetTop、offsetLeft、offsetWidth、offsetHeight
+      - scrollTop、scrollLeft、scrollWidth、scrollHeight
+      - clientTop、clientLeft、clientWidth、clientHeight
+      - width、height
+      - getComputedStyle()
+      - getBoundingClientRect()
+  - 减少回流
+    - CSS
+      - 使用 transform 替代 top
+      - 使用 visibility 替换 display: none
+      - 避免使用 table 布局，可能很小的一个小改动会造成整个 table 的重新布局
+      - 将动画效果应用到 position 属性为 absolute 或 fixed 的元素上
+      - 将频繁重绘或者回流的节点设置为图层，例如 will-change、video、iframe 等
+      - CSS3 硬件加速 GPU 加速
+    - JS
+      - 将样式定义为 class 并一次性更新
+      - 避免频繁操作 DOM，创建一个 documentFragment，在它上面应用所有 DOM 操作，最后再把它添加到文档中
+      - 避免多次读取 offset 等属性，无法避免则将它们缓存到变量
 - 重绘，绘制页面像素信息
-    - outline, visibility, color、background-color
+  - outline, visibility, color、background-color
 - 浏览器会将各层的信息发送给 GPU，GPU 会将各层合成（composite），显示在屏幕上
 
 ![06.png](https://qiniu.chenng.cn/2019-01-13-21-29-17.png)
