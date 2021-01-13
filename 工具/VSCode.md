@@ -15,20 +15,15 @@ https://github.com/Microsoft/vscode-recipes
       "program": "${file}",
       "cwd": "${cwd}",
       "runtimeExecutable": "/Users/ringcrl/.nvm/versions/node/v8.12.0/bin/node",
-      "outputCapture" : "std"
+      "outputCapture": "std"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "node-ts",
-      "runtimeArgs": [
-        "-r",
-        "ts-node/register"
-      ],
-      "args": [
-        "${file}"
-      ],
-      "outputCapture" : "std"
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${file}"],
+      "outputCapture": "std"
     }
   ]
 }
@@ -49,19 +44,21 @@ https://github.com/Microsoft/vscode-recipes
       // linux下需要这样运行：xvfb-run -s "-ac -screen 0 1280x1024x24" node test/pixi.js
       // https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_launch-configuration-support-for-npm-and-other-tools
       "runtimeExecutable": "xvfb-run",
-      "runtimeArgs": [
-        "-s", "-ac -screen 0 1280x1024x24", "node"
-      ],
+      "runtimeArgs": ["-s", "-ac -screen 0 1280x1024x24", "node"],
       "request": "launch",
       "program": "${file}",
       "cwd": "${workspaceFolder}",
-      "outputCapture" : "std",
-    },
+      "outputCapture": "std"
+    }
   ]
 }
 ```
 
 # 使用技巧
+
+## 跳到上一次/下一次光标曾经停留过的地方
+
+`ctrl + -`、`ctrl + shift + -` 光标位置后退，前进
 
 ## 侧边栏查看引用
 
@@ -136,10 +133,6 @@ option + shift + H
 ## 光标所在行下方插入新行
 
 `ctrl + enter` 直接跳到下一行，不会影响当前行内容
-
-## 跳到上一次/下一次光标曾经停留过的地方
-
-`ctrl + alt + ←/→` 跳到上一次/下一次光标曾经停留过的地方
 
 ## 快速修复类型错误
 
