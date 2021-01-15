@@ -27,7 +27,6 @@
 }
 ```
 
-
 ## tsconfig.json
 
 ### 指定 config
@@ -111,32 +110,32 @@
 ### lib
 
 - JavaScript 功能
-    - es5
-    - es6
-    - es2015
-    - es7
-    - es2016
-    - es2017
-    - esnext
+  - es5
+  - es6
+  - es2015
+  - es7
+  - es2016
+  - es2017
+  - esnext
 - 运行环境
-    dom
-    dom.iterable
-    webworker
-    scripthost
+  dom
+  dom.iterable
+  webworker
+  scripthost
 - ESNext 功能选项
-    es2015.core
-    es2015.collection
-    es2015.generator
-    es2015.iterable
-    es2015.promise
-    es2015.proxy
-    es2015.reflect
-    es2015.symbol
-    es2015.symbol.wellknown
-    es2016.array.include
-    es2017.object
-    es2017.sharedmemory
-    esnext.asynciterable
+  es2015.core
+  es2015.collection
+  es2015.generator
+  es2015.iterable
+  es2015.promise
+  es2015.proxy
+  es2015.reflect
+  es2015.symbol
+  es2015.symbol.wellknown
+  es2016.array.include
+  es2017.object
+  es2017.sharedmemory
+  esnext.asynciterable
 
 ## 声明空间
 
@@ -228,25 +227,24 @@ Utility.error('maybe');
 // 转成 ES5
 (function (Utility) {
   // 添加属性至 Utility
-})(Utility || Utility = {});
+})((Utility || Utility = {}));
 ```
 
 ## 动态导入
 
 ```js
 import(/* webpackChunkName: "momentjs" */ 'moment')
-  .then(moment => {
+  .then((moment) => {
     // 懒加载的模块拥有所有的类型，并且能够按期工作
     // 类型检查会工作，代码引用也会工作
     const time = moment().format();
     console.log('TypeScript >= 2.4.0 Dynamic Import Expression:');
     console.log(time);
   })
-  .catch(err => {
+  .catch((err) => {
     console.log('Failed to load moment', err);
   });
 ```
-
 
 ```js
 {
@@ -308,42 +306,42 @@ eval(code); // tslint:disable-line
 
 #### 需求
 
-- 团队中的个性化需求难以满足。例如，saga中的异步函数需要在最外层加try-catch，且catch块中需要加异常上报
+- 团队中的个性化需求难以满足。例如，saga 中的异步函数需要在最外层加 try-catch，且 catch 块中需要加异常上报
 - 官方规则的开启与配置不符合当前团队情况
 
 #### 步骤
 
 - 编写规则信息
-    - 文件命名
-        - 驼峰命名
-        - 以 Rule 为后缀
-    - 类命名
-        - 继承自 `Lint.Rules.AbstractRule`
-    - 填写 metadata 信息
-        - ruleName 是规则名，使用烤串命名法，一般是将类名转为烤串命名格式
-        - description 一个简短的规则说明
-        - descriptionDetails 详细的规则说明
-        - rationale 理论基础
-        - options 配置参数形式，如果没有可以配置为 null
-        - optionExamples 参数范例 ，如没有参数无需配置
-        - typescriptOnly true/false 是否只适用于 TypeScript
-        - hasFix true/false 是否带有修复方式
-        - requiresTypeInfo 是否需要类型信息
-        - optionsDescrition options 的介绍
-        - type 规则的类型
-        - functionality ： 针对于语句问题以及功能问题。
-        - maintainability：主要以代码简洁、可读、可维护为目标的规则。
-        - style：以维护代码风格基本统一的规则。
-        - typescript：针对于TypeScript进行提示。
-    - 定义错误提示信息
-        - `public static FAILURE_STRING = 'Class name must be in pascal case'`
+  - 文件命名
+    - 驼峰命名
+    - 以 Rule 为后缀
+  - 类命名
+    - 继承自 `Lint.Rules.AbstractRule`
+  - 填写 metadata 信息
+    - ruleName 是规则名，使用烤串命名法，一般是将类名转为烤串命名格式
+    - description 一个简短的规则说明
+    - descriptionDetails 详细的规则说明
+    - rationale 理论基础
+    - options 配置参数形式，如果没有可以配置为 null
+    - optionExamples 参数范例 ，如没有参数无需配置
+    - typescriptOnly true/false 是否只适用于 TypeScript
+    - hasFix true/false 是否带有修复方式
+    - requiresTypeInfo 是否需要类型信息
+    - optionsDescrition options 的介绍
+    - type 规则的类型
+    - functionality ： 针对于语句问题以及功能问题。
+    - maintainability：主要以代码简洁、可读、可维护为目标的规则。
+    - style：以维护代码风格基本统一的规则。
+    - typescript：针对于 TypeScript 进行提示。
+  - 定义错误提示信息
+    - `public static FAILURE_STRING = 'Class name must be in pascal case'`
 - 编写检查逻辑
-    - 实现 apply 方法
-        - 返回 `applyWithFunction`、`applyWithWalker`，区别在于可以通过 IWalker 实现一个自定义的 IWalker 类
-    - 语法树解析
-        - AST Explorer：https://github.com/fkling/astexplorer
-        - TypeScript AST Viewer：https://github.com/dsherret/ts-ast-viewer
-    - 检查规则代码编写
+  - 实现 apply 方法
+    - 返回 `applyWithFunction`、`applyWithWalker`，区别在于可以通过 IWalker 实现一个自定义的 IWalker 类
+  - 语法树解析
+    - AST Explorer：https://github.com/fkling/astexplorer
+    - TypeScript AST Viewer：https://github.com/dsherret/ts-ast-viewer
+  - 检查规则代码编写
 - 规则配置使用
 
 参考：https://github.com/palantir/tslint/blob/master/src/rules/classNameRule.ts
@@ -354,30 +352,30 @@ eval(code); // tslint:disable-line
 
 ```ts
 // 布尔值
-let isDone:boolean = false;
+let isDone: boolean = false;
 
 // 数值
-let decLiteral:number = 6;
-let notANumber:number = NaN;
-let infinityNumber:number = Infinity;
+let decLiteral: number = 6;
+let notANumber: number = NaN;
+let infinityNumber: number = Infinity;
 
 // 字符串
-let myName:string = 'Tom';
-let sentence:string = `Hello, my name is ${myName}.
+let myName: string = 'Tom';
+let sentence: string = `Hello, my name is ${myName}.
     I'll be ${myAge + 1} years old next month.`;
 
 // 空值
-function alertName():void {
+function alertName(): void {
   // JavaScript 没有空值（Void）的概念
   // 在 TypeScirpt 中，可以用 void 表示没有任何返回值的函数
   alert('My name is Tom');
 }
 
 // Null 和 Undefined
-let u:undefined = undefined;
-let n:null = null;
+let u: undefined = undefined;
+let n: null = null;
 // undefined 和 null 是所有类型的子类型。也就是说 undefined 类型的变量，可以赋值给 number 类型的变量：
-let num:number = undefined;
+let num: number = undefined;
 ```
 
 ## 任意类型
@@ -389,10 +387,10 @@ let num:number = undefined;
 - 声明的时候，未指定其类型，那么它会被识别为任意值类型
 
 ```js
-let myFavoriteNumber:any = 'seven';
+let myFavoriteNumber: any = 'seven';
 myFavoriteNumber = 7;
 
-let anyThing:any = 'hello';
+let anyThing: any = 'hello';
 console.log(anyThing.myName);
 console.log(anyThing.myName.firstName);
 
@@ -403,7 +401,7 @@ anyThing.myName.setFirstName('Cat');
 
 let something;
 // 上下等价
-let something:any;
+let something: any;
 ```
 
 ## unknown 未知类型
@@ -411,12 +409,12 @@ let something:any;
 `any` 增加了运行时出错的风险，表示不知道什么类型的场景使用 `unknown`
 
 ```js
-let bar: unknown
+let bar: unknown;
 
-bar.toFixed(1) // Error
+bar.toFixed(1); // Error
 
 if (typeof bar === 'number') {
-  bar.toFixed(1) // OK
+  bar.toFixed(1); // OK
 }
 ```
 
@@ -439,7 +437,7 @@ myFavoriteNumber = 7;
 ### 基本使用
 
 ```ts
-let myFavoriteNumber:string|number;
+let myFavoriteNumber: string | number;
 myFavoriteNumber = 'seven';
 myFavoriteNumber = 7;
 ```
@@ -462,7 +460,7 @@ interface Circle {
 }
 type Shape = Square | Rectangle | Circle;
 
-function area(s:Shape) {
+function area(s: Shape) {
   switch (s.kind) {
     case 'square':
       return s.size * s.size;
@@ -471,7 +469,7 @@ function area(s:Shape) {
     case 'circle':
       return Math.PI * s.radius ** 2;
     default:
-      const _exhaustiveCheck:never = s;
+      const _exhaustiveCheck: never = s;
   }
 }
 ```
@@ -487,8 +485,7 @@ type NameOrResolver = Name | NameResolver;
 function getName(n: NameOrResolver): Name {
   if (typeof n === 'string') {
     return n;
-  }
-  else {
+  } else {
     return n();
   }
 }
@@ -505,13 +502,14 @@ function getName(n: NameOrResolver): Name {
 可以把泛型比喻成“方法”，“方法”可以传参，可以有多个参数，可以有默认值
 
 ```ts
-type Foo<T, U = string> = { // 多参数、默认值
-  foo: Array<T> // 可以传递
-  bar: U
-}
+type Foo<T, U = string> = {
+  // 多参数、默认值
+  foo: Array<T>; // 可以传递
+  bar: U;
+};
 
-type A = Foo<number> // type A = { foo: number[]; bar: string; }
-type B = Foo<number, number> // type B = { foo: number[]; bar: number; }
+type A = Foo<number>; // type A = { foo: number[]; bar: string; }
+type B = Foo<number, number>; // type B = { foo: number[]; bar: number; }
 ```
 
 ### 函数、类、方法
@@ -570,7 +568,7 @@ util.reverse<string>(['a', 'b', 'c']);
 ### 多个类型参数
 
 ```ts
-function swap<T, U>(tuple:[T, U]) : [U, T] {
+function swap<T, U>(tuple: [T, U]): [U, T] {
   return [tuple[1], tuple[0]];
 }
 swap([7, 'seven']);
@@ -593,7 +591,7 @@ function loggingIdentity<T>(arg: T): T {
 interface Lengthwise {
   length: number;
 }
-function loggingIdentity<T extends Lengthwise>(arg:T) : T {
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
   console.log(arg.length);
   return arg;
 }
@@ -630,8 +628,8 @@ import Ax from './axios';
 import { ResponseData } from './interface.ts';
 export function getUser<T>() {
   return Ax.get<ResponseData<T>>('/somepath')
-    .then(res => res.data)
-    .catch(err => console.error(err));
+    .then((res) => res.data)
+    .catch((err) => console.error(err));
 }
 ```
 
@@ -640,7 +638,7 @@ export function getUser<T>() {
 - 可以从两个对象中创建一个新对象，新对象会拥有着两个对象所有的功能
 
 ```ts
-function extend<T, U>(first:T, second:U) : T & U {
+function extend<T, U>(first: T, second: U): T & U {
   const result = <T & U>{};
   for (const id in first) {
     (<T>result)[id] = first[id];
@@ -674,8 +672,8 @@ interface Name {
 
 ```ts
 interface Person {
-  name:string;
-  age?:number;
+  name: string;
+  age?: number;
 }
 ```
 
@@ -685,14 +683,14 @@ interface Person {
 
 ```ts
 interface Person {
-  name:string;
-  age?:number;
-  [propName:string]:any;
+  name: string;
+  age?: number;
+  [propName: string]: any;
 }
 
-let tom:Person = {
+let tom: Person = {
   name: 'Tom',
-  gender: 'male'
+  gender: 'male',
 };
 ```
 
@@ -708,10 +706,10 @@ interface Person {
   age?: number;
   [propName: string]: any;
 }
-let tom:Person = {
+let tom: Person = {
   id: 89757,
   name: 'Tom',
-  gender: 'male'
+  gender: 'male',
 };
 tom.id = 9527;
 // Cannot assign to 'id' because it is a constant or a read-only property
@@ -719,10 +717,10 @@ tom.id = 9527;
 
 ```ts
 interface Props {
-  readonly foo:number;
+  readonly foo: number;
 }
 interface State {
-  readonly bar:number;
+  readonly bar: number;
 }
 export class Something extends React.Component<Props, State> {
   someMethod() {
@@ -736,38 +734,36 @@ export class Something extends React.Component<Props, State> {
 
 ### [] 表示
 
-
-
 ```ts
 // 单个类型
-let fibonacci:number[] = [1, 1, 2, 3, 5];
+let fibonacci: number[] = [1, 1, 2, 3, 5];
 
 // 多个类型
-let typesArr:[string, string][] = ['a', 'b']
-let typesArr:([string, string]|[string, string, any])[]
+let typesArr: [string, string][] = ['a', 'b'];
+let typesArr: ([string, string] | [string, string, any])[];
 ```
 
 ### Array 表示
 
 ```ts
-let fibonacci:Array<number> = [1, 1, 2, 3, 5];
+let fibonacci: Array<number> = [1, 1, 2, 3, 5];
 ```
 
 ### 接口表示
 
 ```ts
 interface NumberArray {
-  [index:number]: number;
+  [index: number]: number;
 }
-let fibonacci:NumberArray = [1, 1, 2, 3, 5];
+let fibonacci: NumberArray = [1, 1, 2, 3, 5];
 
 // 自定义类型
 export interface FieldDropdownOption {
-  [0]:FieldDropdownName;
-  [1]:FieldDropdownId;
-  [2]?:FieldDropdownIcon|undefined;
-  [3]?:FieldDropdownTriggleEvent|undefined;
-  [4]?:FieldDropdownLabel|undefined;
+  [0]: FieldDropdownName;
+  [1]: FieldDropdownId;
+  [2]?: FieldDropdownIcon | undefined;
+  [3]?: FieldDropdownTriggleEvent | undefined;
+  [4]?: FieldDropdownLabel | undefined;
 }
 ```
 
@@ -777,7 +773,7 @@ export interface FieldDropdownOption {
 
 ```ts
 function sum() {
-  let args:IArguments = arguments;
+  let args: IArguments = arguments;
 }
 ```
 
@@ -788,7 +784,7 @@ function sum() {
 ### 函数声明
 
 ```ts
-function sum(x:number, y:number) : number {
+function sum(x: number, y: number): number {
   return x + y;
 }
 ```
@@ -796,8 +792,8 @@ function sum(x:number, y:number) : number {
 ### 函数表达式
 
 ```ts
-let mySum : (x:number, y:number) => number;
-mySum = function(x:number, y:number) : number {
+let mySum: (x: number, y: number) => number;
+mySum = function (x: number, y: number): number {
   return x + y;
 };
 ```
@@ -808,7 +804,7 @@ mySum = function(x:number, y:number) : number {
 - 换句话说，可选参数后面不允许再出现必须参数了
 
 ```ts
-function buildName(firstName:string, lastName?:string) {
+function buildName(firstName: string, lastName?: string) {
   if (lastName) {
     return firstName + ' ' + lastName;
   } else {
@@ -820,7 +816,7 @@ function buildName(firstName:string, lastName?:string) {
 ### 默认参数
 
 ```ts
-function buildName(firstName:string = 'Tom', lastName: string) {
+function buildName(firstName: string = 'Tom', lastName: string) {
   return firstName + ' ' + lastName;
 }
 ```
@@ -830,7 +826,7 @@ function buildName(firstName:string = 'Tom', lastName: string) {
 - `...rest` 表示剩余参数，其中 `rest` 是数组
 
 ```ts
-function push(array: any[], ...items:any[]) {
+function push(array: any[], ...items: any[]) {
   items.forEach((item) => {
     array.push(item);
   });
@@ -851,7 +847,7 @@ yarn add @types/jquery -D
 
 ```ts
 declare type JQeury = any;
-declare var $:JQuery;
+declare var $: JQuery;
 ```
 
 ### 声明模块
@@ -861,13 +857,13 @@ declare module 'react-native-image-sequence' {
   import * as React from 'react';
   import { ImageRequireSource, StyleProp, ViewStyle } from 'react-native';
   interface ImageSequenceProps {
-    images:ImageRequireSource[];
-    loop?:boolean;
-    startFrameIndex?:number;
-    framesPerSecond?:number;
-    style?:StyleProp<ViewStyle>;
+    images: ImageRequireSource[];
+    loop?: boolean;
+    startFrameIndex?: number;
+    framesPerSecond?: number;
+    style?: StyleProp<ViewStyle>;
   }
-  const ImageSequence:(props:ImageSequenceProps) => React.Component<ImageSequenceProps>;
+  const ImageSequence: (props: ImageSequenceProps) => React.Component<ImageSequenceProps>;
   export default ImageSequence;
 }
 ```
@@ -879,10 +875,10 @@ declare module 'react-native-image-sequence' {
 - Boolean、Error、Date、RegExp 等
 
 ```ts
-let b:Boolean = new Boolean(1);
-let e:Error = new Error('Error occurred');
-let d:Date = new Date();
-let r:RegExp = /[a-z]/;
+let b: Boolean = new Boolean(1);
+let e: Error = new Error('Error occurred');
+let d: Date = new Date();
+let r: RegExp = /[a-z]/;
 ```
 
 ### DOM 和 BOM
@@ -890,9 +886,9 @@ let r:RegExp = /[a-z]/;
 - Document、HTMLElement、Event、NodeList 等
 
 ```ts
-let body:HTMLElement = document.body;
-let allDiv:NodeList = document.querySelectorAll('div');
-document.addEventListener('click', function(e: MouseEvent) {
+let body: HTMLElement = document.body;
+let allDiv: NodeList = document.querySelectorAll('div');
+document.addEventListener('click', function (e: MouseEvent) {
   // Do something
 });
 
@@ -929,13 +925,13 @@ const [name, num] = nameNumber;
 enum Color {
   Red, // 0
   Green, // 1
-  Blue // 2
+  Blue, // 2
 }
 
 enum Color {
   DarkRed = 3, // 3
   DarkGreen, // 4
-  DarkBlue // 5
+  DarkBlue, // 5
 }
 ```
 
@@ -948,14 +944,22 @@ export enum EvidenceTypeEnum {
   PASSPORT = 'passport',
   SIGHTED_STUDENT_CARD = 'sighted_tertiary_edu_id',
   SIGHTED_KEYPASS_CARD = 'sighted_keypass_card',
-  SIGHTED_PROOF_OF_AGE_CARD = 'sighted_proof_of_age_card'
+  SIGHTED_PROOF_OF_AGE_CARD = 'sighted_proof_of_age_card',
 }
 ```
 
 ### 转换过程
 
 ```ts
-enum Days {Sun, Mon, Tue, Wed, Thu, Fri, Sat};
+enum Days {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
 console.log(Days['Sun'] === 0); // true
 console.log(Days['Mon'] === 1); // true
 console.log(Days['Tue'] === 2); // true
@@ -969,13 +973,13 @@ console.log(Days[6] === 'Sat'); // true
 // 上面的例子会被编译为
 var Days;
 (function (Days) {
-  Days[Days["Sun"] = 0] = "Sun";
-  Days[Days["Mon"] = 1] = "Mon";
-  Days[Days["Tue"] = 2] = "Tue";
-  Days[Days["Wed"] = 3] = "Wed";
-  Days[Days["Thu"] = 4] = "Thu";
-  Days[Days["Fri"] = 5] = "Fri";
-  Days[Days["Sat"] = 6] = "Sat";
+  Days[(Days['Sun'] = 0)] = 'Sun';
+  Days[(Days['Mon'] = 1)] = 'Mon';
+  Days[(Days['Tue'] = 2)] = 'Tue';
+  Days[(Days['Wed'] = 3)] = 'Wed';
+  Days[(Days['Thu'] = 4)] = 'Thu';
+  Days[(Days['Fri'] = 5)] = 'Fri';
+  Days[(Days['Sat'] = 6)] = 'Sat';
 })(Days || (Days = {}));
 ```
 
@@ -986,21 +990,21 @@ var Days;
 
 ```ts
 // T[K]，索引访问操作符
-function pluck<T, K extends keyof T>(o:T, names:K[]) : T[K][] {
+function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
   return names.map((n) => o[n]);
 }
 
 interface Person {
-    name:string;
-    age:number;
+  name: string;
+  age: number;
 }
-let person:Person = {
-    name: 'Jarid',
-    age: 35,
+let person: Person = {
+  name: 'Jarid',
+  age: 35,
 };
 // 索引类型查询操作符
 // let personProps:keyof Person; // 'name' | 'age'
-let strings:string[] = pluck(person, ['name']); // ok, string[]
+let strings: string[] = pluck(person, ['name']); // ok, string[]
 ```
 
 ## 类型映射
@@ -1010,72 +1014,70 @@ type Keys = 'option1' | 'option2';
 type Flags = { [K in Keys]: boolean };
 
 // Readonly可以把每个属性都变成只读
-type A01 = { a: number, b: string }
-type A011 = Readonly<A01> // {readonly a: number;readonly b: string;}
+type A01 = { a: number; b: string };
+type A011 = Readonly<A01>; // {readonly a: number;readonly b: string;}
 // Readonly 实现
 type Readonly<T> = {
   readonly [U in keyof T]: T[U];
 };
 
 // Partial<T>, 让属性都变成可选的
-type A02 = { a: number, b: string }
-type A021 = Partial<A02> // { a?: number; b?: string;}
+type A02 = { a: number; b: string };
+type A021 = Partial<A02>; // { a?: number; b?: string;}
 // Partial 实现
 type Partial<T> = {
   [U in keyof T]?: T[U];
 };
 
 // Required<T>, 让属性都变成必选
-type A03 = { a?: number, b?: string }
-type A031 = Required<A03> // { a: number; b: string;}
+type A03 = { a?: number; b?: string };
+type A031 = Required<A03>; // { a: number; b: string;}
 // Required 实现
 type Required<T> = {
   [U in keyof T]-?: T[U];
 };
 
 // Pick<T,K>, 只保留自己选择的属性, U代表属性集合
-type A04 = { a: number, b: string }
-type A041 = Pick<A04, 'a'> //  {a:number}
+type A04 = { a: number; b: string };
+type A041 = Pick<A04, 'a'>; //  {a:number}
 // Pick 实现
 type Pick<T, K extends keyof T> = {
   [P in K]: T[P];
 };
 
 // Omit<T,K> 实现排除已选的属性
-type A05 = { a: number, b: string }
-type A051 = Omit<A05, 'a'> // {b:string}
+type A05 = { a: number; b: string };
+type A051 = Omit<A05, 'a'>; // {b:string}
 // Omit 实现
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
 // Record<K,T>, 创建一个类型,T代表键值的类型, U代表值的类型
-type A06 = Record<string, string> // 等价{[k:string]:string}
+type A06 = Record<string, string>; // 等价{[k:string]:string}
 
 // Exclude<T,U>, 过滤T中和U相同(或兼容)的类型
-type A07 = { a: number, b: string }
-type A071 = Exclude<number | string, string | number[]> // number
-type A072 = Exclude<number | string, any | number[]> // never , 因为any兼容number, 所以number被过滤掉
+type A07 = { a: number; b: string };
+type A071 = Exclude<number | string, string | number[]>; // number
+type A072 = Exclude<number | string, any | number[]>; // never , 因为any兼容number, 所以number被过滤掉
 // Exclude 实现
 type Exclude<T, U> = T extends U ? never : T;
 
 // Extract<T,U>, 提取T中和U相同(或兼容)的类型
-type A08 = { a: number, b: string }
-type A081 = Extract<number | string, string | number[]> // string
+type A08 = { a: number; b: string };
+type A081 = Extract<number | string, string | number[]>; // string
 
 // NonNullable, 剔除T中的undefined和null
-type A09 = NonNullable<number | string | null | undefined> // number|string
+type A09 = NonNullable<number | string | null | undefined>; // number|string
 
 // ReturnType, 获取T的返回值的类型
-type A10 = ReturnType<() => number> // number
+type A10 = ReturnType<() => number>; // number
 // ReturnType 实现
-type ReturnType<T> = T extends (
-  ...args: any[]
-) => infer R ? R : any;
+type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any;
 
 // Parameters 获取函数参数类型
 interface A11 {
   (a: number, b: string): string[];
 }
-type A1 = Parameters<A11> // [number, string]
+type A1 = Parameters<A11>; // [number, string]
 ```
 
 ## 类型保护
@@ -1092,44 +1094,44 @@ function isFish(pet: Fish | Bird): pet is Fish {
 
 ```ts
 function isNumber(x: any): x is number {
-  return typeof x === "number";
+  return typeof x === 'number';
 }
 
 function isString(x: any): x is string {
-  return typeof x === "string";
+  return typeof x === 'string';
 }
 ```
 
 ### instanceof 类型保护
 
-- 此构造函数的 prototype 属性的类型，如果它的类型不为 any的话
+- 此构造函数的 prototype 属性的类型，如果它的类型不为 any 的话
 - 构造签名所返回的类型的联合
 
 ### 声明
 
 ```ts
 const foo: {
-  [index:string]:{ message: string };
+  [index: string]: { message: string };
 } = {};
 ```
 
 ### 有限字面量
 
 ```ts
-type Index = 'a'|'b'|'c';
+type Index = 'a' | 'b' | 'c';
 type FromIndex = { [k in Index]?: number };
-const good:FromIndex = { b: 1, c: 2 };
+const good: FromIndex = { b: 1, c: 2 };
 ```
 
 ### 多类型索引
 
 ```ts
 interface ArrStr {
-  [key:string]:string|number; // 必须包括所用成员类型
-  [index:number]:string; // 字符串索引类型的子级
+  [key: string]: string | number; // 必须包括所用成员类型
+  [index: number]: string; // 字符串索引类型的子级
 
   // example
-  length:number;
+  length: number;
 }
 ```
 
@@ -1169,8 +1171,8 @@ foo.bas = 'Hello World';
 
 ```ts
 // 脚本模式
-GlobalStore.foo = "foo";
-GlobalStore.bar = "bar"; // Error
+GlobalStore.foo = 'foo';
+GlobalStore.bar = 'bar'; // Error
 
 declare var GlobalStore: {
   foo: string;
@@ -1179,8 +1181,8 @@ declare var GlobalStore: {
 
 ```ts
 // 模块模式
-GlobalStore.foo = "foo";
-GlobalStore.bar = "bar";
+GlobalStore.foo = 'foo';
+GlobalStore.bar = 'bar';
 
 declare global {
   var GlobalStore: {
@@ -1197,29 +1199,57 @@ export {}; // export 关键字改变文件的模式
 ```ts
 // 类型扩展
 interface A {
-  a: string
+  a: string;
 }
-interface B extends A { // { a: string, b: string }
-  b: string
+interface B extends A {
+  // { a: string, b: string }
+  b: string;
 }
 
 // 条件类型中起到三目运算符功能
-type Bar<T> = T extends string ? 'string' : never
-type C = Bar<number> // never
-type D = Bar<string> // string
-type E = Bar<'fooo'> // string
+type Bar<T> = T extends string ? 'string' : never;
+type C = Bar<number>; // never
+type D = Bar<string>; // string
+type E = Bar<'fooo'>; // string
 
 // 类型约束1
-type Foo<T extends object> = T
-type F = Foo<number> // 类型“number”不满足约束“object”。
-type G = Foo<string> // 类型“string”不满足约束“object”。
-type H = Foo<{}> // OK
+type Foo<T extends object> = T;
+type F = Foo<number>; // 类型“number”不满足约束“object”。
+type G = Foo<string>; // 类型“string”不满足约束“object”。
+type H = Foo<{}>; // OK
 
 // 类型约束2
 interface ILengthy {
   length: number;
 }
 function logLength<T extends ILengthy>(arg: T) {
-  console.log(arg.length)
+  console.log(arg.length);
 }
+```
+
+## TypeScript 代码整洁之道
+
+https://github.com/pipiliang/clean-code-typescript
+
+既可以通过变量来封装判断、也可以通过函数来封装判断
+
+避免命名上出现否定的词汇
+
+类里面通过属性来做类区分，这时候可以考虑多个子类了，封装同样的方法
+
+尝试使用 setter 做数据校验
+
+尝试使用参数属性
+
+```ts
+class Test {
+  constructor(private p1: number, private p2: string) {}
+
+  log() {
+    console.log(this.p1, this.p2);
+  }
+}
+
+const test = new Test(1, 'a');
+test.log(); // 1 a
 ```
