@@ -9,37 +9,16 @@ https://github.com/Microsoft/vscode-recipes
   "version": "1.0.0",
   "configurations": [
     {
+      "name": "JS",
       "type": "node",
       "request": "launch",
-      "name": "node-js",
       "program": "${file}",
-      "cwd": "${cwd}",
-      "runtimeExecutable": "/Users/ringcrl/.nvm/versions/node/v8.12.0/bin/node",
+      "cwd": "${workspaceFolder}",
       "outputCapture": "std"
     },
     {
-      "type": "node",
-      "request": "launch",
-      "name": "node-ts",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${file}"],
-      "outputCapture": "std"
-    }
-  ]
-}
-```
-
-```json
-// 支持参数启动
-
-{
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.0.1",
-  "configurations": [
-    {
-      "name": "JS",
+      // 支持参数启动
+      "name": "JS-CONFIG",
       "type": "node",
       // linux下需要这样运行：xvfb-run -s "-ac -screen 0 1280x1024x24" node test/pixi.js
       // https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_launch-configuration-support-for-npm-and-other-tools
@@ -49,60 +28,95 @@ https://github.com/Microsoft/vscode-recipes
       "program": "${file}",
       "cwd": "${workspaceFolder}",
       "outputCapture": "std"
+    },
+    {
+      "name": "TS-NODE",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${file}"]
+    },
+    {
+      "name": "Webpack",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+      "args": ["--config=build/webpack.build-lib.js"]
+    },
+    {
+      "name": "Jest",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--testPathPattern=${file}", "--config=jest.config.js", "--runInBand"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
+    },
+    {
+      "name": "Python",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
     }
   ]
 }
 ```
 
-# 使用技巧
+## .vscode/settings.json
 
-## 跳到上一次/下一次光标曾经停留过的地方
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+# 快捷键
+
+## 跳转光标曾停留过的位置
 
 `ctrl + -`、`ctrl + shift + -` 光标位置后退，前进
 
-## 侧边栏查看引用
-
-shift + alt + F12 可以在侧边栏查看引用
-
 ## 资源管理器同级全选
 
-选中文件后 cmd + a 全选
+选中文件后 `cmd + a` 全选
 
-## 多行转一行
+## 整个单词选中
 
-ctrl + J
-
-## 删除上一个词
-
-option + delete
-
-## 选中词
-
-option + Shift + 右键头 / 左键头
+`option + shift + ←/→`
 
 ## 切换自动换行
 
-option + z
+`option + z`
 
-## 跳转到匹配括号
+## 跳转到匹配的括号
 
-cmd + shift + \
+`cmd + shift + \`
 
-## 转到下一个错误
+## 查看方法调用链
 
-F8
+`option + shift + h`
 
-## 选中所有匹配项
+## 剪切、删除整行
 
-cmd + F2
+`cmd + x`
 
-## 查看定义
+## 移动光标所在行
 
-option + F12
+`alt + ↑/↓`
 
-## 在资源管理器显示文件
+## 开关左侧栏
 
-cmd + K R
+`cmd + b`
+
+## 多行选择
+
+`shift + option + 鼠标拖拽`
+
+# 使用技巧
 
 ## 搜索过滤多个文件夹
 
@@ -110,30 +124,10 @@ files to exclude
 
 {dist, browser}
 
-## 查看方法调用关系
+## TS 重构
 
-option + shift + H
+选中代码，右键选择重构
 
-## 在匹配的闭合标签来回跳跃
+## 快速滚动
 
-`cmd + shift + \` 在匹配的闭合标签来回跳跃
-
-## 剪切整行
-
-剪切文本。但当未选中文本时，该命令会剪切光标所在整行，当然连续 `cmd + x` 用于删除行也是不错的选择
-
-## 复制整行
-
-`cmd + c` 复制文本。但当未选中文本时，该命令会复制光标所在整行
-
-## 移动整行
-
-`alt + ↑/↓` 上下移动光标所在行
-
-## 光标所在行下方插入新行
-
-`ctrl + enter` 直接跳到下一行，不会影响当前行内容
-
-## 快速修复类型错误
-
-`cmd + .`
+按住 `option` 滚动鼠标，可以 5 倍速滚动屏幕
