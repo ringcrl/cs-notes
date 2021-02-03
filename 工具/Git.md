@@ -81,7 +81,7 @@ git log --stat
 
 # git submodule
 
- 是工作目录中的一个子目录，但 Git 还是会将它视作一个子模块。当你不在那个目录中时，Git 并不会跟踪它的内容， 而是将它看作子模块仓库中的某个具体的提交
+是工作目录中的一个子目录，但 Git 还是会将它视作一个子模块。当你不在那个目录中时，Git 并不会跟踪它的内容， 而是将它看作子模块仓库中的某个具体的提交
 
 ## 添加 submodule
 
@@ -196,7 +196,7 @@ git tag -f v0.3.1
 git push -f --tags
 ```
 
-# git remote 
+# git remote
 
 ## 删除 remote 分支
 
@@ -457,7 +457,7 @@ https://stackoverflow.com/questions/21025314/who-is-us-and-who-is-them-according
 
 # fork 与 PR
 
-- fork 
+- fork
 - git clone
 
 ## 添加 upstream
@@ -561,4 +561,14 @@ fi
 
 ```sh
 git push --force --tags origin 'refs/heads/*'
+```
+
+## 修复 git-lfs 错误
+
+```sh
+# 查看 git 路径
+git --exec-path
+
+# 拷贝 git-lfs
+cp /usr/local/bin/git-lfs <path_to_git>
 ```
