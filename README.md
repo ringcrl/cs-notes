@@ -23,13 +23,13 @@ module.exports = {
     node: true,
     es6: true,
   },
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ['airbnb-base'],
 };
 ```
 
 ### TS
+
+首先安装上述 JS 部分基础依赖
 
 TypeScript：https://www.npmjs.com/package/eslint-config-airbnb-typescript
 
@@ -78,7 +78,7 @@ module.exports = {
   trailingComma: 'es5', // Trailing commas where valid in ES5 (objects, arrays, etc)
   printWidth: 100, // 100字符换行
   tabWidth: 2, // 缩进空格数
-}
+};
 ```
 
 ```json
