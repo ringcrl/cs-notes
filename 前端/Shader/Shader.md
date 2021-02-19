@@ -5,6 +5,24 @@
 - `cmd + shift + p`，选择 `Configure User Snippets`，选择 `glsl`
 - 把 `assets/glsl.json` 拷贝进去
 
+## Clang-Format
+
+```sh
+# 安装 clang-format
+brew install clang-format
+
+# 查看二进制文件位置
+brew info clang-format
+```
+
+VSC 安装 `Clang-Format` 插件，配置
+
+```json
+{
+  "clang-format.executable": "/absolute/path/to/clang-format"
+}
+```
+
 # 基本概念
 
 - OpenGL：全称为 Open Graphics Library（开放图形库）。是用于渲染 2D 或 3D 图像的跨语言跨平台的应用程序编程接口
