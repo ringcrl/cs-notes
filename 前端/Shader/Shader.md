@@ -287,18 +287,6 @@ mat2 d = a+b; // mat2(1.0+10.0,2.0+20.0,3.0+30.0,4.0+40);
 
 `inout` inout 下,形参可以被理解为是一个带值的"坑位",及可读也可写,在函数中,修改 inout 修饰的形参会影响到实参本身.
 
-## 内置函数
-
-### 三角函数
-
-sin(), cos(), tan(), asin(), acos(), atan(), pow(), exp(), log(), sqrt(), abs(), sign(), floor(), ceil(), fract(), mod(), min(), max() 和 clamp()。
-
-![13.png](./imgs/13.png)
-
-函数详细解释：https://thebookofshaders.com/glossary/?search=sin
-
-可视化操作：https://graphtoy.com/
-
 ### 缓动函数
 
 https://easings.net/
@@ -1534,3 +1522,5 @@ void main (void)
 - [WebGL 纹理详解](https://zhuanlan.zhihu.com/p/68894334)
 - [awesome-glsl](https://github.com/radixzz/awesome-glsl)
 - [GLSL 中文手册](https://github.com/wshxbqq/GLSL-Card)
+- [函数详细解释](https://thebookofshaders.com/glossary/?search=sin)
+- [函数可视化](https://graphtoy.com/)
