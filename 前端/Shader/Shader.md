@@ -27,7 +27,7 @@ VSC 安装 `Clang-Format` 插件，配置
 }
 ```
 
-# 基本概念
+# 概念
 
 - OpenGL：全称为 Open Graphics Library（开放图形库）。是用于渲染 2D 或 3D 图像的跨语言跨平台的应用程序编程接口
 - OpenGL ES：全称为 OpenGL for Embedded Systems（嵌入式系统开放图形库）。OpenGL ES 是 OpenGL 的子集，主要针对嵌入式系统（设备）设计，去除了 Open GL 中非必要的特性
@@ -91,7 +91,7 @@ x 向右、y 向上、z 向屏幕外
 
 ![01.jpg](imgs/01.jpg)
 
-# GLSL 基本语法
+# 语法
 
 - 1、大小写敏感
 - 2、表达式后面必须以`;`结束
@@ -158,6 +158,22 @@ magenta = yellow.rbg;   // 绿色和蓝色通道互换
 // 生成绿色
 green.rgb = yellow.bgb; // 通道颜色可以重复使用
 ```
+
+## 向量运算
+
+![09.png](./imgs/09.png)
+
+### 平移
+
+![10.png](./imgs/10.png)
+
+### 旋转
+
+![11.png](./imgs/11.png)
+
+### 缩放
+
+![12.png](./imgs/12.png)
 
 ## 基础类型运算
 
@@ -272,172 +288,248 @@ mat2 d = a+b; // mat2(1.0+10.0,2.0+20.0,3.0+30.0,4.0+40);
 
 ![16.png](https://cdn-1257430323.cos.ap-guangzhou.myqcloud.com/assets/imgs/20210220101008_f7fbbcdcaf85e83fbe5d48e293ecf6f1.png)
 
-## 函数参数限定符
+## 限定符
 
-函数的参数默认是以拷贝的形式传递的,也就是值传递,任何传递给函数参数的变量,其值都会被复制一份,然后再交给函数内部进行处理.
-我们可以为参数添加限定符来达到传递引用的目的,glsl 中提供的参数限定符如下:
+| 修饰符      | 说明                                                                                                 |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| `none`      | (默认的可省略)本地变量,可读可写,函数的输入参数既是这种类型                                           |
+| `const`     | 声明变量或函数的参数为只读类型                                                                       |
+| `attribute` | 只能存在于 vertex shader 中,一般用于保存顶点或法线数据,它可以在数据缓冲区中读取数据                  |
+| `uniform`   | 在运行时 shader 无法改变 uniform 变量, 一般用来放置程序传递给 shader 的变换矩阵，材质，光照参数等等. |
+| `varying`   | 主要负责在 vertex 和 fragment 之间传递变量                                                           |
 
-| 限定符            | 说明                           |
-| ----------------- | ------------------------------ |
-| < none: default > | 默认使用 in 限定符             |
-| in                | 复制到函数中在函数中可读写     |
-| out               | 返回时从函数中复制出来         |
-| inout             | 复制到函数中并在返回时复制出来 |
+### const
 
-`in` 是函数参数的默认限定符,最终真正传入函数形参的其实是实参的一份拷贝.在函数中,修改 in 修饰的形参不会影响到实参变量本身.
+和 C 语言类似,被 const 限定符修饰的变量初始化后不可变,除了局部变量,函数参数也可以使用 const 修饰符.但要注意的是结构变量可以用 const 修饰, 但结构中的字段不行.
 
-`out` 它的作用是向函数外部传递新值,out 模式下传递进来的参数是 write-only 的(可写不可读).就像是一个"坑位",坑位中的值需要函数给他赋予.
-在函数中,修改 out 修饰的形参会影响到实参本身.
+const 变量必须在声明时就初始化 `const vec3 v3 = vec3(0.,0.,0.)`
 
-`inout` inout 下,形参可以被理解为是一个带值的"坑位",及可读也可写,在函数中,修改 inout 修饰的形参会影响到实参本身.
+局部变量只能使用 const 限定符.
 
-### 缓动函数
-
-https://easings.net/
-
-### step
+函数参数只能使用 const 限定符.
 
 ```cpp
-// st.x 小于等于 0.5 返回 0.0
-// st.x 大于 0.5 返回 1.0
-float y = step(0.5,st.x);
+struct light {
+        vec4 color;
+        vec3 pos;
+        //const vec3 pos1; //结构中的字段不可用 const 修饰会报错.
+    };
+const light lgt = light(vec4(1.0), vec3(0.0)); // 结构变量可以用 const 修饰
 ```
-
-### smoothstep
-
-```cpp
-// st.x 小于 0.2 设置为 0.0
-// st.x 大于 0.8 设置为 1.0
-// st.x 在 0.2-0.8 区间 0.0-1.0 线性变化
-float y = smoothstep(0.2,0.8,st.x);
-```
-
-### 向量的乘法
-
-![02.png](./imgs/02.png)
-
-```js
-// 伪代码
-// a · b = a.x * b.x + a.y * b.y;
-// a · b = |a||b|cos(θ)
-
-// a、b 向量平行
-a.x * b.x + a.y * b.y === a.length * b.length;
-
-// a、b 向量垂直
-a.x * b.x + a.y * b.y === 0;
-```
-
-### 仿射变换
-
-CSS 的 transform 就是对元素应用仿射变换，仿射变换具有两个性质：
-
-- 仿射变换前是直线段的，仿射变换后依然是直线段对两条直线段
-- a 和 b 应用同样的仿射变换，变换前后线段长度比例保持不变
-
-### 平移
-
-```js
-export class Vector2D extends Array {
-  // ...
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
-    return this;
-  }
-}
-```
-
-### 旋转
-
-![03.jpg](./imgs/03.jpg)
-
-![04.jpeg](./imgs/04.jpeg)
-
-rcos⍺、rsin⍺ 是向量 P 原始的坐标 x0、y0，所以，我们可以把坐标代入到上面的公式中，就会得到如下的公式
-
-![05.jpeg](./imgs/05.jpeg)
-
-写成矩阵形式，得到旋转矩阵
-
-![06.jpeg](./imgs/06.jpeg)
-
-```js
-export class Vector2D extends Array {
-  // ...
-  rotate(rad) {
-    const c = Math.cos(rad);
-    const s = Math.sin(rad);
-    const [x, y] = this;
-
-    this.x = x * c + y * -s;
-    this.y = x * s + y * c;
-
-    return this;
-  }
-}
-```
-
-### 缩放
-
-直接让向量与标量（标量只有大小、没有方向）相乘
-
-![07.jpeg](./imgs/07.jpeg)
-
-也可以把它写成矩阵形式
-
-![08.jpg](./imgs/08.jpg)
 
 ### attribute
 
-attribute 变量是对应于顶点的。也就是说，几何图形有几个顶点就要提供几份 attribute 数据。并且，attribute 变量只能在顶点着色器中使用，如果要在片元着色器中使用，需要我们通过 varying 变量将它传给片元着色器
+attribute 变量是`全局`且`只读`的，它只能在 vertex shader 中使用，只能与浮点数、向量或矩阵变量组合，一般 attribute 变量用来放置程序传递来的模型顶点,法线,颜色,纹理等数据，它可以访问数据缓冲区(还记得`gl.vertexAttribPointer`这个函数吧)
+
+```cpp
+attribute vec4 a_Position;
+```
 
 ### uniform
 
-- uniform 变量既可以在顶点着色器中使用，也可以在片元着色器中使用
-- 在 WebGL 中，我们可以通过 gl.uniformXXX(loc, u_color); 的方法将数据传给 shader 的 uniform 变量
-  - `gl.uniform1f` 传入一个浮点数，对应的 uniform 变量的类型为 float
-  - `gl.uniform4f` 传入四个浮点数，对应的 uniform 变量类型为 `float[4]`
-  - `gl.uniform3fv` 传入一个三维向量，对应的 uniform 变量类型为 vec3
-  - `gl.uniformMatrix4fv` 传入一个 4x4 的矩阵，对应的 uniform 变量类型为 mat4
-
-### 鸡尾酒赋值
+uniform 变量是`全局`且`只读`的，在整个 shader 执行完毕前其值不会改变，他可以和任意基本类型变量组合，一般我们使用 uniform 变量来放置外部程序传递来的环境数据(如点光源位置,模型的变换矩阵等等)，这些数据在运行中显然是不需要被改变的
 
 ```cpp
-vec4 vector;
-vector[0] = vector.r = vector.x = vector.s;
-vector[1] = vector.g = vector.y = vector.t;
-vector[2] = vector.b = vector.z = vector.p;
-vector[3] = vector.a = vector.w = vector.q;
-
-vec3 yellow, magenta, green;
-
-// 生成黄色
-yellow.rg = vec2(1.0);  // 红色、绿色通道设置为 1.0
-yellow[2] = 0.0;        // 蓝色通道设置为 0.0
-
-// 生成品红
-magenta = yellow.rbg;   // 绿色和蓝色通道互换
-
-// 生成绿色
-green.rgb = yellow.bgb; // 通道颜色可以重复使用
+uniform vec4 lightPosition;
 ```
 
-### 变量
+### varying
+
+varying 类型变量是 vertex shader 与 fragment shader 之间的信使，一般我们在 vertex shader 中修改它然后在 fragment shader 使用它，但不能在 fragment shader 中修改它
 
 ```cpp
-int age = 18; // 声明并赋值
+// 顶点着色器
+varying vec4 v_Color;
+void main(){
+  v_Color = vec4(1.0, 1.0, 1.0, 1.0);
+}
 
-float money; // 声明不赋值
-
-bool isMe; // 先声明
-isMe = true; // 后赋值
-
-const int AGE = 18; // 声明常量必须赋值
-AGE = 20; // error! 常量不可以更改
+// 片元着色器
+varying vec4 v_Color;
+void main() {
+  gl_FragColor = v_Color;
+}
 ```
 
-### 函数
+要注意全局变量限制符只能为 const、attribute、uniform 和 varying 中的一个，不可复合
+
+## 内置函数
+
+glsl 提供了非常丰富的函数库,供我们使用,这些功能都是非常有用且会经常用到的. 这些函数按功能区分大改可以分成 7 类:
+
+### 通用函数
+
+下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
+
+```cpp
+T abs(T x) // 返回 x 的绝对值
+
+T sign(T x) // 比较 x 与 0 的值,大于,等于,小于 分别返回 1.0 ,0.0,-1.0
+
+T floor(T x) // 返回 <=x 的最大整数
+
+T ceil(T x) // 返回 <=x 的最大整数
+
+T fract(T x) // 获取 x 的小数部分
+
+T mod(T x, float y) // 取 x,y 的余
+
+T min(T x, float y) // 取 x,y 的最小值
+
+T max(T x, float y) // 取 x,y 的最大值
+
+T clamp(T x, float minVal, float maxVal) // min(max(x, minVal), maxVal),返回值被限定在 minVal,maxVal 之间
+
+T mix(T x, T y, float a) // 取 x,y 的线性混合,x*(1-a) + y*a
+
+T step(float edge, T x) // x < edge 返回 0.0 否则返回 1.0
+
+T smoothstep(float edge0, float edge1, T x) // 如果 x < edge0 返回 0.0 如果 x > edge1 返回 1.0, 否则返回 Hermite 插值
+```
+
+### 角度&三角函数
+
+下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
+
+```cpp
+T radians(T degrees) // 角度转弧度
+T degrees(T radians) // 弧度转角度
+T sin(T angle) // 正弦函数,角度是弧度
+T cos(T angle) // 余弦函数,角度是弧度
+T tan(T angle) // 正切函数,角度是弧度
+T asin(T x)  // 反正弦函数,返回值是弧度
+T acos(T x)  // 反余弦函数,返回值是弧度
+T atan(T y_over_x) // 反正切函数,返回值是弧度
+```
+
+### 指数函数
+
+下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
+
+```cpp
+T pow(T x, T y) // 返回 x 的 y 次幂，x<sub>y</sub>
+
+T exp(T x) // 返回 x 的自然指数幂，e<sub>x</sub>
+
+T log(T x) // 返回 x 的自然对数 ln
+
+T exp2(T x) // 返回 2 的 x 次幂 2<sub>x</sub>
+
+T log2(T x) // 返回 2 为底的对数 log2
+
+T sqrt(T x) // 开根号 √x
+
+T inversesqrt(T x) // 先开根号,在取倒数,就是 1/√x
+```
+
+### 几何函数
+
+下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
+
+```cpp
+float length(T x) // 返回矢量 x 的长度
+
+float distance(T p0, T p1) // 返回 p0 p1 两点的距离
+
+float dot(T x, T y) // 返回 x y 的点积
+
+vec3 cross(vec3 x, vec3 y) // 返回 x y 的叉积
+
+T normalize(T x) // 对 x 进行归一化,保持向量方向不变但长度变为 1
+
+T faceforward(T N, T I, T Nref) // 根据 矢量 N 与 Nref 调整法向量
+
+T reflect(T I, T N) // 返回 I - 2 _ dot(N,I) _ N, 结果是入射矢量 I 关于法向量 N 的 镜面反射矢量
+
+T refract(T I, T N, float eta) // 返回入射矢量 I 关于法向量 N 的折射矢量,折射率为 eta
+```
+
+### 矩阵函数
+
+```cpp
+mat matrixCompMult(mat x, mat y) // 将矩阵 x 和 y 的元素逐分量相乘
+```
+
+### 向量函数
+
+下文中的 类型 T 可以是 vec2, vec3, vec4, 且可以逐分量操作.
+
+bvec 指的是由 bool 类型组成的一个向量:
+
+```cpp
+vec3 v3= vec3(0.,0.,0.);
+vec3 v3_1= vec3(1.,1.,1.);
+bvec3 aa= lessThan(v3,v3_1); //bvec3(true,true,true)
+
+bvec lessThan(T x, T y) // 逐分量比较 x < y,将结果写入 bvec 对应位置
+
+bvec lessThanEqual(T x, T y) // 逐分量比较 x <= y,将结果写入 bvec 对应位置
+
+bvec greaterThan(T x, T y) // 逐分量比较 x > y,将结果写入 bvec 对应位置
+
+bvec greaterThanEqual(T x, T y) // 逐分量比较 x >= y,将结果写入 bvec 对应位置
+
+bvec equal(T x, T y) // 逐分量比较 x == y,将结果写入 bvec 对应位置
+
+bvec notEqual(T x, T y) // 逐分量比较 x!= y,将结果写入 bvec 对应位置
+
+bool any(bvec x) // 如果 x 的任意一个分量是 true,则结果为 true
+
+bool all(bvec x) // 如果 x 的所有分量是 true,则结果为 true
+
+bvec not(bvec x) // bool 矢量的逐分量取反
+```
+
+### 纹理查询函数
+
+图像纹理有两种 一种是平面 2d 纹理,另一种是盒纹理,针对不同的纹理类型有不同访问方法.
+
+纹理查询的最终目的是从 sampler 中提取指定坐标的颜色信息. 函数中带有 Cube 字样的是指 需要传入盒状纹理. 带有 Proj 字样的是指带投影的版本.
+
+```cpp
+// 以下函数只在 vertex shader 中可用
+vec4 texture2DLod(sampler2D sampler, vec2 coord, float lod);
+vec4 texture2DProjLod(sampler2D sampler, vec3 coord, float lod);
+vec4 texture2DProjLod(sampler2D sampler, vec4 coord, float lod);
+vec4 textureCubeLod(samplerCube sampler, vec3 coord, float lod);
+```
+
+```cpp
+// 以下函数只在 fragment shader 中可用
+vec4 texture2D(sampler2D sampler, vec2 coord, float bias);
+vec4 texture2DProj(sampler2D sampler, vec3 coord, float bias);
+vec4 texture2DProj(sampler2D sampler, vec4 coord, float bias);
+vec4 textureCube(samplerCube sampler, vec3 coord, float bias);
+```
+
+```cpp
+// 在 vertex shader 与 fragment shader 中都可用:
+vec4 texture2D(sampler2D sampler, vec2 coord);
+vec4 texture2DProj(sampler2D sampler, vec3 coord);
+vec4 texture2DProj(sampler2D sampler, vec4 coord);
+vec4 textureCube(samplerCube sampler, vec3 coord);
+```
+
+## 函数
+
+glsl 允许在程序的最外部声明函数.函数不能嵌套,不能递归调用,且必须声明返回值类型(无返回值时声明为 void) 在其他方面 glsl 函数与 c 函数非常类似.
+
+```cpp
+vec4 getPosition(){
+    vec4 v4 = vec4(0.,0.,0.,1.);
+    return v4;
+}
+
+void doubleSize(inout float size){
+    size= size*2.0  ;
+}
+void main() {
+    float psize= 10.0;
+    doubleSize(psize);
+    gl_Position = getPosition();
+    gl_PointSize = psize;
+}
+```
 
 - 如果函数有返回值，就需要指定返回值的类型，如果没有返回值，必须指定为空 void
 - 如果函数有参数，那么也需要指定参数的类型
@@ -501,6 +593,23 @@ void age(); // Error! 冲突
 - `?:`：三目运算
 
 ### 限定符
+
+函数的参数默认是以拷贝的形式传递的,也就是值传递,任何传递给函数参数的变量,其值都会被复制一份,然后再交给函数内部进行处理.
+我们可以为参数添加限定符来达到传递引用的目的,glsl 中提供的参数限定符如下:
+
+| 限定符            | 说明                           |
+| ----------------- | ------------------------------ |
+| < none: default > | 默认使用 in 限定符             |
+| in                | 复制到函数中在函数中可读写     |
+| out               | 返回时从函数中复制出来         |
+| inout             | 复制到函数中并在返回时复制出来 |
+
+`in` 是函数参数的默认限定符,最终真正传入函数形参的其实是实参的一份拷贝.在函数中,修改 in 修饰的形参不会影响到实参变量本身.
+
+`out` 它的作用是向函数外部传递新值,out 模式下传递进来的参数是 write-only 的(可写不可读).就像是一个"坑位",坑位中的值需要函数给他赋予.
+在函数中,修改 out 修饰的形参会影响到实参本身.
+
+`inout` inout 下,形参可以被理解为是一个带值的"坑位",及可读也可写,在函数中,修改 inout 修饰的形参会影响到实参本身.
 
 #### 储存限定符
 
@@ -614,9 +723,9 @@ precision lowp samplerCube;
 // 在片段着色器中浮点类型、浮点向量和浮点矩阵都没有默认的精度，所以使用时就必须声明其精度，或者事先声明默认精度
 ```
 
-### 数据类型
+## 数据类型
 
-#### 标量（Scalar）
+### 标量（Scalar）
 
 标量表示只有大小没有方向的量
 
@@ -656,11 +765,11 @@ vec3 a = vec3(0.1, 0.2, 0.3);
 float b = float(a); // 0.1
 ```
 
-#### 向量（Vector）
+### 向量（Vector）
 
 在 GLSL 中向量一般用于储存顶点坐标、颜色或纹理坐标数据，一个向量可以包含 2 到 4 个分量（Component）
 
-##### 创建向量
+#### 创建向量
 
 一般情况下使用浮点（float）型 `vecn`，n 为分量的个数
 
@@ -684,7 +793,7 @@ vec4 four = vec4(0.1, 0.2, 0.3, 0.4);
 vec3 three = vec3(four); // 等同于 vec3(0.1, 0.2, 0.3)，抛弃了 0.4
 ```
 
-##### 使用分量
+#### 使用分量
 
 通过分量名来获取向量中的第 1 到第 4 个分量，所有向量都可以使用：
 
@@ -711,7 +820,7 @@ float t = texCoord.t; // 0.4
 float p = texCoord.p; // 0.6
 ```
 
-##### 重组分量
+#### 重组分量
 
 使用同一组分量名的任意组合来创建一个新的向量
 
@@ -725,7 +834,7 @@ vec4 boom = coord.xyzw + coord.wzyx; // vec4(0.5, 0.5, 0.5, 0.5)
 vec4 hello = vec4(coord.zyx, 0.0); // vec4(0.3, 0.2, 0.1, 0.0)
 ```
 
-#### 矩阵（Matrix）
+### 矩阵（Matrix）
 
 矩阵最多能够支持 4 列 4 行的数据，最少 2 行 2 列，且其元素只能够为 float 类型
 
@@ -759,7 +868,7 @@ mat3 three = mat3(0.1, 0.2, 0.3, // 第一列
 float el = three[0][2]; // 获取第一列第三行的元素：0.3
 ```
 
-#### 采样器（Sampler）
+### 采样器（Sampler）
 
 通过采样器来获取纹理的信息
 
@@ -776,7 +885,7 @@ uniform sampler2D myTexture;
 vec4 color = texture(myTexture, uv_0);
 ```
 
-#### 结构体（Structure）
+### 结构体（Structure）
 
 使用 struct 关键字来自定义一个新的类型，新的自定义类型可以包含其他已经定义的类型
 
@@ -792,7 +901,7 @@ circle myCircle;
 myCircle.radius = 0.5;
 ```
 
-#### 数组（Array）
+### 数组（Array）
 
 在变量名称后面接上一对方括号 `[]` 就是数组
 
@@ -807,9 +916,9 @@ float[5] getValues() { ... }
 void setValues(float[2] values) { ... }
 ```
 
-### 迭代
+## 迭代
 
-#### 循环语句
+### 循环语句
 
 ```cpp
 // for
@@ -842,7 +951,7 @@ do {
 // a = 1;
 ```
 
-#### 选择语句
+### 选择语句
 
 ```cpp
 // if
@@ -884,7 +993,7 @@ switch (a) {
 // a = 4
 ```
 
-#### 跳转语句
+### 跳转语句
 
 ```cpp
 // continue
@@ -941,169 +1050,7 @@ void main() {
 }
 ```
 
-## 矩阵运算
-
-### 矩阵乘法
-
-乘法公式
-
-![09.png](./imgs/09.png)
-
-平移
-
-![10.png](./imgs/10.png)
-
-旋转
-
-![11.png](./imgs/11.png)
-
-缩放
-
-![12.png](./imgs/12.png)
-
-# GLSL Card
-
-## 变量限定符
-
-| 修饰符      | 说明                                                                                                 |
-| ----------- | ---------------------------------------------------------------------------------------------------- |
-| `none`      | (默认的可省略)本地变量,可读可写,函数的输入参数既是这种类型                                           |
-| `const`     | 声明变量或函数的参数为只读类型                                                                       |
-| `attribute` | 只能存在于 vertex shader 中,一般用于保存顶点或法线数据,它可以在数据缓冲区中读取数据                  |
-| `uniform`   | 在运行时 shader 无法改变 uniform 变量, 一般用来放置程序传递给 shader 的变换矩阵，材质，光照参数等等. |
-| `varying`   | 主要负责在 vertex 和 fragment 之间传递变量                                                           |
-
-### const
-
-和 C 语言类似,被 const 限定符修饰的变量初始化后不可变,除了局部变量,函数参数也可以使用 const 修饰符.但要注意的是结构变量可以用 const 修饰, 但结构中的字段不行.
-
-const 变量必须在声明时就初始化 `const vec3 v3 = vec3(0.,0.,0.)`
-
-局部变量只能使用 const 限定符.
-
-函数参数只能使用 const 限定符.
-
-```cpp
-struct light {
-        vec4 color;
-        vec3 pos;
-        //const vec3 pos1; //结构中的字段不可用 const 修饰会报错.
-    };
-const light lgt = light(vec4(1.0), vec3(0.0)); // 结构变量可以用 const 修饰
-```
-
-### attribute
-
-attribute 变量是`全局`且`只读`的，它只能在 vertex shader 中使用，只能与浮点数、向量或矩阵变量组合，一般 attribute 变量用来放置程序传递来的模型顶点,法线,颜色,纹理等数据，它可以访问数据缓冲区(还记得`gl.vertexAttribPointer`这个函数吧)
-
-```cpp
-attribute vec4 a_Position;
-```
-
-### uniform
-
-uniform 变量是`全局`且`只读`的，在整个 shader 执行完毕前其值不会改变，他可以和任意基本类型变量组合，一般我们使用 uniform 变量来放置外部程序传递来的环境数据(如点光源位置,模型的变换矩阵等等)，这些数据在运行中显然是不需要被改变的
-
-```cpp
-uniform vec4 lightPosition;
-```
-
-### varying
-
-varying 类型变量是 vertex shader 与 fragment shader 之间的信使，一般我们在 vertex shader 中修改它然后在 fragment shader 使用它，但不能在 fragment shader 中修改它
-
-```cpp
-// 顶点着色器
-varying vec4 v_Color;
-void main(){
-  v_Color = vec4(1.0, 1.0, 1.0, 1.0);
-}
-
-// 片元着色器
-varying vec4 v_Color;
-void main() {
-  gl_FragColor = v_Color;
-}
-```
-
-要注意全局变量限制符只能为 const、attribute、uniform 和 varying 中的一个，不可复合
-
-### glsl 的函数
-
-glsl 允许在程序的最外部声明函数.函数不能嵌套,不能递归调用,且必须声明返回值类型(无返回值时声明为 void) 在其他方面 glsl 函数与 c 函数非常类似.
-
-```cpp
-vec4 getPosition(){
-    vec4 v4 = vec4(0.,0.,0.,1.);
-    return v4;
-}
-
-void doubleSize(inout float size){
-    size= size*2.0  ;
-}
-void main() {
-    float psize= 10.0;
-    doubleSize(psize);
-    gl_Position = getPosition();
-    gl_PointSize = psize;
-}
-
-```
-
-### 构造函数:
-
-glsl 中变量可以在声明的时候初始化,`float pSize = 10.0` 也可以先声明然后等需要的时候在进行赋值.
-
-聚合类型对象如(向量,矩阵,数组,结构) 需要使用其构造函数来进行初始化. `vec4 color = vec4(0.0, 1.0, 0.0, 1.0);`
-
-```cpp
-//一般类型
-float pSize = 10.0;
-float pSize1;
-pSize1=10.0;
-...
-
-//复合类型
-vec4 color = vec4(0.0, 1.0, 0.0, 1.0);
-vec4 color1;
-color1 =vec4(0.0, 1.0, 0.0, 1.0);
-...
-
-//结构
-struct light {
-    float intensity;
-    vec3 position;
-};
-light lightVar = light(3.0, vec3(1.0, 2.0, 3.0));
-
-//数组
-const float c[3] = float[3](5.0, 7.2, 1.1);
-
-```
-
-### 类型转换:
-
-glsl 可以使用构造函数进行显式类型转换,各值如下:
-
-```cpp
-bool t= true;
-bool f = false;
-
-int a = int(t); //true转换为1或1.0
-int a1 = int(f);//false转换为0或0.0
-
-float b = float(t);
-float b1 = float(f);
-
-bool c = bool(0);//0或0.0转换为false
-bool c1 = bool(1);//非0转换为true
-
-bool d = bool(0.0);
-bool d1 = bool(1.0);
-
-```
-
-### 精度限定:
+### 精度设置
 
 glsl 在进行光栅化着色的时候,会产生大量的浮点数运算,这些运算可能是当前设备所不能承受的,所以 glsl 提供了 3 种浮点数精度,我们可以根据不同的设备来使用合适的精度.
 
@@ -1116,8 +1063,7 @@ lowp ivec2 foo(lowp mat3);
 highp mat4 m;
 ```
 
-我们一般在片元着色器(fragment shader)最开始的地方加上 `precision mediump float;` 便设定了默认的精度.这样所有没有显式表明精度的变量
-都会按照设定好的默认精度来处理.
+我们一般在片元着色器(fragment shader)最开始的地方加上 `precision mediump float;` 便设定了默认的精度.这样所有没有显式表明精度的变量都会按照设定好的默认精度来处理
 
 **如何确定精度:**
 
@@ -1134,8 +1080,6 @@ m = h2 – h1; //运算过程 是高精度
 h2 = m + m; //运算过程和结果都 是中等精度
 void f(highp float p); // 形参 p 是高精度
 f(3.3); //传入的 3.3是高精度
-
-
 ```
 
 **invariant 关键字:**
@@ -1147,7 +1091,6 @@ f(3.3); //传入的 3.3是高精度
 ```cpp
 #pragma STDGL invariant(all) //所有输出变量为 invariant
 invariant varying texCoord; //varying在传递数据的时候声明为invariant
-
 ```
 
 **限定符的顺序:**
@@ -1166,16 +1109,26 @@ invariant varying lowp float color; // invariant > storage > precision
 void doubleSize(const in lowp float s){ //storage > parameter > precision
     float s1=s;
 }
-
 ```
 
-### 预编译指令:
+## 预编译指令
 
 以 # 开头的是预编译指令,常用的有:
 
 ```cpp
-#define #undef #if #ifdef #ifndef #else
-#elif #endif #error #pragma #extension #version #line
+#define
+#undef
+#if
+#ifdef
+#ifndef
+#else
+#elif
+#endif
+#error
+#pragma
+#extension
+#version
+#line
 ```
 
 比如 **\#version 100** 他的意思是规定当前 shader 使用 GLSL ES 1.00 标准进行编译,如果使用这条预编译指令,则他必须出现在程序的最开始位置.
@@ -1213,7 +1166,7 @@ precision mediump float;
 #endif
 ```
 
-### 内置的特殊变量
+## 内置特殊变量
 
 glsl 程序使用一些特殊的内置变量与硬件进行沟通.他们大致分成两种 一种是 `input`类型,他负责向硬件(渲染管线)发送数据.
 另一种是`output`类型,负责向程序回传数据,以便编程时需要.
@@ -1244,7 +1197,7 @@ output 类型的内置变量:
 | mediump vec4 `gl_FragColor`;  | 设置当前片点的颜色                             | vec4 RGBA color |
 | mediump vec4 `gl_FragData[n]` | 设置当前片点的颜色,使用 glDrawBuffers 数据数组 | vec4 RGBA color |
 
-### 内置的常量
+## 内置常量
 
 glsl 提供了一些内置的常量,用来说明当前系统的一些特性. 有时我们需要针对这些特性,对 shader 程序进行优化,让程序兼容度更好.
 
@@ -1252,40 +1205,33 @@ glsl 提供了一些内置的常量,用来说明当前系统的一些特性. 有
 
 1.const mediump int `gl_MaxVertexAttribs`>=8
 
-gl_MaxVertexAttribs 表示在 vertex shader(顶点着色器)中可用的最大 attributes 数.这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-不过最低不能小于 8 个.
+gl_MaxVertexAttribs 表示在 vertex shader(顶点着色器)中可用的最大 attributes 数.这个值的大小取决于 OpenGL ES 在某设备上的具体实现,不过最低不能小于 8 个.
 
 2.const mediump int `gl_MaxVertexUniformVectors` >= 128
 
-gl_MaxVertexUniformVectors 表示在 vertex shader(顶点着色器)中可用的最大 uniform vectors 数. 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-不过最低不能小于 128 个.
+gl_MaxVertexUniformVectors 表示在 vertex shader(顶点着色器)中可用的最大 uniform vectors 数. 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,不过最低不能小于 128 个.
 
 3.const mediump int `gl_MaxVaryingVectors` >= 8
 
-gl_MaxVaryingVectors 表示在 vertex shader(顶点着色器)中可用的最大 varying vectors 数. 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-不过最低不能小于 8 个.
+gl_MaxVaryingVectors 表示在 vertex shader(顶点着色器)中可用的最大 varying vectors 数. 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,不过最低不能小于 8 个.
 
 4.const mediump int `gl_MaxVertexTextureImageUnits` >= 0
 
-gl_MaxVaryingVectors 表示在 vertex shader(顶点着色器)中可用的最大纹理单元数(贴图). 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-甚至可以一个都没有(无法获取顶点纹理)
+gl_MaxVaryingVectors 表示在 vertex shader(顶点着色器)中可用的最大纹理单元数(贴图). 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,甚至可以一个都没有(无法获取顶点纹理)
 
 5.const mediump int `gl_MaxCombinedTextureImageUnits` >= 8
 
-gl_MaxVaryingVectors 表示在 vertex Shader 和 fragment Shader 总共最多支持多少个纹理单元. 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-不过最低不能小于 8 个.
+gl_MaxVaryingVectors 表示在 vertex Shader 和 fragment Shader 总共最多支持多少个纹理单元. 这个值的大小取决于 OpenGL ES 在某设备上的具体实现,不过最低不能小于 8 个.
 
 **在 fragment Shader 中:**
 
 1.const mediump int `gl_MaxTextureImageUnits` >= 8
 
-gl_MaxVaryingVectors 表示在 fragment Shader(片元着色器)中能访问的最大纹理单元数,这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-不过最低不能小于 8 个.
+gl_MaxVaryingVectors 表示在 fragment Shader(片元着色器)中能访问的最大纹理单元数,这个值的大小取决于 OpenGL ES 在某设备上的具体实现,不过最低不能小于 8 个.
 
 2.const mediump int `gl_MaxFragmentUniformVectors` >= 16
 
-gl_MaxFragmentUniformVectors 表示在 fragment Shader(片元着色器)中可用的最大 uniform vectors 数,这个值的大小取决于 OpenGL ES 在某设备上的具体实现,
-不过最低不能小于 16 个.
+gl_MaxFragmentUniformVectors 表示在 fragment Shader(片元着色器)中可用的最大 uniform vectors 数,这个值的大小取决于 OpenGL ES 在某设备上的具体实现,不过最低不能小于 16 个.
 
 3.const mediump int `gl_MaxDrawBuffers` = 1
 
@@ -1307,7 +1253,7 @@ struct gl_DepthRangeParameters {
 
 除了 gl_DepthRange 外的所有 uniform 状态常量都已在 glsl 1.30 中`废弃`.
 
-### 流控制
+## 流控制
 
 glsl 的流控制和 c 语言非常相似,这里不必再做过多说明,唯一不同的是片段着色器中有一种特殊的控制流`discard`.
 使用 discard 会退出片段着色器，不执行后面的片段着色操作。片段也不会写入帧缓冲区。
@@ -1342,179 +1288,39 @@ if (true)
 
 ```
 
-### 内置函数库
-
-glsl 提供了非常丰富的函数库,供我们使用,这些功能都是非常有用且会经常用到的. 这些函数按功能区分大改可以分成 7 类:
-
-**通用函数:**
-
-下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
-
-| 方法                                                                                 | 说明                                                               |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| T abs(T x)                                                                           | 返回 x 的绝对值                                                    |
-| T sign(T x)                                                                          | 比较 x 与 0 的值,大于,等于,小于 分别返回 1.0 ,0.0,-1.0             |
-| T floor(T x)                                                                         | 返回<=x 的最大整数                                                 |
-| T ceil(T x)                                                                          | 返回>=等于 x 的最小整数                                            |
-| T fract(T x)                                                                         | 获取 x 的小数部分                                                  |
-| T mod(T x, T y) <br/> T mod(T x, float y)                                            | 取 x,y 的余数                                                      |
-| T min(T x, T y) <br/> T min(T x, float y)                                            | 取 x,y 的最小值                                                    |
-| T max(T x, T y) <br/> T max(T x, float y)                                            | 取 x,y 的最大值                                                    |
-| T clamp(T x, T minVal, T maxVal) <br/>T clamp(T x, float minVal,float maxVal)        | min(max(x, minVal), maxVal),返回值被限定在 minVal,maxVal 之间      |
-| T mix(T x, T y, T a) <br/> T mix(T x, T y, float a)                                  | 取 x,y 的线性混合,x\*(1-a)+y\*a                                    |
-| T step(T edge, T x) <br/> T step(float edge, T x)                                    | 如果 x<edge 返回 0.0 否则返回 1.0                                  |
-| T smoothstep(T edge0, T edge1, T x) <br/> T smoothstep(float edge0,float edge1, T x) | 如果 x<edge0 返回 0.0 如果 x>edge1 返回 1.0, 否则返回 Hermite 插值 |
-
-**角度&三角函数:**
-
-下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
-
-| 方法                                     | 说明                    |
-| ---------------------------------------- | ----------------------- |
-| T radians(T degrees)                     | 角度转弧度              |
-| T degrees(T radians)                     | 弧度转角度              |
-| T sin(T angle)                           | 正弦函数,角度是弧度     |
-| T cos(T angle)                           | 余弦函数,角度是弧度     |
-| T tan(T angle)                           | 正切函数,角度是弧度     |
-| T asin(T x)                              | 反正弦函数,返回值是弧度 |
-| T acos(T x)                              | 反余弦函数,返回值是弧度 |
-| T atan(T y, T x)<br/> T atan(T y_over_x) | 反正切函数,返回值是弧度 |
-
-**指数函数:**
-
-下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
-
-| 方法               | 说明                              |
-| ------------------ | --------------------------------- |
-| T pow(T x, T y)    | 返回 x 的 y 次幂 x<sub>y</sub>    |
-| T exp(T x)         | 返回 x 的自然指数幂 e<sub>x</sub> |
-| T log(T x)         | 返回 x 的自然对数 ln              |
-| T exp2(T x)        | 返回 2 的 x 次幂 2<sub>x</sub>    |
-| T log2(T x)        | 返回 2 为底的对数 log2            |
-| T sqrt(T x)        | 开根号 √x                         |
-| T inversesqrt(T x) | 先开根号,在取倒数,就是 1/√x       |
-
-**几何函数:**
-
-下文中的 类型 T 可以是 float, vec2, vec3, vec4,且可以逐分量操作.
-
-| 方法                            | 说明                                                                     |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| float length(T x)               | 返回矢量 x 的长度                                                        |
-| float distance(T p0, T p1)      | 返回 p0 p1 两点的距离                                                    |
-| float dot(T x, T y)             | 返回 x y 的点积                                                          |
-| vec3 cross(vec3 x, vec3 y)      | 返回 x y 的叉积                                                          |
-| T normalize(T x)                | 对 x 进行归一化,保持向量方向不变但长度变为 1                             |
-| T faceforward(T N, T I, T Nref) | 根据 矢量 N 与 Nref 调整法向量                                           |
-| T reflect(T I, T N)             | 返回 I - 2 _ dot(N,I) _ N, 结果是入射矢量 I 关于法向量 N 的 镜面反射矢量 |
-| T refract(T I, T N, float eta)  | 返回入射矢量 I 关于法向量 N 的折射矢量,折射率为 eta                      |
-
-**矩阵函数:**
-
-mat 可以为任意类型矩阵.
-
-| 方法                             | 说明                           |
-| -------------------------------- | ------------------------------ |
-| mat matrixCompMult(mat x, mat y) | 将矩阵 x 和 y 的元素逐分量相乘 |
-
-**向量函数:**
-
-下文中的 类型 T 可以是 vec2, vec3, vec4, 且可以逐分量操作.
-
-bvec 指的是由 bool 类型组成的一个向量:
+# 校验成果
 
 ```cpp
-vec3 v3= vec3(0.,0.,0.);
-vec3 v3_1= vec3(1.,1.,1.);
-bvec3 aa= lessThan(v3,v3_1); //bvec3(true,true,true)
-
-```
-
-| 方法                                                        | 说明                                       |
-| ----------------------------------------------------------- | ------------------------------------------ |
-| bvec lessThan(T x, T y)                                     | 逐分量比较 x < y,将结果写入 bvec 对应位置  |
-| bvec lessThanEqual(T x, T y)                                | 逐分量比较 x <= y,将结果写入 bvec 对应位置 |
-| bvec greaterThan(T x, T y)                                  | 逐分量比较 x > y,将结果写入 bvec 对应位置  |
-| bvec greaterThanEqual(T x, T y)                             | 逐分量比较 x >= y,将结果写入 bvec 对应位置 |
-| bvec equal(T x, T y) <br/> bvec equal(bvec x, bvec y)       | 逐分量比较 x == y,将结果写入 bvec 对应位置 |
-| bvec notEqual(T x, T y) <br/> bvec notEqual(bvec x, bvec y) | 逐分量比较 x!= y,将结果写入 bvec 对应位置  |
-| bool any(bvec x)                                            | 如果 x 的任意一个分量是 true,则结果为 true |
-| bool all(bvec x)                                            | 如果 x 的所有分量是 true,则结果为 true     |
-| bvec not(bvec x)                                            | bool 矢量的逐分量取反                      |
-
-**纹理查询函数:**
-
-图像纹理有两种 一种是平面 2d 纹理,另一种是盒纹理,针对不同的纹理类型有不同访问方法.
-
-纹理查询的最终目的是从 sampler 中提取指定坐标的颜色信息. 函数中带有 Cube 字样的是指 需要传入盒状纹理. 带有 Proj 字样的是指带投影的版本.
-
-以下函数只在 vertex shader 中可用:
-
-```cpp
-vec4 texture2DLod(sampler2D sampler, vec2 coord, float lod);
-vec4 texture2DProjLod(sampler2D sampler, vec3 coord, float lod);
-vec4 texture2DProjLod(sampler2D sampler, vec4 coord, float lod);
-vec4 textureCubeLod(samplerCube sampler, vec3 coord, float lod);
-
-```
-
-以下函数只在 fragment shader 中可用:
-
-```cpp
-vec4 texture2D(sampler2D sampler, vec2 coord, float bias);
-vec4 texture2DProj(sampler2D sampler, vec3 coord, float bias);
-vec4 texture2DProj(sampler2D sampler, vec4 coord, float bias);
-vec4 textureCube(samplerCube sampler, vec3 coord, float bias);
-```
-
-在 vertex shader 与 fragment shader 中都可用:
-
-```cpp
-vec4 texture2D(sampler2D sampler, vec2 coord);
-vec4 texture2DProj(sampler2D sampler, vec3 coord);
-vec4 texture2DProj(sampler2D sampler, vec4 coord);
-vec4 textureCube(samplerCube sampler, vec3 coord);
-```
-
-### 官方的 shader 范例:
-
-下面的 shader 如果你可以一眼看懂,说明你已经对 glsl 语言基本掌握了.
-
-**Vertex Shader:**
-
-```cpp
-uniform mat4 mvp_matrix; //透视矩阵 * 视图矩阵 * 模型变换矩阵
-uniform mat3 normal_matrix; //法线变换矩阵(用于物体变换后法线跟着变换)
-uniform vec3 ec_light_dir; //光照方向
+// Vertex Shader
+uniform mat4 mvp_matrix; // 透视矩阵 * 视图矩阵 * 模型变换矩阵
+uniform mat3 normal_matrix; // 法线变换矩阵(用于物体变换后法线跟着变换)
+uniform vec3 ec_light_dir; // 光照方向
 attribute vec4 a_vertex; // 顶点坐标
-attribute vec3 a_normal; //顶点法线
-attribute vec2 a_texcoord; //纹理坐标
-varying float v_diffuse; //法线与入射光的夹角
-varying vec2 v_texcoord; //2d纹理坐标
-void main(void)
-{
- //归一化法线
+attribute vec3 a_normal; // 顶点法线
+attribute vec2 a_texcoord; // 纹理坐标
+varying float v_diffuse; // 法线与入射光的夹角
+varying vec2 v_texcoord; // 2d纹理坐标
+void main(void) {
+ // 归一化法线
  vec3 ec_normal = normalize(normal_matrix * a_normal);
- //v_diffuse 是法线与光照的夹角.根据向量点乘法则,当两向量长度为1是 乘积即cosθ值
+ // v_diffuse 是法线与光照的夹角.根据向量点乘法则,当两向量长度为1是 乘积即cosθ值
  v_diffuse = max(dot(ec_light_dir, ec_normal), 0.0);
  v_texcoord = a_texcoord;
  gl_Position = mvp_matrix * a_vertex;
 }
 ```
 
-**Fragment Shader:**
-
 ```cpp
+// Fragment Shader
 precision mediump float;
 uniform sampler2D t_reflectance;
 uniform vec4 i_ambient;
 varying float v_diffuse;
 varying vec2 v_texcoord;
-void main (void)
-{
+void main (void) {
  vec4 color = texture2D(t_reflectance, v_texcoord);
- //这里分解开来是 color*vec3(1,1,1)*v_diffuse + color*i_ambient
- //色*光*夹角cos + 色*环境光
+ // 这里分解开来是 color*vec3(1,1,1)*v_diffuse + color*i_ambient
+ // 色*光*夹角cos + 色*环境光
  gl_FragColor = color*(vec4(v_diffuse) + i_ambient);
 }
 ```
@@ -1528,3 +1334,4 @@ void main (void)
 - [GLSL 中文手册](https://github.com/wshxbqq/GLSL-Card)
 - [函数详细解释](https://thebookofshaders.com/glossary/?search=sin)
 - [函数可视化](https://graphtoy.com/)
+- [缓动函数](https://easings.net/)
