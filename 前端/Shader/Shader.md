@@ -1,3 +1,7 @@
+# glsls
+
+`./glsl` 文件夹下有 shader 学习文件
+
 # 配置
 
 ## VSC 语法提示
