@@ -236,7 +236,7 @@ iphone6 plus / iphone 7 plus
 
 ## script 标签
 
-![09.png](https://qiniu.chenng.cn/2018-11-06-17-59-56.png)
+![09.png](./imgs/09.png)
 
 - html 静态 `<script>` 引入，JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情
 - js 动态插入 `<script>`
@@ -510,11 +510,11 @@ rgba()和 opacity 都能实现透明效果，但最大的不同是 opacity 作�
 
 ### 速记图
 
-![01.jpg](https://qiniu.chenng.cn/2019-04-26-10-29-39.jpg)
-![02.jpg](https://qiniu.chenng.cn/2019-04-26-10-30-00.jpg)
-![03.jpg](https://qiniu.chenng.cn/2019-04-26-10-30-14.jpg)
-![04.jpg](https://qiniu.chenng.cn/2019-04-26-10-30-19.jpg)
-![05.jpg](https://qiniu.chenng.cn/2019-04-26-10-30-27.jpg)
+![01.jpg](./imgs/01.jpg)
+![02.jpg](./imgs/02.jpg)
+![03.jpg](./imgs/03.jpg)
+![04.jpg](./imgs/04.jpg)
+![05.jpg](./imgs/05.jpg)
 
 [flex.css](https://github.com/lzxb/flex.css)
 
@@ -2615,11 +2615,11 @@ body
   - outline, visibility, color、background-color
 - 浏览器会将各层的信息发送给 GPU，GPU 会将各层合成（composite），显示在屏幕上
 
-![06.png](https://qiniu.chenng.cn/2019-01-13-21-29-17.png)
+![06.png](./imgs/06.png)
 
-![07.png](https://qiniu.chenng.cn/2019-01-13-21-29-40.png)
+![07.png](./imgs/07.png)
 
-![08.png](https://qiniu.chenng.cn/2019-01-13-21-30-10.png)
+![08.png](./imgs/08.png)
 
 ## 保证可访问性
 

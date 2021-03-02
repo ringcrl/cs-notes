@@ -11,27 +11,28 @@ viewBox 代表想要叠加在视口上的用户坐标系统：
 - 宽度
 - 高度
 
-## translate变换
+## translate 变换
 
 看个栗子：<http://oreillymedia.github.io/svg-essentials-examples/ch06/translate.html>
 
 translate 声明会获取整个网格，然后把它移动到画布的新位置，而不是移动正方形。就正方形而言，它仍然绘制在左上角 (0, 0) 处。乍看之下，使用 translate 似乎荒谬且低效，如同通过移动整个起居室、墙壁以及所有东西到新的位置，从而让沙发远离房子的外墙。事实上，如果 translation 是唯一可用的变 换，那么移动整个坐标系统将是一种浪费。但是，我们很快会看到，如果要对整个坐标系统应用其他的变换或者一系列变换的组合，那么从数学和概念上讲，这样做会更方便。
 
-## scale变换
+## scale 变换
 
 网格并没有被移动，坐标系统的点 (0, 0) 仍然在相同的位置，但是每个用户坐标都变成原 来的两倍了。从网格线上可以看到，矩形的左上角在更大的新网格中仍然在 (10, 10) 位置， 因为对象并没有移动。这也解释了为什么较大正方形的轮廓线更粗了。stroke-width 仍然 是一个用户单位，但是这个单位已经是原来的两倍了，因此其笔画变粗了。
 
 ```html
 <svg width="200px" height="200px" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <g id="square">
-  <rect x="10" y="10" width="20" height="20" style="fill: none; stroke: black;"/> </g>
-  <use xlink:href="#square" transform="scale(2)"/>
+    <rect x="10" y="10" width="20" height="20" style="fill: none; stroke: black;" />
+  </g>
+  <use xlink:href="#square" transform="scale(2)" />
 </svg>
 ```
 
 缩放变换永远不会改变图形对象的网格坐标或者它的笔画宽度，但是，它会改变对应画布上的坐标系统(网格)的大小。
 
-![02.png](https://qiniu.chenng.cn/2019-02-07-23-52-59.png)
+![02.png](./imgs/02.png)
 
 # 基本形状
 
@@ -95,7 +96,7 @@ translate 声明会获取整个网格，然后把它移动到画布的新位置�
 
 ## 椭圆弧
 
-![01.png](https://qiniu.chenng.cn/2019-02-07-23-39-37.png)
+![01.png](./imgs/01.png)
 
 以 A（绝对坐标）或 a（相对坐标）开始，后面接 7 个参数：
 
@@ -106,24 +107,28 @@ translate 声明会获取整个网格，然后把它移动到画布的新位置�
 - 终点的 x 坐标和 y 坐标
 
 ```html
-<path d="M 125,75 A100,50 0 0,0 225,125"/> <!-- b -->
-<path d="M 125,75 A100,50 0 0,1 225,125"/> <!-- c -->
-<path d="M 125,75 A100,50 0 1,0 225,125"/> <!-- d -->
-<path d="M 125,75 A100,50 0 1,1 225,125"/> <!-- e -->
+<path d="M 125,75 A100,50 0 0,0 225,125" />
+<!-- b -->
+<path d="M 125,75 A100,50 0 0,1 225,125" />
+<!-- c -->
+<path d="M 125,75 A100,50 0 1,0 225,125" />
+<!-- d -->
+<path d="M 125,75 A100,50 0 1,1 225,125" />
+<!-- e -->
 ```
 
 ## 文本
 
 ```html
 <g style="font-size: 14pt;">
-  <path d="M 100 10 100 100" style="stroke: gray; fill: none;"/>
+  <path d="M 100 10 100 100" style="stroke: gray; fill: none;" />
   <text x="100" y="30" style="text-anchor: start">Start</text>
   <text x="100" y="60" style="text-anchor: middle">Middle</text>
   <text x="100" y="90" style="text-anchor: end">End</text>
 </g>
 ```
 
-![03.png](https://qiniu.chenng.cn/2019-02-07-23-55-37.png)
+![03.png](./imgs/03.png)
 
 ### `<tspan>`元素
 
@@ -144,18 +149,14 @@ translate 声明会获取整个网格，然后把它移动到画布的新位置�
 设置 image 的 xlink:href 属性的时候，要指定 namespace：
 
 ```js
-svg_image_element.setAttributeNS(
-  'http://www.w3.org/1999/xlink',
-  'xlink:href',
-  image_src,
-);
+svg_image_element.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', image_src);
 ```
 
 # filter
 
 ## 原理
 
-- 使用了 filter 的 svg们不会将图案直接渲染为最终图形，会渲染图案的像素到临时位图中
+- 使用了 filter 的 svg 们不会将图案直接渲染为最终图形，会渲染图案的像素到临时位图中
 - 由 filter 指定的操作会被应用到该临时区域，其结果会被渲染为最终图形
 - filter 标记之间就是执行我们想要操作的滤镜基元，每个基元有一个或多个输入，但只有一个输出
 - 基元的输入可以是原始图形(SourceGraphic)、图形的不透明度通道(SourceAlpha)、前一个滤镜基元的输出，只有对图形的形状感兴趣而不管颜色时，不透明度通道是有用的，不透明度通道会和颜色相互作用
@@ -200,11 +201,11 @@ svg_image_element.setAttributeNS(
 
 ```html
 <filter id="drop-shadow">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
-  <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+  <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+  <feOffset in="blur" dx="4" dy="4" result="offsetBlur" />
   <feMerge>
-    <feMergeNode in="offsetBlur"/>
-    <feMergeNode in="SourceGraphic"/>
+    <feMergeNode in="offsetBlur" />
+    <feMergeNode in="SourceGraphic" />
   </feMerge>
 </filter>
 ```
@@ -213,56 +214,56 @@ svg_image_element.setAttributeNS(
 
 - 允许修改任意像素点的颜色或者阿尔法值
 - type 属性为 matrix 的时候，values 4 行 5 列，表四行代表计算 R、G、B、A
-- 每行中的数字分别乘以输入像素的 R、G、B、A和常量 1（按照列的顺序），得到输出值
+- 每行中的数字分别乘以输入像素的 R、G、B、A 和常量 1（按照列的顺序），得到输出值
 - 若不指定 result，表示用作下一个基元的隐形输入
 
 ```html
 <filter id="glow">
-  <feColorMatrix type="matrix"
-    values=
-        "0 0 0 0   0
+  <feColorMatrix
+    type="matrix"
+    values="0 0 0 0   0
           0 0 0 0.9 0 
           0 0 0 0.9 0 
-          0 0 0 1   0"/>
-  <feGaussianBlur stdDeviation="2.5"
-    result="coloredBlur"/>
+          0 0 0 1   0"
+  />
+  <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
   <feMerge>
-    <feMergeNode in="coloredBlur"/>
-    <feMergeNode in="SourceGraphic"/>
+    <feMergeNode in="coloredBlur" />
+    <feMergeNode in="SourceGraphic" />
   </feMerge>
 </filter>
 ```
 
-![04.png](https://qiniu.chenng.cn/2019-04-28-16-45-19.png)
+![04.png](./imgs/04.png)
 
 ## feComponentTransfer
 
 - 提供一种更方便、更灵活的方式来单独操作每个颜色分量
-    - 可以让蓝色更亮，也可以通过增加绿色和红色级别让它没那么强烈
+  - 可以让蓝色更亮，也可以通过增加绿色和红色级别让它没那么强烈
 - 通过内置 feFuncR、 feFuncG、feFuncB、feFuncA 调整红绿蓝和阿尔法的级别
-    - 每个元素可以指定一个 type 说明如何修改该通道，所有结果大于 1.0 被减少为 1.0，小于 0 被调整为 0
-        - linear：把当前颜色值分量放到公式 `slope * C + intercept` 中，intercept 为结果提供一个基准值，slope 是一个简单的比例因子。`<feFuncB type="linear" slope="3" intercept="0.2">`
-        - table：将颜色值划分为一系列相等的间隔，每个间隙中的值都相应地扩大，类似于最小的四分之一颜色范围的值加倍，下一个四分之一都塞入一个十分之一的范围，保持第三个四分之一的范围不变，最后一个四分之一的值塞入剩下的 15% 的颜色范围中 `<feFuncG type="table" tableValues="0.0, 0.5, 0.6, 0.85, 1.0" />`
+  - 每个元素可以指定一个 type 说明如何修改该通道，所有结果大于 1.0 被减少为 1.0，小于 0 被调整为 0
+    - linear：把当前颜色值分量放到公式 `slope * C + intercept` 中，intercept 为结果提供一个基准值，slope 是一个简单的比例因子。`<feFuncB type="linear" slope="3" intercept="0.2">`
+    - table：将颜色值划分为一系列相等的间隔，每个间隙中的值都相应地扩大，类似于最小的四分之一颜色范围的值加倍，下一个四分之一都塞入一个十分之一的范围，保持第三个四分之一的范围不变，最后一个四分之一的值塞入剩下的 15% 的颜色范围中 `<feFuncG type="table" tableValues="0.0, 0.5, 0.6, 0.85, 1.0" />`
 
 ## feComposite
 
 - 接受两个输入源，分别指定在 in 和 in2 属性中
 - operator 属性用于设置如何合并这两个输入源
-    - over：`<feComposite operator="over" in="A" in2="B" />` 生成的结果 A 层叠在 B 上面，`<feMergeNode>` 仅仅是制定 over 操作的 `feComposite` 元素的一种便利的快捷方式
-    - in：`<feComposite operator="in" in="A" in2="B" />` 结果是 A 的一部分重叠在 B 的不透明区域，类似于蒙版效果，但这个蒙版仅仅基于 B 的阿尔法通道，而不是它的颜色亮度
-    - out：`<feComposite operator="out" in="A" in2="B" />`，结果是 A 的一部分位于 B 的不透明区域的外部
-    - atop：`feComposite operator="atop" in="A" in2="B" />`，结果是 A 的一部分位于 B 里面，B 的一部分在 A 外面
-    - xor：`<feComposite operator="xor" in="A" in2="B" />`，结果包含位于 B 的外面的 A 的部分和位于 A 的外面的 B 的部分
+  - over：`<feComposite operator="over" in="A" in2="B" />` 生成的结果 A 层叠在 B 上面，`<feMergeNode>` 仅仅是制定 over 操作的 `feComposite` 元素的一种便利的快捷方式
+  - in：`<feComposite operator="in" in="A" in2="B" />` 结果是 A 的一部分重叠在 B 的不透明区域，类似于蒙版效果，但这个蒙版仅仅基于 B 的阿尔法通道，而不是它的颜色亮度
+  - out：`<feComposite operator="out" in="A" in2="B" />`，结果是 A 的一部分位于 B 的不透明区域的外部
+  - atop：`feComposite operator="atop" in="A" in2="B" />`，结果是 A 的一部分位于 B 里面，B 的一部分在 A 外面
+  - xor：`<feComposite operator="xor" in="A" in2="B" />`，结果包含位于 B 的外面的 A 的部分和位于 A 的外面的 B 的部分
 
 ## feBlend
 
 - 接受两个输入源，分别指定在 in 和 in2 属性中
 - mode 属性用于设置如何混合输入源
-    - normal：只有 B
-    - multiply：对于每个颜色通道，将 A 的值和 B 的值想成，由于颜色值在 0~1 之间，相乘会让它们更小，这会加深颜色，如果某个颜色是白色则没有效果
-    - screen：把每个通道的颜色值加载一起，然后减去它们乘积，明亮颜色或者浅色往往回避暗色占优势，但相似亮度的颜色会被合并
-    - darken：取 A 和 B 的每个通道的最小值，颜色较暗
-    - lighten：提取 A 和 B 的每个通道的最大值，颜色较亮
+  - normal：只有 B
+  - multiply：对于每个颜色通道，将 A 的值和 B 的值想成，由于颜色值在 0~1 之间，相乘会让它们更小，这会加深颜色，如果某个颜色是白色则没有效果
+  - screen：把每个通道的颜色值加载一起，然后减去它们乘积，明亮颜色或者浅色往往回避暗色占优势，但相似亮度的颜色会被合并
+  - darken：取 A 和 B 的每个通道的最小值，颜色较暗
+  - lighten：提取 A 和 B 的每个通道的最大值，颜色较亮
 
 ## feFlood 和 feTile
 
@@ -275,8 +276,24 @@ svg_image_element.setAttributeNS(
 
 ```html
 <feGaussianBlur result="outShadowAnimate" in="outColor" stdDeviation="3">
-  <animate id="increase" attributeType="XML" attributeName="stdDeviation" from="3" to="10" begin="0s;decrease.end" dur="0.4s" />
-  <animate id="decrease" attributeType="XML" attributeName="stdDeviation" from="10" to="3" begin="increase.end" dur="0.4s" />
+  <animate
+    id="increase"
+    attributeType="XML"
+    attributeName="stdDeviation"
+    from="3"
+    to="10"
+    begin="0s;decrease.end"
+    dur="0.4s"
+  />
+  <animate
+    id="decrease"
+    attributeType="XML"
+    attributeName="stdDeviation"
+    from="10"
+    to="3"
+    begin="increase.end"
+    dur="0.4s"
+  />
 </feGaussianBlur>
 ```
 
@@ -381,16 +398,16 @@ svg_image_element.setAttributeNS(
 
 ```html
 <symbol xmlns="http://www.w3.org/2000/svg" id="new_tap" viewBox="0 0 24 24">
-    <g fill="none" fill-rule="evenodd">
-        <path d="M0 0h24v24H0z"/>
-        <path fill="#FFF" fill-rule="nonzero" d="M12 12.866V ..."/>
-    </g>
+  <g fill="none" fill-rule="evenodd">
+    <path d="M0 0h24v24H0z" />
+    <path fill="#FFF" fill-rule="nonzero" d="M12 12.866V ..." />
+  </g>
 </symbol>
 <symbol xmlns="http://www.w3.org/2000/svg" id="new_start" viewBox="0 0 24 24">
-    <g fill="none" fill-rule="evenodd">
-        <path d="M0 0h24v24H0z"/>
-        <path fill="#FFF" fill-rule="nonzero" d="M6.375 18C4.5..."/>
-    </g>
+  <g fill="none" fill-rule="evenodd">
+    <path d="M0 0h24v24H0z" />
+    <path fill="#FFF" fill-rule="nonzero" d="M6.375 18C4.5..." />
+  </g>
 </symbol>
 ```
 
@@ -400,7 +417,12 @@ svg_image_element.setAttributeNS(
 
 ```html
 <!-- 原来 -->
-<image height="36px" width="36px" class="blocklyTypeIcon" xlink:href="https://static.codemao.cn/kitten/blocks/new_start.svg"></image>
+<image
+  height="36px"
+  width="36px"
+  class="blocklyTypeIcon"
+  xlink:href="https://static.codemao.cn/kitten/blocks/new_start.svg"
+></image>
 
 <!-- SVG 雪碧图版本 -->
 <use height="36px" width="36px" class="blocklyTypeIcon" xlink:href="#new_start"></use>

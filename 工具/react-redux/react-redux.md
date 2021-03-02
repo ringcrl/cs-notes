@@ -3,10 +3,10 @@
 ## 生命周期
 
 - componentWillMount：在渲染前调用，在客户端也在服务端
-- componentDidMount：在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，可以通过 this.getDOMNode()来进行访问
+- componentDidMount：在第一次渲染后调用，只在客户端。之后组件已经生成了对应的 DOM 结构，可以通过 this.getDOMNode()来进行访问
 - componentWillReceiveProps：在组件接收到一个新的 prop (更新后)时被调用，这个方法在初始化 render 时不会被调用
 - shouldComponentUpdate：返回一个布尔值，在组件接收到新的 props 或者 state 时被调用。在初始化时或者使用 forceUpdate 时不被调用，可以在你确认不需要更新组件时使用
-- componentWillUpdate：在组件接收到新的 props 或者 state 但还没有render时被调用。在初始化时不会被调用
+- componentWillUpdate：在组件接收到新的 props 或者 state 但还没有 render 时被调用。在初始化时不会被调用
 - componentDidUpdate：在组件完成更新后立即调用。在初始化时不会被调用
 - componentWillUnmount：在组件从 DOM 中移除之前立刻被调用
 
@@ -18,13 +18,13 @@
 ## 核心流程
 
 - reconciliation (调度算法）
-    - 更新 state 与 props
-    - 调用生命周期钩子
-    - 生成 virtual dom（称为 Fiber Tree 更为符合）
-    - 通过新旧 vdom 进行 diff 算法，获取 vdom change
-    - 确定是否需要重新渲染
+  - 更新 state 与 props
+  - 调用生命周期钩子
+  - 生成 virtual dom（称为 Fiber Tree 更为符合）
+  - 通过新旧 vdom 进行 diff 算法，获取 vdom change
+  - 确定是否需要重新渲染
 - commit
-    - 如需要，则操作 dom 节点更新
+  - 如需要，则操作 dom 节点更新
 
 ## Fiber
 
@@ -32,9 +32,9 @@
 
 - 同步阻塞：React 需要实例化每个类组件，生成一颗组件树，使用 **同步递归** 的方式进行遍历渲染，而这个过程最大的问题就是无法 **暂停和恢复**
 - 解决同步阻塞的三个解决思路
-    - 任务分割（Fiber 使用的思想）
-    - 异步调用
-    - 缓存策略
+  - 任务分割（Fiber 使用的思想）
+  - 异步调用
+  - 缓存策略
 
 ### 实现原理
 
@@ -72,9 +72,9 @@ class Fiber {
 任务分割后，就可以把小任务单元分散到浏览器的空闲期间去排队执行，而实现的关键是两个 API
 
 - requestIdleCallback
-    - 低优先级的任务交给 requestIdleCallback 处理，这是个浏览器提供的事件循环空闲期的回调函数，需要 pollyfill，而且拥有 deadline 参数，限制执行事件，以继续切分任务
+  - 低优先级的任务交给 requestIdleCallback 处理，这是个浏览器提供的事件循环空闲期的回调函数，需要 pollyfill，而且拥有 deadline 参数，限制执行事件，以继续切分任务
 - requestAnimationFrame
-    - 高优先级的任务交给 requestAnimationFrame 处理
+  - 高优先级的任务交给 requestAnimationFrame 处理
 
 ### 优先级策略
 
@@ -97,14 +97,14 @@ yarn add -D why-did-you-update
 ```
 
 ```js
-import React from 'react'
+import React from 'react';
 if (process.env.NODE_ENV !== 'production') {
-  const {whyDidYouUpdate} = require('why-did-you-update')
-  whyDidYouUpdate(React)
+  const { whyDidYouUpdate } = require('why-did-you-update');
+  whyDidYouUpdate(React);
 }
 ```
 
-![01.png](https://qiniu.chenng.cn/2019-01-19-11-21-57.png)
+![01.png](./imgs/01.png)
 
 ## Hooks
 
@@ -123,9 +123,7 @@ function Example() {
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
@@ -134,17 +132,17 @@ function Example() {
 ### 解决的问题
 
 - 很难在组件之间重用状态逻辑
-    - React 没有提供一种将可重用行为附加到组件的方法(例如，将它连接到 store)
-    - 以前使用高阶组件来解决问题，要求你重新构造组件，会造成“包裹地狱”的现象
-    - React 需要更好的原生共享状态逻辑，Hooks 从组件中提取有状态逻辑，以便可以独立测试和重用它
-    - Hooks 允许您重用状态逻辑，而不改变组件层次结构
+  - React 没有提供一种将可重用行为附加到组件的方法(例如，将它连接到 store)
+  - 以前使用高阶组件来解决问题，要求你重新构造组件，会造成“包裹地狱”的现象
+  - React 需要更好的原生共享状态逻辑，Hooks 从组件中提取有状态逻辑，以便可以独立测试和重用它
+  - Hooks 允许您重用状态逻辑，而不改变组件层次结构
 - 一些组件很容易变得无法复用
-    - `componentDidMount` 的时候执行了一些数据获取
-    - `componentDidMount` 的时候执行了一些事件监听
-    - Hooks 允许你在如设置订阅或者获取数据的部分将一个组件拆成更小的函数，而不是根据生命周期强制拆分
+  - `componentDidMount` 的时候执行了一些数据获取
+  - `componentDidMount` 的时候执行了一些事件监听
+  - Hooks 允许你在如设置订阅或者获取数据的部分将一个组件拆成更小的函数，而不是根据生命周期强制拆分
 - Class 难以理解
-    - 必须了解 this 如何工作
-    - 必须记住事件绑定程序
+  - 必须了解 this 如何工作
+  - 必须记住事件绑定程序
 
 ### 三种 Hooks
 
@@ -164,9 +162,7 @@ function Example() {
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
@@ -199,9 +195,7 @@ function Example() {
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
@@ -220,19 +214,19 @@ function Example() {
 - 如果不传第二个参数的话，它就等价于 componentDidMount 和 componentDidUpdate
 
 ```js
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 export function BusinessComponent() {
   const initData = async () => {
     // 发起请求并执行初始化操作
-  }
+  };
   // 执行初始化操作
   // 需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
   useEffect(() => {
     initData();
   }, []);
 
-  return (<div></div>);
+  return <div></div>;
 }
 ```
 
@@ -242,15 +236,13 @@ export function BusinessComponent() {
 - 传入了第二个参数，那么只有在第二个参数的值发生变化(以及首次渲染)的时候，才会触发 effects
 
 ```js
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 export function QRCode(url, userId) {
   // 根据 userId 查询扫描状态
-  const pollingQueryingStatus = async () => {
-  }
+  const pollingQueryingStatus = async () => {};
   // 取消轮询
-  const stopPollingQueryStatus = async() => {
-  }
+  const stopPollingQueryStatus = async () => {};
 
   useEffect(() => {
     pollingQueryingStatus();
@@ -259,20 +251,18 @@ export function QRCode(url, userId) {
   }, []);
 
   // 根据url生成二维码
-  return (<div></div>)
+  return <div></div>;
 }
 ```
 
 ```js
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 export function QRCode(url, userId) {
   // 根据 userId 查询扫描状态
-  const pollingQueryingStatus = async () => {
-  }
+  const pollingQueryingStatus = async () => {};
 
-  const stopPollingQueryStatus = async() => {
-  }
+  const stopPollingQueryStatus = async () => {};
   // 我们只是将 useEffect 的第二个参数加了个 userId
   // userId 的每一次变化都会先触发 stopPollingQueryStatus，之后再执行 effects
   useEffect(() => {
@@ -282,7 +272,7 @@ export function QRCode(url, userId) {
   }, [userId]);
 
   // 根据 url 生成二维码
-  return (<div></div>)
+  return <div></div>;
 }
 ```
 
@@ -300,23 +290,23 @@ export function Count() {
     name: 'cjg',
     age: 18,
   });
-    
+
   const handleClick = () => {
     const { count } = data;
     // 这里必须将完整的state对象传进去
     setData({
       ...data,
       count: count + 1,
-    })
+    });
   };
 
-  return (<button onClick={handleClick}></button>)
+  return <button onClick={handleClick}></button>;
 }
 ```
 
 #### PureComponent
 
-- React.momo 其实并不是一个hook，它其实等价于 PureComponent
+- React.momo 其实并不是一个 hook，它其实等价于 PureComponent
 
 ```js
 import React, { useState } from 'react';
@@ -327,16 +317,16 @@ export const Count = React.memo((props) => {
     name: 'cjg',
     age: 18,
   });
-  
+
   const handleClick = () => {
     const { count } = data;
     setData({
       ...data,
       count: count + 1,
-    })
+    });
   };
 
-  return (<button onClick={handleClick}>count:{data.count}</button>)
+  return <button onClick={handleClick}>count:{data.count}</button>;
 });
 ```
 
@@ -345,13 +335,13 @@ export const Count = React.memo((props) => {
 - 可以使用 Context 来实现跨层级的组件数据传递
 - 使用 Context，可以跨越组件进行数据传递
 - 如果要 Context 发挥作用，需要用到两种组件
-    - 一个是 Context 生产者(Provider)，通常是一个父节点
-    - 另外是一个 Context 的消费者(Consumer)，通常是一个或者多个子节点
-    - Context 的使用基于生产者消费者模式
+  - 一个是 Context 生产者(Provider)，通常是一个父节点
+  - 另外是一个 Context 的消费者(Consumer)，通常是一个或者多个子节点
+  - Context 的使用基于生产者消费者模式
 
 ### 项目
 
-- react-redux的 `<Provider />`，通过 Context 提供一个全局态的 store
+- react-redux 的 `<Provider />`，通过 Context 提供一个全局态的 store
 - 拖拽组件 react-dnd，通过 Context 在组件中分发 DOM 的 Drag 和 Drop 事件
 - 路由组件 react-router 通过 Context 管理路由状态
 
@@ -365,12 +355,12 @@ export const Count = React.memo((props) => {
 - 并实现一个实例 getChildContext 方法，返回一个代表 Context 的纯对象
 
 ```js
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class MiddleComponent extends React.Component {
-  render () {
-    return <ChildComponent />
+  render() {
+    return <ChildComponent />;
   }
 }
 
@@ -378,19 +368,19 @@ class ParentComponent extends React.Component {
   // 声明 Context 对象属性
   static childContextTypes = {
     propA: PropTypes.string,
-    methodA: PropTypes.func
-  }
-  
+    methodA: PropTypes.func,
+  };
+
   // 返回 Context 对象，方法名是约定好的
-  getChildContext () {
+  getChildContext() {
     return {
       propA: 'propA',
-      methodA: () => 'methodA'
-    }
+      methodA: () => 'methodA',
+    };
   }
-  
-  render () {
-    return <MiddleComponent />
+
+  render() {
+    return <MiddleComponent />;
   }
 }
 ```
@@ -401,24 +391,21 @@ Context 的消费者，通过如下方式访问父组件提供的 Context
 - 否则，即使属性名没写错，拿到的对象也是 undefined
 
 ```js
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class ChildComponent extends React.Component {
   // 声明需要使用的 Context 属性
   static contextTypes = {
-    propA: PropTypes.string
-  }
-  
-  render () {
-    const {
-      propA,
-      methodA
-    } = this.context
-    
-    console.log(`context.propA = ${propA}`)  // context.propA = propA
-    console.log(`context.methodA = ${methodA}`)  // context.methodA = undefined
-    
+    propA: PropTypes.string,
+  };
+
+  render() {
+    const { propA, methodA } = this.context;
+
+    console.log(`context.propA = ${propA}`); // context.propA = propA
+    console.log(`context.methodA = ${methodA}`); // context.methodA = undefined
+
     return null;
   }
 }
@@ -434,14 +421,14 @@ const ChildComponent = (props, context) => {
   const {
     propA
   } = context
-    
+
   console.log(`context.propA = ${propA}`)  // context.propA = propA
-    
+
   return ...
 }
-  
+
 ChildComponent.contextProps = {
-  propA: PropTypes.string    
+  propA: PropTypes.string
 }
 ```
 
@@ -454,12 +441,11 @@ ChildComponent.contextProps = {
 - `<Provider />` 的 value 相当于现在的 `getChildContext()`
 - `<Consumer />` 的 `children` 必须是一个函数，通过函数的参数获取 `<Provider />` 提供的 Context
 
-
 ```js
 class App extends React.Component {
-  render () {
+  render() {
     return (
-      <ThemeContext.Provider value={{background: 'green', color: 'white'}}>
+      <ThemeContext.Provider value={{ background: 'green', color: 'white' }}>
         <Header />
       </ThemeContext.Provider>
     );
@@ -469,19 +455,17 @@ class App extends React.Component {
 
 ```js
 class Header extends React.Component {
-  render () {
-    return (
-      <Title>Hello React Context API</Title>
-    );
+  render() {
+    return <Title>Hello React Context API</Title>;
   }
 }
- 
+
 class Title extends React.Component {
-  render () {
+  render() {
     return (
       <ThemeContext.Consumer>
-        {context => (
-          <h1 style={{background: context.background, color: context.color}}>
+        {(context) => (
+          <h1 style={{ background: context.background, color: context.color }}>
             {this.props.children}
           </h1>
         )}
@@ -496,9 +480,9 @@ class Title extends React.Component {
 - 实例的 context 属性(this.context)
 - 构造方法 constructor(props, context)
 - 生命周期
-    - componentWillReceiveProps(nextProps, nextContext)
-    - shouldComponentUpdate(nextProps, nextState, nextContext)
-    - componetWillUpdate(nextProps, nextState, nextContext)
+  - componentWillReceiveProps(nextProps, nextContext)
+  - shouldComponentUpdate(nextProps, nextState, nextContext)
+  - componetWillUpdate(nextProps, nextState, nextContext)
 - 无状态组件通过函数的参数直接访问组件的 Context
 
 ```js
@@ -518,13 +502,13 @@ const StatelessComponent = (props, context) => (
 ### 理解
 
 - 由于组件的 Context 由其父节点链上所有组件通过 getChildContext() 返回的 Context 对象组合而成，组件通过 Context 是可以访问到其父组件链上所有节点组件提供的 Context 的属性
-    - 父组件提供 Context 需要通过 childContextTypes 进行“声明”
-    - 子组件使用父组件的 Context 属性需要通过 contextTypes 进行“申请”
-    - 可以在一定程度上确保组件所提供的 Context 的可控性和影响范围
-    - 通过 Context 暴露数据或者 API 不是一种优雅的实践方案
+  - 父组件提供 Context 需要通过 childContextTypes 进行“声明”
+  - 子组件使用父组件的 Context 属性需要通过 contextTypes 进行“申请”
+  - 可以在一定程度上确保组件所提供的 Context 的可控性和影响范围
+  - 通过 Context 暴露数据或者 API 不是一种优雅的实践方案
 - 不优先使用
-    - 尽管不建议在 App 中使用 Context，但对于组件而言，由于影响范围小于 App，如果可以做到高内聚，不破坏组件树的依赖关系，那么还是可以考虑使用 Context 的
-    - 对于组件之间的数据通信或者状态管理，优先考虑用 props 或者 state 解决，然后再考虑用其他第三方成熟库解决的，以上方法都不是最佳选择的时候，那么再考虑使用 Context
+  - 尽管不建议在 App 中使用 Context，但对于组件而言，由于影响范围小于 App，如果可以做到高内聚，不破坏组件树的依赖关系，那么还是可以考虑使用 Context 的
+  - 对于组件之间的数据通信或者状态管理，优先考虑用 props 或者 state 解决，然后再考虑用其他第三方成熟库解决的，以上方法都不是最佳选择的时候，那么再考虑使用 Context
 
 ### redux 使用 context
 
@@ -533,38 +517,38 @@ const StatelessComponent = (props, context) => (
 
 ```js
 export function createProvider(storeKey = 'store', subKey) {
-    const subscriptionKey = subKey || `${storeKey}Subscription`
+  const subscriptionKey = subKey || `${storeKey}Subscription`;
 
-    class Provider extends Component {
-        getChildContext() {
-          return { [storeKey]: this[storeKey], [subscriptionKey]: null }
-        }
-
-        constructor(props, context) {
-          super(props, context)
-          this[storeKey] = props.store;
-        }
-
-        render() {
-          return Children.only(this.props.children)
-        }
+  class Provider extends Component {
+    getChildContext() {
+      return { [storeKey]: this[storeKey], [subscriptionKey]: null };
     }
 
-    // ......
-
-    Provider.propTypes = {
-        store: storeShape.isRequired,
-        children: PropTypes.element.isRequired,
-    }
-    Provider.childContextTypes = {
-        [storeKey]: storeShape.isRequired,
-        [subscriptionKey]: subscriptionShape,
+    constructor(props, context) {
+      super(props, context);
+      this[storeKey] = props.store;
     }
 
-    return Provider
+    render() {
+      return Children.only(this.props.children);
+    }
+  }
+
+  // ......
+
+  Provider.propTypes = {
+    store: storeShape.isRequired,
+    children: PropTypes.element.isRequired,
+  };
+  Provider.childContextTypes = {
+    [storeKey]: storeShape.isRequired,
+    [subscriptionKey]: subscriptionShape,
+  };
+
+  return Provider;
 }
 
-export default createProvider()
+export default createProvider();
 ```
 
 ## VNode
@@ -577,12 +561,12 @@ export default createProvider()
 
 ## key 的作用
 
-一棵树转换为另一棵树的最小操作数算法问题的通用方案，树中元素个数为n，时间复杂度为O(n的3次方)。React 基于两点假设，实现了一个启发的O(n)算法：
+一棵树转换为另一棵树的最小操作数算法问题的通用方案，树中元素个数为 n，时间复杂度为 O(n 的 3 次方)。React 基于两点假设，实现了一个启发的 O(n)算法：
 
 - 两个不同类型的元素将产生不同的树
-    - 每当根元素有不同类型，React 将卸载旧树并重新构建新树
+  - 每当根元素有不同类型，React 将卸载旧树并重新构建新树
 - 通过渲染器附带 key 属性，开发者可以示意哪些子元素可能是稳定的
-    - 子节点有 key 时，React 使用 key 来匹配原本树的子节点和新树的子节点
+  - 子节点有 key 时，React 使用 key 来匹配原本树的子节点和新树的子节点
 
 ## super(props)
 
@@ -599,7 +583,7 @@ instance.props = props;
 class Button extends React.Component {
   constructor(props) {
     super(); // 我们忘了传入 props
-    console.log(props);      // {}
+    console.log(props); // {}
     console.log(this.props); // undefined
   }
 }
@@ -618,17 +602,17 @@ https://github.com/facebook/react/issues/11527#issuecomment-360199710
 
 ### 总结
 
-- 在 **合成事件** 和 **生命周期钩子(除 componentDidUpdate)** 中，setState是异步的
-    - 原因：因为在 setState 的实现中，有一个判断: 当更新策略正在事务流的执行中时，该组件更新会被推入 dirtyComponents 队列中等待执行；否则，开始执行 batchedUpdates 队列更新
-        - 在生命周期钩子调用中，更新策略都处于更新之前，组件仍处于事务流中，而 componentDidUpdate 是在更新之后，此时组件已经不在事务流中了，因此则会同步执行
-        - 在合成事件中，React 是基于 **事务流完成的事件委托机制** 实现，也是处于事务流中
-    - 问题：无法在 setState 后马上从 this.state 上获取更新后的值
-    - 解决：如果需要马上同步去获取新值，setState 其实是可以传入第二个参数的。setState(updater, callback)，在 callback 中即可获取最新值
+- 在 **合成事件** 和 **生命周期钩子(除 componentDidUpdate)** 中，setState 是异步的
+  - 原因：因为在 setState 的实现中，有一个判断: 当更新策略正在事务流的执行中时，该组件更新会被推入 dirtyComponents 队列中等待执行；否则，开始执行 batchedUpdates 队列更新
+    - 在生命周期钩子调用中，更新策略都处于更新之前，组件仍处于事务流中，而 componentDidUpdate 是在更新之后，此时组件已经不在事务流中了，因此则会同步执行
+    - 在合成事件中，React 是基于 **事务流完成的事件委托机制** 实现，也是处于事务流中
+  - 问题：无法在 setState 后马上从 this.state 上获取更新后的值
+  - 解决：如果需要马上同步去获取新值，setState 其实是可以传入第二个参数的。setState(updater, callback)，在 callback 中即可获取最新值
 - 在 **原生事件** 和 **setTimeout** 中，setState 是同步的，可以马上获取更新后的值
-    - 原因：原生事件是浏览器本身的实现，与事务流无关，自然是同步
-    - 而 setTimeout 是放置于定时器线程中延后执行，此时事务流已结束，因此也是同步
+  - 原因：原生事件是浏览器本身的实现，与事务流无关，自然是同步
+  - 而 setTimeout 是放置于定时器线程中延后执行，此时事务流已结束，因此也是同步
 - 函数式：由于 Fiber 及合并的问题，官方推荐使用 `this.setState((state, props) => newState)`
-    - 使用函数式，可以用于避免 setState 的批量更新的逻辑，传入的函数将会被 **顺序调用**
+  - 使用函数式，可以用于避免 setState 的批量更新的逻辑，传入的函数将会被 **顺序调用**
 
 ### 示例
 
@@ -637,30 +621,30 @@ class Example extends React.Component {
   constructor() {
     super();
     this.state = {
-      val: 0
+      val: 0,
     };
   }
-  
-  componentDidMount() {
-    this.setState({val: this.state.val + 1});
-    console.log(this.state.val);    // 0
 
-    this.setState({val: this.state.val + 1});
-    console.log(this.state.val);    // 0
+  componentDidMount() {
+    this.setState({ val: this.state.val + 1 });
+    console.log(this.state.val); // 0
+
+    this.setState({ val: this.state.val + 1 });
+    console.log(this.state.val); // 0
 
     setTimeout(() => {
-      this.setState({val: this.state.val + 1});
-      console.log(this.state.val);  // 2
+      this.setState({ val: this.state.val + 1 });
+      console.log(this.state.val); // 2
 
-      this.setState({val: this.state.val + 1});
-      console.log(this.state.val);  // 3
+      this.setState({ val: this.state.val + 1 });
+      console.log(this.state.val); // 3
     }, 0);
   }
 
   render() {
     return null;
   }
-};
+}
 ```
 
 - 第一次和第二次都是在 react 自身生命周期内，触发时 isBatchingUpdates 为 true，所以并不会直接执行更新 state，而是加入了 dirtyComponents，所以打印时获取的都是更新前的状态 0
@@ -702,7 +686,7 @@ class SomePlugin extends React.Component {
   }
 
   render() {
-    return <div ref={el => this.el = el} />;
+    return <div ref={(el) => (this.el = el)} />;
   }
 }
 ```
@@ -710,10 +694,7 @@ class SomePlugin extends React.Component {
 ## render 元素数组
 
 ```js
-const Fruits = () => [
-  <li key="1">Pear</li>,
-  <li key="2">Apple</li>,
-]
+const Fruits = () => [<li key="1">Pear</li>, <li key="2">Apple</li>];
 ```
 
 ## TextOnlyComponent
@@ -729,10 +710,10 @@ const Comment = ({ text }) => text.replace(':)', '[smile]')
 ```js
 class Overlay extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.container = document.createElement('div')
-    document.body.appendChild(this.container)
+    this.container = document.createElement('div');
+    document.body.appendChild(this.container);
   }
 
   componentWillUnmount() {
@@ -748,29 +729,31 @@ class Overlay extends Component {
         {this.props.children}
       </div>,
       this.container
-    )
+    );
   }
 }
 
 // 需要在使用 Overlay 组件的地方定义开关状态
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = { overlayActive: true }
+    this.state = { overlayActive: true };
   }
 
   closeOverlay() {
-    this.setState({ overlayActive: false })
+    this.setState({ overlayActive: false });
   }
 
   render() {
     return (
       <div>
         <h2>Dashboard</h2>
-        {this.state.overlayActive && <Overlay onClose={this.closeOverlay.bind(this)}>overlay content</Overlay>}
+        {this.state.overlayActive && (
+          <Overlay onClose={this.closeOverlay.bind(this)}>overlay content</Overlay>
+        )}
       </div>
-    )
+    );
   }
 }
 ```
@@ -782,9 +765,10 @@ class App extends Component {
 - 深层父子组件通信很麻烦
 - 将公共数据提取出来，而修改公共数据需要能保证相关组件自动更新
 - Action 概念是用来增强应用的可拓展性的
-    - 某一次变化以 Action 的形式展示
-    - 公共数据监听 Action 决定自己如何变化，使得公共数据可以以业务逻辑进行维度拆分，拆分出来的数据只要监听跟自己业务逻辑相关的 Action 就可以了
-  
+
+  - 某一次变化以 Action 的形式展示
+  - 公共数据监听 Action 决定自己如何变化，使得公共数据可以以业务逻辑进行维度拆分，拆分出来的数据只要监听跟自己业务逻辑相关的 Action 就可以了
+
 ## combineReducers
 
 ```js
@@ -810,13 +794,13 @@ export function blockly_dialog() {
 - 不希望把 dispatch 或 Redux store 传给它
 
 ```js
-function map_dispatch_to_props(dispatch:Dispatch<NemoState>) {
+function map_dispatch_to_props(dispatch: Dispatch<NemoState>) {
   return bindActionCreators(
     {
       action_toggle_add_variable_dialog,
       action_add_variable,
     },
-    dispatch,
+    dispatch
   );
 }
 ```
@@ -824,25 +808,21 @@ function map_dispatch_to_props(dispatch:Dispatch<NemoState>) {
 ## applyMiddleware
 
 ```js
-const middlewares:any[] = [];
+const middlewares: any[] = [];
 const saga_middleware = createSagaMiddleware();
 middlewares.push(saga_middleware);
-let _store:Store<NemoState> = createStore<NemoState>(
-  root_reducer,
-  applyMiddleware(...middlewares)
-);
+let _store: Store<NemoState> =
+  createStore < NemoState > (root_reducer, applyMiddleware(...middlewares));
 ```
 
 ## createStore
 
 ```js
-const middlewares:any[] = [];
+const middlewares: any[] = [];
 const saga_middleware = createSagaMiddleware();
 middlewares.push(saga_middleware);
-let _store:Store<NemoState> = createStore<NemoState>(
-  root_reducer,
-  applyMiddleware(...middlewares)
-);
+let _store: Store<NemoState> =
+  createStore < NemoState > (root_reducer, applyMiddleware(...middlewares));
 ```
 
 # React-Redux
@@ -851,30 +831,30 @@ react-redux 主要暴露出两个 api
 
 - Provider 组件
 - connect 方法
-    - mapStateToProps
-    - mapDispatchToProps
-    - connect(mapStateToProps, mapDispatchToProps)(Component)
-        - 高阶函数，用于注入 Props
+  - mapStateToProps
+  - mapDispatchToProps
+  - connect(mapStateToProps, mapDispatchToProps)(Component)
+    - 高阶函数，用于注入 Props
 
 ## connect
 
 ```js
 export const AddVariableDialog = connect(
   map_state_to_props,
-  map_dispatch_to_props,
+  map_dispatch_to_props
 )(AddVariableDialogComponent);
 ```
 
 ## Dispatch
 
 ```js
-function map_dispatch_to_props(dispatch:Dispatch<NemoState>) {
+function map_dispatch_to_props(dispatch: Dispatch<NemoState>) {
   return bindActionCreators(
     {
       action_toggle_add_variable_dialog,
       action_add_variable,
     },
-    dispatch,
+    dispatch
   );
 }
 ```
@@ -884,28 +864,28 @@ function map_dispatch_to_props(dispatch:Dispatch<NemoState>) {
 概念：
 
 - redux-saga 是一个 redux 中间件
-    - 将具体业务和底层逻辑解耦的组件
-    - redux 中，中间件就是一个函数，对 `store.dispatch` 方法进行了改造，在发出 Action 和执行 Reducer 这之间，添加了其他功能
+  - 将具体业务和底层逻辑解耦的组件
+  - redux 中，中间件就是一个函数，对 `store.dispatch` 方法进行了改造，在发出 Action 和执行 Reducer 这之间，添加了其他功能
 - 集中处理 redux 副作用问题，被实现为 generator
 - 相当于在 Redux 原有数据流中多了一层，对 Action 进行监听，从而捕获到监听的 Action，然后可以【派生】一个新的任务对 state 进行处理
 - watch/worker（监听->执行） 的工作形式
 
 优点：
 
-- 声明式 Effects：所有的操作以JavaScript对象的方式被 yield，并被 middleware 执行。使得在 saga 内部测试变得更加容易，可以通过简单地遍历 Generator 并在 yield 后的成功值上面做一个 deepEqual 测试
+- 声明式 Effects：所有的操作以 JavaScript 对象的方式被 yield，并被 middleware 执行。使得在 saga 内部测试变得更加容易，可以通过简单地遍历 Generator 并在 yield 后的成功值上面做一个 deepEqual 测试
 - 高级的异步控制流以及并发管理：可以使用简单的同步方式描述异步流，并通过 fork 实现并发任务
 - 将所有的异步流程控制都移入到了 sagas，UI 组件不用执行业务逻辑，只需 dispatch action 就行，增强组件复用性
 
-![02.png](https://qiniu.chenng.cn/2019-03-25-11-15-24.png)
+![02.png](./imgs/02.png)
 
-![03.jpg](https://qiniu.chenng.cn/2019-03-26-10-32-29.jpg)
+![03.jpg](./imgs/03.jpg)
 
 ## Side Effects
 
 - 映射在 Javascript 程序中，Side Effects 主要指的就是：异步网络请求、本地读取 localStorage/Cookie 等外界操作
 - 在 Web 应用，侧重点在于 Side Effects 的 **优雅管理（manage）**，而不是 **消除**
 
-## Middleware && __REDUX_DEVTOOLS_EXTENSION__
+## Middleware && **REDUX_DEVTOOLS_EXTENSION**
 
 ```js
 import { applyMiddleware, createStore, Store } from 'redux';
@@ -917,7 +897,7 @@ middlewares.push(saga_middleware);
 const root_reducer = get_root_reducer();
 const store = createStore(
   root_reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && 
+  window.__REDUX_DEVTOOLS_EXTENSION__ &&
     window.__REDUX_DEVTOOLS_EXTENSION__(){ trace: true, traceLimit: 25 }),
   // 注入 sagaMiddleware
   // 后每次执行 store.dispatch(action)
@@ -1001,9 +981,9 @@ function* watchFetchUser() {
 
 ```js
 function* takeEvery(pattern, saga, ...args) {
-  while(true) {
-    const action = yield take(pattern)
-    yield fork(saga, ...args.concat(action))
+  while (true) {
+    const action = yield take(pattern);
+    yield fork(saga, ...args.concat(action));
   }
 }
 ```
@@ -1032,13 +1012,12 @@ function* watchLastFetchUser() {
 
 ```js
 function* takeLatest(pattern, saga, ...args) {
-  let lastTask
-  while(true) {
-    const action = yield take(pattern)
-    if(lastTask)
-      yield cancel(lastTask) // 如果任务已经终止，取消就是空操作
+  let lastTask;
+  while (true) {
+    const action = yield take(pattern);
+    if (lastTask) yield cancel(lastTask); // 如果任务已经终止，取消就是空操作
 
-    lastTask = yield fork(saga, ...args.concat(action))
+    lastTask = yield fork(saga, ...args.concat(action));
   }
 }
 ```
@@ -1070,7 +1049,7 @@ function countSaga* () {
 }
 ```
 
-### call 
+### call
 
 - 阻塞地调用 saga 或者返回 promise 的函数
 
@@ -1095,7 +1074,7 @@ const members = yield call(fetchMembers, project.id);
 
 ### all
 
-创建一个效果描述，指示中间件并行运行多个效果并等待所有效果完成。这是与标准相当的API `Promise#all`
+创建一个效果描述，指示中间件并行运行多个效果并等待所有效果完成。这是与标准相当的 API `Promise#all`
 
 ```js
 yield all([
@@ -1111,9 +1090,9 @@ yield all([
 创建一个 Redux 中间件，将 Sagas 与 Redux Store 建立连接。
 
 ```js
-import createSagaMiddleware from 'redux-saga'
-import reducer from './path/to/reducer'
-import sagas from './path/to/sagas'
+import createSagaMiddleware from 'redux-saga';
+import reducer from './path/to/reducer';
+import sagas from './path/to/sagas';
 
 export default function configureStore(initialState) {
   // 注意：redux@>=3.1.0 的版本才支持把 middleware 作为 createStore 方法的最后一个参数
@@ -1123,8 +1102,8 @@ export default function configureStore(initialState) {
     applyMiddleware(
       /* other middleware, */
       createSagaMiddleware(...sagas)
-    ),
-  )
+    )
+  );
 }
 ```
 
@@ -1134,11 +1113,11 @@ export default function configureStore(initialState) {
 - 在某些场景中，比如在大型应用中使用 code splitting（模块按需从服务器上加载），又或者处于服务端环境中， 在这些情况下，我们可能希望或者需要在 applyMiddleware 阶段完成之后启动 Sagas
 
 ```js
-import createSagaMiddleware from 'redux-saga'
-import startupSagas from './path/to/sagas'
+import createSagaMiddleware from 'redux-saga';
+import startupSagas from './path/to/sagas';
 
 // middleware 实例
-const sagaMiddleware = createSagaMiddleware(...startupSagas)
+const sagaMiddleware = createSagaMiddleware(...startupSagas);
 ```
 
 ## 错误处理
@@ -1146,9 +1125,15 @@ const sagaMiddleware = createSagaMiddleware(...startupSagas)
 - 假设 saga2 出现代码异常了，且没有进行异常捕获，这样的异常会导致整个 Web App 崩溃
 
 ```js
-function* saga1 () { /* ... */ }
-function* saga2 () { throw new Error('模拟异常'); }
-function* saga3 () { /* ... */ }
+function* saga1() {
+  /* ... */
+}
+function* saga2() {
+  throw new Error('模拟异常');
+}
+function* saga3() {
+  /* ... */
+}
 
 function* rootSaga() {
   yield fork(saga1);
@@ -1174,10 +1159,10 @@ export default function* root() {
 - 在最上层为每一个 childSaga 添加异常捕获，并通过 while(true) {} 循环自动创建新的 childTask 取代 异常 childTask，以保证功能依然可用
 
 ```js
-function* rootSaga () {
-  const sagas = [ saga1, saga2, saga3 ]; 
+function* rootSaga() {
+  const sagas = [saga1, saga2, saga3];
 
-  yield sagas.map(saga =>
+  yield sagas.map((saga) =>
     spawn(function* () {
       while (true) {
         try {
@@ -1197,8 +1182,8 @@ function* rootSaga () {
 
 ```js
 function toggle_add_variable_dialog(
-  state:VariableState,
-  action:Action<{show_add_variable_dialog:boolean}>,
+  state: VariableState,
+  action: Action<{ show_add_variable_dialog: boolean }>
 ) {
   if (action.payload === undefined) {
     return state;
@@ -1213,7 +1198,8 @@ function toggle_add_variable_dialog(
 ## createAction
 
 ```js
-export const action_toggle_add_variable_dialog = createAction<ToggleAddVariableDialogPayload>(A.TOGGLE_VARIABLE_DIALOG);
+export const action_toggle_add_variable_dialog =
+  createAction < ToggleAddVariableDialogPayload > A.TOGGLE_VARIABLE_DIALOG;
 ```
 
 ## handleActions

@@ -1139,7 +1139,7 @@ interface ArrStr {
 
 TS2.9 支持使用 `import()` 语法将类型导入到全局模块中。
 
-![02.png](https://qiniu.chenng.cn/2019-01-19-08-52-50.png)
+![02.png](./imgs/02.png)
 
 ```ts
 declare namespace Express {

@@ -22,7 +22,7 @@
 
 比较好的 markdown 的查看方式是直接用 VSCode 打开大纲，这样整个脉络一目了然，后续补充知识点也很快定位到相应的位置：
 
-![01.png](https://qiniu.chenng.cn/2019-01-28-09-44-31.png)
+![01.png](./imgs/01.png)
 
 这个 markdown 文件已经丢到 Github，有更新会直接推这里：
 

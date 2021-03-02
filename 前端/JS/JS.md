@@ -29,12 +29,12 @@
 ```js
 const cat = {
   say() {
-    console.log("meow~");
+    console.log('meow~');
   },
   jump() {
-    console.log("jump");
-  }
-}
+    console.log('jump');
+  },
+};
 
 const tiger = Object.create(cat, {
   say: {
@@ -42,10 +42,10 @@ const tiger = Object.create(cat, {
     configurable: true,
     enumerable: true,
     value: function () {
-      console.log("roar!");
-    }
-  }
-})
+      console.log('roar!');
+    },
+  },
+});
 
 const anotherCat = Object.create(cat);
 anotherCat.say(); // meow~
@@ -60,11 +60,11 @@ anotherTiger.say(); // roar!
 
 - 原型属性应该指向一个对象，而不是一个函数，所以它必须指向一个由父构造函数所创建的一个实例
 - 缺点：
-    - 同时继承了两个对象的属性，在绝大数时候不需要这些属性
-    - 不支持参数传递到子构造函数中，而自构造函数又将参数传递到父构造函数中
+  - 同时继承了两个对象的属性，在绝大数时候不需要这些属性
+  - 不支持参数传递到子构造函数中，而自构造函数又将参数传递到父构造函数中
 
 ```js
-Child.prototype = new Parent()
+Child.prototype = new Parent();
 ```
 
 #### 借用构造函数
@@ -73,7 +73,7 @@ Child.prototype = new Parent()
 
 ```js
 function Child(a, b, c, d) {
-  Parent.apply(this, arguments)
+  Parent.apply(this, arguments);
 }
 ```
 
@@ -84,10 +84,10 @@ function Child(a, b, c, d) {
 
 ```js
 function Child(a, b, c, d) {
-  Parent.apply(this, arguments)
+  Parent.apply(this, arguments);
 }
 
-Child.prototype = new Parent()
+Child.prototype = new Parent();
 ```
 
 #### 共享原型
@@ -96,20 +96,20 @@ Child.prototype = new Parent()
 缺点：子对象或者子孙对象修改了原型，会影响父对象和祖先对象
 
 ```js
-Child.prototype = Parent.prototype
+Child.prototype = Parent.prototype;
 ```
 
 #### 圣杯模式
 
 ```js
 const inherit = (function () {
-  const F = function () { };
+  const F = function () {};
   return function (Child, Parent) {
     F.prototype = Parent.prototype;
     Child.prototype = new F();
     Child.prototype.constructor = Child;
   };
-}());
+})();
 ```
 
 ### prototype 的理解
@@ -144,9 +144,9 @@ console.log(Object.getPrototypeOf(a) === Person.prototype) // true
 
 - 宿主对象（host Objects）：由 JavaScript 宿主环境提供的对象，它们的行为完全由宿主环境决定
 - 内置对象（Built-in Objects）：由 JavaScript 语言提供的对象
-    - 固有对象（Intrinsic Objects ）：由标准规定，随着 JavaScript 运行时创建而自动创建的对象实例
-    - 原生对象（Native Objects）：可以由用户通过 Array、RegExp 等内置构造器或者特殊语法创建的对象
-    - 普通对象（Ordinary Objects）：由 {} 语法、Object 构造器或者 class 关键字定义类创建的对象，它能够被原型继承
+  - 固有对象（Intrinsic Objects ）：由标准规定，随着 JavaScript 运行时创建而自动创建的对象实例
+  - 原生对象（Native Objects）：可以由用户通过 Array、RegExp 等内置构造器或者特殊语法创建的对象
+  - 普通对象（Ordinary Objects）：由 {} 语法、Object 构造器或者 class 关键字定义类创建的对象，它能够被原型继承
 
 ### 判断对象相等
 
@@ -177,19 +177,19 @@ export default function dequal(foo, bar) {
 
 ```js
 // Object.prototype.toString.call()
-Object.prototype.toString.call('An') // "[object String]"
-Object.prototype.toString.call(1) // "[object Number]"
-Object.prototype.toString.call(Symbol(1)) // "[object Symbol]"
-Object.prototype.toString.call(null) // "[object Null]"
-Object.prototype.toString.call(undefined) // "[object Undefined]"
-Object.prototype.toString.call(function(){}) // "[object Function]"
-Object.prototype.toString.call({name: 'An'}) // "[object Object]"
+Object.prototype.toString.call('An'); // "[object String]"
+Object.prototype.toString.call(1); // "[object Number]"
+Object.prototype.toString.call(Symbol(1)); // "[object Symbol]"
+Object.prototype.toString.call(null); // "[object Null]"
+Object.prototype.toString.call(undefined); // "[object Undefined]"
+Object.prototype.toString.call(function () {}); // "[object Function]"
+Object.prototype.toString.call({ name: 'An' }); // "[object Object]"
 
 // instanceof
 console.log([] instanceof Array); // true
 
 // Array.isArray()
-Array.isArray([]) // true
+Array.isArray([]); // true
 ```
 
 ### 宿主对象
@@ -201,26 +201,26 @@ Array.isArray([]) // true
 #### window
 
 ```js
-window.close();  //关闭窗口
-window.alert("message");  //弹出一个具有OK按钮的系统消息框，显示指定的文本
-window.confirm("Are you sure?");  //弹出一个具有OK和Cancel按钮的询问对话框，返回一个布尔值
-window.prompt("What's your name?", "Default");  //提示用户输入信息，接受两个参数，即要显示给用户的文本和文本框中的默认值，将文本框中的值作为函数值返回
-window.status  //可以使状态栏的文本暂时改变
-window.defaultStatus  //默认的状态栏信息，可在用户离开当前页面前一直改变文本
-window.setTimeout("alert('xxx')", 1000);  //设置在指定的毫秒数后执行指定的代码，接受2个参数，要执行的代码和等待的毫秒数
-window.clearTimeout("ID");  //取消还未执行的暂停，将暂停ID传递给它
-window.setInterval(function(){}, 1000);  //无限次地每隔指定的时间段重复一次指定的代码，参数同setTimeout()一样
-window.clearInterval("ID");  //取消时间间隔，将间隔ID传递给它
+window.close(); //关闭窗口
+window.alert('message'); //弹出一个具有OK按钮的系统消息框，显示指定的文本
+window.confirm('Are you sure?'); //弹出一个具有OK和Cancel按钮的询问对话框，返回一个布尔值
+window.prompt("What's your name?", 'Default'); //提示用户输入信息，接受两个参数，即要显示给用户的文本和文本框中的默认值，将文本框中的值作为函数值返回
+window.status; //可以使状态栏的文本暂时改变
+window.defaultStatus; //默认的状态栏信息，可在用户离开当前页面前一直改变文本
+window.setTimeout("alert('xxx')", 1000); //设置在指定的毫秒数后执行指定的代码，接受2个参数，要执行的代码和等待的毫秒数
+window.clearTimeout('ID'); //取消还未执行的暂停，将暂停ID传递给它
+window.setInterval(function () {}, 1000); //无限次地每隔指定的时间段重复一次指定的代码，参数同setTimeout()一样
+window.clearInterval('ID'); //取消时间间隔，将间隔ID传递给它
 ```
 
 #### history
 
 ```js
-history.go(-1);  //访问浏览器窗口的历史，负数为后退，正数为前进
-history.back();  //同上
-history.forward();  //同上
-history.length  //可以查看历史中的页面数
-history.pushState // 修改历史记录
+history.go(-1); //访问浏览器窗口的历史，负数为后退，正数为前进
+history.back(); //同上
+history.forward(); //同上
+history.length; //可以查看历史中的页面数
+history.pushState; // 修改历史记录
 ```
 
 - `history.pushState()` 和 `history.replaceState()` 方法，它们分别可以添加和修改历史记录条目。通常与 `window.onpopstate` 配合使用
@@ -229,15 +229,15 @@ history.pushState // 修改历史记录
 ```js
 // 监听 url 改变
 window.onpopstate = () => {
-  const query = parseQueryString()
+  const query = parseQueryString();
   // ...
-}
+};
 
 // 触发 url 变化
 // 为 history 添加记录
-history.pushState(null, null, url)
+history.pushState(null, null, url);
 // 不为 url 添加记录
-history.replaceState(null, null, url)
+history.replaceState(null, null, url);
 ```
 
 #### document
@@ -261,17 +261,17 @@ document.write(); 或document.writeln();  //将字符串插入到调用它们的
 
 ```js
 // location对象：表示载入窗口的URL，也可用window.location引用它
-location.href  //当前载入页面的完整URL，如http://www.somewhere.com/pictures/index.htm
-location.portocol  //URL中使用的协议，即双斜杠之前的部分，如http
-location.host  //服务器的名字，如www.wrox.com
-location.hostname  //通常等于host，有时会省略前面的www
-location.port  //URL声明的请求的端口，默认情况下，大多数URL没有端口信息，如8080
-location.pathname  //URL中主机名后的部分，如/pictures/index.htm
-location.search  //执行GET请求的URL中的问号后的部分，又称查询字符串，如?param=xxxx
-location.hash  //如果URL包含#，返回该符号之后的内容，如#anchor1
-location.assign("http:www.baidu.com");  //同location.href，新地址都会被加到浏览器的历史栈中
-location.replace("http:www.baidu.com");  //同assign()，但新地址不会被加到浏览器的历史栈中，不能通过back和forward访问
-location.reload(true | false);  //重新载入当前页面，为false时从浏览器缓存中重载，为true时从服务器端重载，默认为false
+location.href; //当前载入页面的完整URL，如http://www.somewhere.com/pictures/index.htm
+location.portocol; //URL中使用的协议，即双斜杠之前的部分，如http
+location.host; //服务器的名字，如www.wrox.com
+location.hostname; //通常等于host，有时会省略前面的www
+location.port; //URL声明的请求的端口，默认情况下，大多数URL没有端口信息，如8080
+location.pathname; //URL中主机名后的部分，如/pictures/index.htm
+location.search; //执行GET请求的URL中的问号后的部分，又称查询字符串，如?param=xxxx
+location.hash; //如果URL包含#，返回该符号之后的内容，如#anchor1
+location.assign('http:www.baidu.com'); //同location.href，新地址都会被加到浏览器的历史栈中
+location.replace('http:www.baidu.com'); //同assign()，但新地址不会被加到浏览器的历史栈中，不能通过back和forward访问
+location.reload(true | false); //重新载入当前页面，为false时从浏览器缓存中重载，为true时从服务器端重载，默认为false
 ```
 
 #### navigator
@@ -279,28 +279,26 @@ location.reload(true | false);  //重新载入当前页面，为false时从浏�
 ```js
 // `navigator`对象：包含大量有关Web浏览器的信息，在检测浏览器及操作系统上非常有用，也可用window.navigator引用它
 // `navigator.appCodeName`  //浏览器代码名的字符串表示
-navigator.appName  //官方浏览器名的字符串表示
-navigator.appVersion  //浏览器版本信息的字符串表示
-navigator.cookieEnabled  //如果启用cookie返回true，否则返回false
-navigator.javaEnabled  //如果启用java返回true，否则返回false
-navigator.platform  //浏览器所在计算机平台的字符串表示
-navigator.plugins  //安装在浏览器中的插件数组
-navigator.taintEnabled  //如果启用了数据污点返回true，否则返回false
-navigator.userAgent  //用户代理头的字符串表示
+navigator.appName; //官方浏览器名的字符串表示
+navigator.appVersion; //浏览器版本信息的字符串表示
+navigator.cookieEnabled; //如果启用cookie返回true，否则返回false
+navigator.javaEnabled; //如果启用java返回true，否则返回false
+navigator.platform; //浏览器所在计算机平台的字符串表示
+navigator.plugins; //安装在浏览器中的插件数组
+navigator.taintEnabled; //如果启用了数据污点返回true，否则返回false
+navigator.userAgent; //用户代理头的字符串表示
 ```
 
 #### screen
 
 ```js
 // screen对象：用于获取某些关于用户屏幕的信息，也可用window.screen引用它
-screen.width/window.height  //屏幕的宽度与高度，以像素计
-screen.availWidth/screen.availHeight  //窗口可以使用的屏幕的宽度和高度，以像素计
-screen.colorDepth  //用户表示颜色的位数，大多数系统采用32位
+screen.width / window.height; //屏幕的宽度与高度，以像素计
+screen.availWidth / screen.availHeight; //窗口可以使用的屏幕的宽度和高度，以像素计
+screen.colorDepth; //用户表示颜色的位数，大多数系统采用32位
 window.moveTo(0, 0);
-window.resizeTo(screen.availWidth, screen.availHeight);  //填充用户的屏幕
+window.resizeTo(screen.availWidth, screen.availHeight); //填充用户的屏幕
 ```
-
-
 
 ### 内置-固有对象
 
@@ -338,23 +336,23 @@ Array、Date、RegExp、Promise、Proxy、Map、WeakMap、Set、WeapSet、Functi
 #### Number.isNaN 与 isNaN
 
 ```js
-isNaN === Number.isNaN // false
-isNaN('a') // true
-Number.isNaN('a') // false
+isNaN === Number.isNaN; // false
+isNaN('a'); // true
+Number.isNaN('a'); // false
 ```
 
 ### 内置-原生对象
 
 - 基本类型
-    - Boolean、String、Number、Symbol、Object
+  - Boolean、String、Number、Symbol、Object
 - 基础功能和数据类型
-    - Array、Date、RegExp、Promise、Proxy、Map、WeakMap、Set、WeapSet、Function
+  - Array、Date、RegExp、Promise、Proxy、Map、WeakMap、Set、WeapSet、Function
 - 错误类型
-    - Error、EvalError、RangeError、ReferenceError、SyntaxError、TypeError、URIError
+  - Error、EvalError、RangeError、ReferenceError、SyntaxError、TypeError、URIError
 - 二进制操作
-    - ArrayBuffer、SharedArrayBuffer、DataView
+  - ArrayBuffer、SharedArrayBuffer、DataView
 - 带类型的数组
-    - Float32Array、Float64Array、Int8Array、Int16Array、Int32Array、UInt8Array、UInt16Array、UInt32Array、Uint8ClampedArray
+  - Float32Array、Float64Array、Int8Array、Int16Array、Int32Array、UInt8Array、UInt16Array、UInt32Array、Uint8ClampedArray
 
 几乎所有这些构造器的能力都是无法用纯 JavaScript 代码实现的，它们也无法用 class/extend 语法来继承。
 
@@ -447,17 +445,17 @@ let monthEndTime = Date.parse(monthEndDate) / 1000 + 86399 // 这个月最后一
 const s = new Set();
 s.add(1).add(2).add(2); // 添加元素
 
-s.size // 2
+s.size; // 2
 
-s.has(1) // true
-s.has(2) // true
-s.has(3) // false
+s.has(1); // true
+s.has(2); // true
+s.has(3); // false
 
 s.delete(2);
-s.has(2) // false
+s.has(2); // false
 
 s.clear();
-console.log(s);  // Set(0) {}
+console.log(s); // Set(0) {}
 ```
 
 ##### 实例的遍历
@@ -486,7 +484,7 @@ for (let item of set.entries()) {
 // ["bbb", "bbb"]
 // ["ccc", "ccc"]
 
-set.forEach((value, key) => console.log(key + ' : ' + value))
+set.forEach((value, key) => console.log(key + ' : ' + value));
 // aaa : aaa
 // bbb : bbb
 // ccc : ccc
@@ -503,7 +501,7 @@ let array = [...mySet];
 
 // forEach
 let array = [];
-mySet.forEach(v => array.push(v));
+mySet.forEach((v) => array.push(v));
 ```
 
 #### Map
@@ -515,16 +513,16 @@ const map = new Map();
 map.set('aaa', 100);
 map.set('bbb', 200);
 
-map.size // 2
+map.size; // 2
 
-map.get('aaa') // 100
+map.get('aaa'); // 100
 
-map.has('aaa') // true
+map.has('aaa'); // true
 
-map.delete('aaa')
-map.has('aaa') // false
+map.delete('aaa');
+map.has('aaa'); // false
 
-map.clear()
+map.clear();
 ```
 
 ##### 实例的遍历
@@ -564,8 +562,8 @@ for (let [key, value] of map.entries()) {
 
 - WeakMap 的 key 只能是 Object 类型（null 除外），原始数据类型是不能作为 key 的（比如 `Symbol`），键名所指向的对象，不计入垃圾回收机制
 - WeakMap 最大的好处是可以避免内存泄漏，一个仅被 WeakMap 作为 key 而引用的对象，会被垃圾回收器回收掉
-    - 当一个对象被引用的时候，往往意味着它正在被使用，或者在将来有可能会被使用。此时对象不会被垃圾回收机制回收掉
-    - 使用场景是对象有可能被手动回收的场景
+  - 当一个对象被引用的时候，往往意味着它正在被使用，或者在将来有可能会被使用。此时对象不会被垃圾回收机制回收掉
+  - 使用场景是对象有可能被手动回收的场景
 - WeakMap 没有任何与迭代有关的属性和方法
 
 #### XMLHttpRequest
@@ -578,8 +576,8 @@ xhr.onreadystatechange = () => {
       console.dir(xhr.responseText);
     }
   }
-}
-xhr.open("GET", "/api", false);
+};
+xhr.open('GET', '/api', false);
 xhr.send(null);
 ```
 
@@ -624,9 +622,9 @@ yield call(load_sounds_from_state.bind(this, persisted.audio));
 #### 纯函数缓存特性
 
 ```js
-let memoize = function(f) {
+let memoize = function (f) {
   let cache = {};
-  return function() {
+  return function () {
     let arg_str = JSON.stringify(arguments);
     cache[arg_str] = cache[arg_str] || f.apply(f, arguments);
     return cache[arg_str];
@@ -651,18 +649,18 @@ let memoize = function(f) {
 
 ```js
 // 非纯函数
-let signUp = function(attrs) {
+let signUp = function (attrs) {
   let user = saveUser(attrs);
   welcomeUser(user);
 };
 
 // 纯函数
-let signUp = function(Db, Email, attrs) {
-  return function() {
+let signUp = function (Db, Email, attrs) {
+  return function () {
     let user = saveUser(Db, attrs);
     welcomeUser(Email, user);
-  }
-}
+  };
+};
 ```
 
 ### generator 迭代器函数
@@ -670,19 +668,18 @@ let signUp = function(Db, Email, attrs) {
 生成器对象是由一个 generator function 返回的。
 
 ```js
-function* idMaker(){
-    let index = 0;
-    while(true)
-        yield index++;
+function* idMaker() {
+  let index = 0;
+  while (true) yield index++;
 }
 
 let gen = idMaker(); // "Generator { }"
 
-console.log(gen.next().value); 
+console.log(gen.next().value);
 // 0
-console.log(gen.next().value); 
+console.log(gen.next().value);
 // 1
-console.log(gen.next().value); 
+console.log(gen.next().value);
 // 2
 ```
 
@@ -699,11 +696,10 @@ async function getZhihuColumn(id) {
   return await response.json();
 }
 
-getZhihuColumn('feweekly')
-  .then(column => {
-    console.log(`NAME: ${column.name}`);
-    console.log(`INTRO: ${column.intro}`);
-  });
+getZhihuColumn('feweekly').then((column) => {
+  console.log(`NAME: ${column.name}`);
+  console.log(`INTRO: ${column.intro}`);
+});
 ```
 
 #### 立即 await
@@ -795,7 +791,7 @@ const showColumnInfo = async () => {
   console.time('showColumnInfo');
 
   const names = ['feweekly', 'toolingtips'];
-  const promises = names.map(x => getZhihuColumn(x));
+  const promises = names.map((x) => getZhihuColumn(x));
   for (const promise of promises) {
     const column = await promise;
     console.log(`Name: ${column.name}`);
@@ -835,20 +831,20 @@ node.querySelector('[name="x"]');
 
 ```js
 // DOM 元素的添加、删除、替换、插入到某个节点
-$ele.appendChild()
-$ele.removeChild()
-$ele.replaceChild()
-$ele.insertBefore()
+$ele.appendChild();
+$ele.removeChild();
+$ele.replaceChild();
+$ele.insertBefore();
 
 // 创建新节点
-document.createDocumentFragment() // 创建一个 DOM 片段
-document.createElement() // 创建一个具体的元素
-ducoment.createTextNode() // 创建一个文本节点
+document.createDocumentFragment(); // 创建一个 DOM 片段
+document.createElement(); // 创建一个具体的元素
+ducoment.createTextNode(); // 创建一个文本节点
 ```
 
 ### offset、clent、scrollWidth
 
-![01.jpg](https://qiniu.chenng.cn/2019-02-07-21-24-01.jpg)
+![01.jpg](./imgs/01.jpg)
 
 ### property 和 attribute
 
@@ -869,32 +865,32 @@ ducoment.createTextNode() // 创建一个文本节点
 ### createDocumentFragment
 
 ```js
-let p, t, frag
+let p, t, frag;
 
-frag = document.createDocumentFragment()
+frag = document.createDocumentFragment();
 
-p = document.createElement('p')
-t = document.createTextNode('first paragraph')
-p.appendChild(t)
-grag.appendChild(p)
+p = document.createElement('p');
+t = document.createTextNode('first paragraph');
+p.appendChild(t);
+grag.appendChild(p);
 
-p = document.createElement('p')
-t = document.createTextNode('second paragraph')
-p.appendChild(t)
-frag.appendChild(p)
+p = document.createElement('p');
+t = document.createTextNode('second paragraph');
+p.appendChild(t);
+frag.appendChild(p);
 
-document.body.appendChild(frag)
+document.body.appendChild(frag);
 ```
 
 ### cloneNode
 
 ```js
 let oldNode = document.getElementById('result'),
-  clone = oldNode.cloneNode(true)
+  clone = oldNode.cloneNode(true);
 
 // 处理克隆对象...
 
-oldNode.parentNode.repalceChild(clone, oldNode)
+oldNode.parentNode.repalceChild(clone, oldNode);
 ```
 
 ### DOM 序列化与反序列化
@@ -922,8 +918,7 @@ const documentDom = parse.parseFromString(documentStr, 'text/html');
 ##### 获取 DOM 节点
 
 ```js
-const xml_dom = parser
-  .parseFromString(`<xml style="display: none" />`, 'text/xml')
+const xml_dom = parser.parseFromString(`<xml style="display: none" />`, 'text/xml')
   .firstElementChild;
 ```
 
@@ -937,17 +932,17 @@ const xml_dom = parser
 <!-- A页面 http://a.qq.com/a.html -->
 <iframe id="iframe" src="http://b.qq.com/b.html"></iframe>
 <script>
-    document.domain = "qq.com";
-    var windowB = document.getElementById("iframe").contentWindow;
-    alert("B页面的user变量：" + windowB.user);
+  document.domain = 'qq.com';
+  var windowB = document.getElementById('iframe').contentWindow;
+  alert('B页面的user变量：' + windowB.user);
 </script>
 ```
 
 ```html
 <!-- B页面 http://b.qq.com/b.html -->
 <script>
-    document.domain = "qq.com";
-    var user = "saramliu";
+  document.domain = 'qq.com';
+  var user = 'saramliu';
 </script>
 ```
 
@@ -957,40 +952,44 @@ const xml_dom = parser
 <!-- A页面 http://a.qq.com/a.html -->
 <iframe id="iframe" src="http://b.qq1.com/b.html"></iframe>
 <script>
-    var iframe = document.getElementById('iframe');
-    iframe.onload = function() {
-        var data = {meesage: "这里是A页面发的消息"}; 
-        var url = "http://b.qq1.com/b.html";
-        // 向B页面发送消息
-        iframe.contentWindow.postMessage(JSON.stringify(data), url);
-    };
-    window.addEventListener("message", function(e) {
-        alert("B页面发来消息：" + JSON.parse(e.data));
-    });
+  var iframe = document.getElementById('iframe');
+  iframe.onload = function () {
+    var data = { meesage: '这里是A页面发的消息' };
+    var url = 'http://b.qq1.com/b.html';
+    // 向B页面发送消息
+    iframe.contentWindow.postMessage(JSON.stringify(data), url);
+  };
+  window.addEventListener('message', function (e) {
+    alert('B页面发来消息：' + JSON.parse(e.data));
+  });
 </script>
 ```
 
 ```html
 <!-- B页面 http://b.qq1.com/b.html -->
 <script>
-    window.addEventListener("message", function(e) {
-        alert("A页面发来消息：" + JSON.parse(e.data));
-        var data = {meesage: "这里是B页面发的消息"}; 
-        var url = "http://a.qq.com/a.html";
-        window.parent.postMessage(JSON.stringify(data), url);
-    }, false);
+  window.addEventListener(
+    'message',
+    function (e) {
+      alert('A页面发来消息：' + JSON.parse(e.data));
+      var data = { meesage: '这里是B页面发的消息' };
+      var url = 'http://a.qq.com/a.html';
+      window.parent.postMessage(JSON.stringify(data), url);
+    },
+    false
+  );
 </script>
 ```
 
 ## 鼠标事件判断
 
 ```js
-ele.addEventListener('mousedown', function(e) {
-    // e.button === 0: the left button is clicked
-    // e.button === 1: the middle button is clicked
-    // e.button === 2: the right button is clicked
-    // e.button === 3: the `Browser Back` button is clicked
-    // e.button === 4: the `Browser Forward` button is clicked
+ele.addEventListener('mousedown', function (e) {
+  // e.button === 0: the left button is clicked
+  // e.button === 1: the middle button is clicked
+  // e.button === 2: the right button is clicked
+  // e.button === 3: the `Browser Back` button is clicked
+  // e.button === 4: the `Browser Forward` button is clicked
 });
 ```
 
@@ -1009,18 +1008,23 @@ el.addEventListener('animationend', () => {
  * 操作手机旋转角度，获取alpha，beta，gamma的角度值并且操作
  */
 function getOrientationEvent() {
-  if (window.DeviceOrientationEvent) { // 判断是否支持重力感应事件
+  if (window.DeviceOrientationEvent) {
+    // 判断是否支持重力感应事件
     //绑定重力感应事件
-    window.addEventListener('deviceorientation', function (event) {
-      //alpha角度，三d坐标系z轴旋转
-      document.getElementById('alpha').innerHTML = Math.round(event.alpha)
-      //beta角度，三D坐标系X轴旋转
-      document.getElementById('beta').innerHTML = Math.round(event.beta)
-      //gamma角度，三D坐标系Y轴旋转
-      document.getElementById('gamma').innerHTML = Math.round(event.gamma)
+    window.addEventListener(
+      'deviceorientation',
+      function (event) {
+        //alpha角度，三d坐标系z轴旋转
+        document.getElementById('alpha').innerHTML = Math.round(event.alpha);
+        //beta角度，三D坐标系X轴旋转
+        document.getElementById('beta').innerHTML = Math.round(event.beta);
+        //gamma角度，三D坐标系Y轴旋转
+        document.getElementById('gamma').innerHTML = Math.round(event.gamma);
 
-      //PS：能操作的就这三个属性，或者重力感应的角度
-    }, false)
+        //PS：能操作的就这三个属性，或者重力感应的角度
+      },
+      false
+    );
   }
 }
 ```
@@ -1058,17 +1062,17 @@ function getOrientationEvent() {
 ### 事件级别
 
 - DOM0
-    - 如果说给同一个元素绑定了两次或者多次相同类型的事件，那么后面的绑定会覆盖前面的绑定
-    - 不支持 DOM 事件流：事件捕获阶段 => 目标元素阶段 => 事件冒泡阶段
-    - `$el.onclick = function(){}`
+  - 如果说给同一个元素绑定了两次或者多次相同类型的事件，那么后面的绑定会覆盖前面的绑定
+  - 不支持 DOM 事件流：事件捕获阶段 => 目标元素阶段 => 事件冒泡阶段
+  - `$el.onclick = function(){}`
 - DOM2
   - 如果说给同一个元素绑定了两次或者多次相同类型的事件，所有的绑定将会依次触发
   - 支持 DOM 事件流的
   - 进行事件绑定传参不需要 on 前缀
   - `$el.addEventListener('click', function(){}, false)`
 - DOM3
-    - 增了很多鼠标事件、键盘事件
-    - `$el.addEventListener('keyup', function() {}, false)`
+  - 增了很多鼠标事件、键盘事件
+  - `$el.addEventListener('keyup', function() {}, false)`
 
 ### 同一元素的捕获与冒泡
 
@@ -1090,61 +1094,57 @@ window => document => html(document.documentElement) => body(document.body) => .
 
 ```js
 // 阻止默认行为
-event.preventDefault()
+event.preventDefault();
 // 阻止事件冒泡
-event.stopPropagation()
+event.stopPropagation();
 // 阻止剩余的事件处理函数执行并且防止事件冒泡到DOM树上
 // 这个方法不接受任何参数。
 // 例如注册了A、B两个 click 事件，在 A 的方法中阻止后，不会执行 B 的方法
-event.stopImmediatePropagation()
+event.stopImmediatePropagation();
 // 返回绑定事件的元素
-event.currentTarget
+event.currentTarget;
 // 返回触发事件的元素
-event.target
+event.target;
 ```
 
 ### 自定义事件
 
 ```js
-let myEvent = new Event('custome')
+let myEvent = new Event('custome');
 $el.addEventListener('custome', () => {
-  console.log('custome')
-})
-$el.dispatchEvent(myEvent)
+  console.log('custome');
+});
+$el.dispatchEvent(myEvent);
 ```
 
 ## target 与 currentTarget
 
 ```html
 <div id="a">
-    <div id="b">
-      <div id="c">
-        <div id="d"></div>
-      </div>
+  <div id="b">
+    <div id="c">
+      <div id="d"></div>
     </div>
+  </div>
 </div>
 
 <script>
-  document.getElementById('a').addEventListener('click', function(e) {
-    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id)
-  })
-  document.getElementById('b').addEventListener('click', function(e) {
-    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id)
-  })
-  document.getElementById('c').addEventListener('click', function(e) {
-    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id)
-  })
-  document.getElementById('d').addEventListener('click', function(e) {
-    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id)
-  })
+  document.getElementById('a').addEventListener('click', function (e) {
+    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id);
+  });
+  document.getElementById('b').addEventListener('click', function (e) {
+    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id);
+  });
+  document.getElementById('c').addEventListener('click', function (e) {
+    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id);
+  });
+  document.getElementById('d').addEventListener('click', function (e) {
+    console.log('target:' + e.target.id + ' & currentTarget:' + e.currentTarget.id);
+  });
 </script>
 
-
-结果
-target:d & currentTarget:d
-target:d & currentTarget:c
-target:d & currentTarget:b
-target:d & currentTarget:a
+结果 target:d & currentTarget:d target:d & currentTarget:c target:d & currentTarget:b target:d &
+currentTarget:a
 ```
 
 ## DOM 事件清除
@@ -1152,10 +1152,10 @@ target:d & currentTarget:a
 清除元素上面所有绑定的点击事件：
 
 ```js
-const $el = document.getElementById('el')
-const $elClone = el.cloneNode(true)
+const $el = document.getElementById('el');
+const $elClone = el.cloneNode(true);
 
-$el.parentNode.replaceChild($elClone, $el)
+$el.parentNode.replaceChild($elClone, $el);
 ```
 
 ## input 事件
@@ -1170,18 +1170,18 @@ $el.parentNode.replaceChild($elClone, $el)
 - 输入中文过程中不会发送请求
 
 ```js
-let cpLock = false
-let $searchKeyword = document.querySelector('#search-keyword')
-if($searchKeyword) {
+let cpLock = false;
+let $searchKeyword = document.querySelector('#search-keyword');
+if ($searchKeyword) {
   $searchKeyword.addEventListener('compositionstart', () => {
-    cpLock = true
-  })
+    cpLock = true;
+  });
   $searchKeyword.addEventListener('compositionend', () => {
-    cpLock = false
-  })
+    cpLock = false;
+  });
   $searchKeyword.addEventListener('keyup', (e) => {
-    if(!cpLock) search(e)
-  })
+    if (!cpLock) search(e);
+  });
 }
 ```
 
@@ -1189,61 +1189,59 @@ if($searchKeyword) {
 
 ```js
 // Handle the `paste` event
-document.addEventListener('paste', function(evt) {
-    // Get the data of clipboard
-    const clipboardItems = evt.clipboardData.items;
-    const items = [].slice
-        .call(clipboardItems)
-        .filter(function(item) {
-            // Filter the image items only
-            return item.type.indexOf('image') !== -1;
-        });
-    if (items.length === 0) {
-        return;
+document.addEventListener('paste', function (evt) {
+  // Get the data of clipboard
+  const clipboardItems = evt.clipboardData.items;
+  const items = [].slice.call(clipboardItems).filter(function (item) {
+    // Filter the image items only
+    return item.type.indexOf('image') !== -1;
+  });
+  if (items.length === 0) {
+    return;
+  }
+
+  const item = items[0];
+  // Get the blob of image
+  const blob = item.getAsFile();
+
+  // Assume that we have an `img` element
+  // <img id="preview" />
+
+  const imageEle = document.getElementById('preview');
+  imageEle.src = URL.createObjectURL(blob);
+
+  // 粘贴后上传服务器
+  // Create a new FormData
+  const formData = new FormData();
+  formData.append('image', blob, 'filename');
+
+  // Create new Ajax request
+  const req = new XMLHttpRequest();
+  req.open('POST', '/path/to/back-end', true);
+
+  // Handle the events
+  req.onload = function () {
+    if (req.status >= 200 && req.status < 400) {
+      const res = req.responseText;
+      // Do something with the response
+      // ...
     }
+  };
 
-    const item = items[0];
-    // Get the blob of image
-    const blob = item.getAsFile();
-
-    // Assume that we have an `img` element
-    // <img id="preview" />
-
-    const imageEle = document.getElementById('preview');
-    imageEle.src = URL.createObjectURL(blob);
-
-    // 粘贴后上传服务器
-    // Create a new FormData
-    const formData = new FormData();
-    formData.append('image', blob, 'filename');
-
-    // Create new Ajax request
-    const req = new XMLHttpRequest();
-    req.open('POST', '/path/to/back-end', true);
-
-    // Handle the events
-    req.onload = function() {
-        if (req.status >= 200 && req.status < 400) {
-            const res = req.responseText;
-            // Do something with the response
-            // ...
-        }
-    };
-
-    // Send it
-    req.send(formData);
+  // Send it
+  req.send(formData);
 });
 ```
 
 ## Video 事件
 
 - abort 在播放被终止时触发,例如, 当播放中的视频重新开始播放时会触发这个事件。
-- canplay 在媒体数据已经有足够的数据（至少播放数帧）可供播放时触发。这个事件对应CAN_PLAY的readyState。
+- canplay 在媒体数据已经有足够的数据（至少播放数帧）可供播放时触发。这个事件对应 CAN_PLAY 的 readyState。
 - canplaythrough 在媒体的 readyState 变为 CAN_PLAY_THROUGH 时触发，表明媒体可以在保持当前的下载速度的情况下不被中断地播放完毕。注意：手动设置 currentTime 会使得 firefox 触发一次 canplaythrough 事件，其他浏览器或许不会如此。
 - durationchange 元信息已载入或已改变，表明媒体的长度发生了改变。例如，在媒体已被加载足够的长度从而得知总长度时会触发这个事件。
 - emptied 媒体被清空（初始化）时触发。
 - ended 播放结束时触发。
-- error 在发生错误时触发。元素的error属性会包含更多信息。参阅 HTMLMediaElement.error 获得详细信息。
+- error 在发生错误时触发。元素的 error 属性会包含更多信息。参阅 HTMLMediaElement.error 获得详细信息。
 - loadeddata 媒体的第一帧已经加载完毕。
 - loadedmetadata 媒体的元数据已经加载完毕，现在所有的属性包含了它们应有的有效信息。
 - loadstart 在媒体开始加载时触发。
@@ -1251,14 +1249,14 @@ document.addEventListener('paste', function(evt) {
 - pause 播放暂停时触发。
 - play 在媒体回放被暂停后再次开始时触发。即，在一次暂停事件后恢复媒体回放。
 - playing 在媒体开始播放时触发（不论是初次播放、在暂停后恢复、或是在结束后重新开始）。
-- progress 告知媒体相关部分的下载进度时周期性地触发。有关媒体当前已下载总计的信息可以在元素的buffered属性中获取到。
+- progress 告知媒体相关部分的下载进度时周期性地触发。有关媒体当前已下载总计的信息可以在元素的 buffered 属性中获取到。
 - ratechange 在回放速率变化时触发。
 - seeked 在跳跃操作完成时触发。
 - seeking 在跳跃操作开始时触发。
 - stalled 在尝试获取媒体数据，但数据不可用时触发。
 - suspend 在媒体资源加载终止时触发，这可能是因为下载已完成或因为其他原因暂停。
-- timeupdate 元素的currentTime属性表示的时间已经改变。
-- volumechange 在音频音量改变时触发（既可以是volume属性改变，也可以是muted属性改变）。
+- timeupdate 元素的 currentTime 属性表示的时间已经改变。
+- volumechange 在音频音量改变时触发（既可以是 volume 属性改变，也可以是 muted 属性改变）。
 - waiting 在一个待执行的操作（如回放）因等待另一个操作（如跳跃或下载）被延迟时触发。
 
 # API
@@ -1281,7 +1279,7 @@ const getPerformanceTimingByName = (performance, name) => {
   return false;
 };
 
-getPerformanceTimingByName(performance, 'first-contentful-paint')
+getPerformanceTimingByName(performance, 'first-contentful-paint');
 ```
 
 ### MutationObserver
@@ -1309,10 +1307,7 @@ function isInFirstScreen(target) {
   const rect = target.getBoundingClientRect();
   const screenHeight = window.innerHeight;
   const screenWidth = window.innerWidth;
-  return rect.left >= 0
-    && rect.left < screenWidth
-    && rect.top >= 0
-    && rect.top < screenHeight;
+  return rect.left >= 0 && rect.left < screenWidth && rect.top >= 0 && rect.top < screenHeight;
 }
 
 function updateTiming() {
@@ -1320,7 +1315,7 @@ function updateTiming() {
     observeDom.disconnect();
   }
   for (let i = 0; i < details.length; i++) {
-    const detail = details[i]
+    const detail = details[i];
     for (let j = 0; j < detail.roots.length; j++) {
       if (isInFirstScreen(detail.roots[j])) {
         firstScreenTiming = detail.time;
@@ -1335,17 +1330,17 @@ function updateTiming() {
 }
 
 if (window.MutationObserver) {
-  observeDom = new MutationObserver((mutations => {
+  observeDom = new MutationObserver((mutations) => {
     if (!mutations || !mutations.forEach) return;
     const detail = {
       time: performance.now(),
       roots: [],
     };
 
-    mutations.forEach(mutation => {
+    mutations.forEach((mutation) => {
       if (!mutation || !mutation.addedNodes || !mutation.addedNodes.forEach) return;
 
-      mutation.addedNodes.forEach(ele => {
+      mutation.addedNodes.forEach((ele) => {
         if (ele.nodeType === 1 && ignoreEleList.indexOf(ele.nodeName.toLocaleLowerCase()) === -1) {
           if (!isEleInArray(ele, detail.roots)) {
             detail.roots.push(ele);
@@ -1357,7 +1352,7 @@ if (window.MutationObserver) {
     if (detail.roots.length) {
       details.push(detail);
     }
-  }));
+  });
 
   observeDom.observe(document, {
     childList: true,
@@ -1366,7 +1361,7 @@ if (window.MutationObserver) {
 }
 
 window.addEventListener('load', function () {
-  updateTiming()
+  updateTiming();
 });
 ```
 
@@ -1390,15 +1385,15 @@ const observer = new MutationObserver((mutations, observer) => {
 
 ### MutationRecord 对象
 
-- DOM 每次发生变化，就会生成一条变动记录(MutationRecord实例)
+- DOM 每次发生变化，就会生成一条变动记录(MutationRecord 实例)
 - 该实例包含了与变动相关的所有信息。MutationObserver 处理的就是一个个 MutationRecord 实例组成的数组
 
 - type：观察变动的类型(attribute、characterData 或者 childList)
-- target：发生变动的DOM节点
-- addedNodes：新增的DOM节点
-- removedNodes：删除的DOM节点
+- target：发生变动的 DOM 节点
+- addedNodes：新增的 DOM 节点
+- removedNodes：删除的 DOM 节点
 - previousSibling：前一个同级节点，如果没有则返回 null
-- nextSibling：下一个同级的节点，如果没有则返回null
+- nextSibling：下一个同级的节点，如果没有则返回 null
 - attributeName：发生变动的属性名，如果设置了 attributeFilter，则只返回 attributeFilter 中的属性值
 - oldValue：这个属性只对 attribute 和 characterData 变动生效，如果发生 childList 变动，则返回 null
 
@@ -1410,13 +1405,13 @@ observe 方法用来监听 DOM 变化，接受两个参数
 
 - 所要观察的 DOM 节点
 - 配置对象，指定所要观察的变动类型
-    - childList：子节点变动(指新增、删除、修改)
-    - attributes：属性的变动
-    - characterData：节点内容或节点文本的变动
-    - subtree：布尔值，表示是否将观察者应用于该节点的后代所有节点
-    - attributeOldValue：布尔值，表示观察 attributes 变动时，是否需要记录变动前的属性值
-    - characterDataOldValue：布尔值，表示观察 characterData 变动时，是否需要记录变动前的值
-    - attributeFilter：数组，表示需要观察的特定属性(比如说 `['class','src']` )
+  - childList：子节点变动(指新增、删除、修改)
+  - attributes：属性的变动
+  - characterData：节点内容或节点文本的变动
+  - subtree：布尔值，表示是否将观察者应用于该节点的后代所有节点
+  - attributeOldValue：布尔值，表示观察 attributes 变动时，是否需要记录变动前的属性值
+  - characterDataOldValue：布尔值，表示观察 characterData 变动时，是否需要记录变动前的值
+  - attributeFilter：数组，表示需要观察的特定属性(比如说 `['class','src']` )
 
 ```js
 observer.observe(document.documentElement, {
@@ -1457,32 +1452,32 @@ observer.disconnect();
 
 ```js
 export async function downloadZip(url) {
-  let data = await new Promise(function(rs, rj) {
-    JSZipUtils.getBinaryCountent(url, function(err, result) {
-      if(err) {
-        throw err
+  let data = await new Promise(function (rs, rj) {
+    JSZipUtils.getBinaryCountent(url, function (err, result) {
+      if (err) {
+        throw err;
       }
-      rs(result)
-    })
-  })
+      rs(result);
+    });
+  });
 
-  let zip = await JSZip.loadAsync(data)
+  let zip = await JSZip.loadAsync(data);
 
-  let re = /(.jpg|.png|.gif|.ps|.jpeg)$/
+  let re = /(.jpg|.png|.gif|.ps|.jpeg)$/;
 
   let result = await Promise.all(
     Object.keys(zip.files)
-      .filter(fileName => re.test(fileName.toLocaleLowerCase()))
-      .map(async function(fileName) {
-        let file = zip.files[fileName]
-        let blob = await file.async('blob')
+      .filter((fileName) => re.test(fileName.toLocaleLowerCase()))
+      .map(async function (fileName) {
+        let file = zip.files[fileName];
+        let blob = await file.async('blob');
 
         return [
           fileName,
-          blob // create an url: URL.createObjectURL(blob)
-        ]
+          blob, // create an url: URL.createObjectURL(blob)
+        ];
       })
-  )
+  );
 }
 ```
 
@@ -1492,7 +1487,7 @@ export async function downloadZip(url) {
 
 ```js
 if (!window.openDatabase) {
-  alert('浏览器不支持 WebSQL')
+  alert('浏览器不支持 WebSQL');
 }
 ```
 
@@ -1506,28 +1501,24 @@ if (!window.openDatabase) {
  * dbsize 数据库大小
  * cb 创建回调
  */
-var db = window.openDatabase(
-  dbname,
-  version,
-  dbdesc,
-  dbsize,
-  function cb() {}
-);
+var db = window.openDatabase(dbname, version, dbdesc, dbsize, function cb() {});
 ```
 
 ### 事务操作：transaction
 
 ```js
-/** 
+/**
  * callback 处理事务的回调函数，在回调函数中可以执行 SQL 语句
  * errorCallback 失败回调
  * successCallback 成功回调
-*/
+ */
 transaction(callback, errorCallback, successCallback);
 
 db.transaction(function (tx) {
-    tx.executeSql('CREATE TABLE IF NOT EXISTS heros (id unique, name, hp_max, mp_max, role_main)');
-    tx.executeSql('INSERT INTO heros (id, name, hp_max, mp_max, role_main) VALUES (10000, " 夏侯惇 ", 7350, 1746, " 坦克 ")');
+  tx.executeSql('CREATE TABLE IF NOT EXISTS heros (id unique, name, hp_max, mp_max, role_main)');
+  tx.executeSql(
+    'INSERT INTO heros (id, name, hp_max, mp_max, role_main) VALUES (10000, " 夏侯惇 ", 7350, 1746, " 坦克 ")'
+  );
 });
 ```
 
@@ -1539,7 +1530,7 @@ db.transaction(function (tx) {
  * SQL 语句中 ? 占位符对应的参数
  * callback 成功回调
  * errorCallback 失败回调
-*/
+ */
 tx.executeSql(sql, [], callback, errorCallback);
 ```
 
@@ -1572,12 +1563,12 @@ textAreaEle.select();
 
 // Execute the "copy" command
 try {
-    document.execCommand('copy');
+  document.execCommand('copy');
 } catch (err) {
-    // Unable to copy
+  // Unable to copy
 } finally {
-    // Remove the textarea
-    document.body.removeChild(textAreaEle);
+  // Remove the textarea
+  document.body.removeChild(textAreaEle);
 }
 ```
 
@@ -1593,26 +1584,26 @@ new Promise(请求1)
   .then(请求3(请求2结果))
   .then(请求4(请求3结果))
   .then(请求5(请求4结果))
-  .catch(处理异常(异常信息))
+  .catch(处理异常(异常信息));
 ```
 
 ### Promise 方法
 
 - Promise.resolve(value)
-    - value 是值，以成功状态返回的 Promise 对象，then 之后就是值
-    - value 是 Promise 对象，返回的 Promise 对象就是入参的 Promise 对象
+  - value 是值，以成功状态返回的 Promise 对象，then 之后就是值
+  - value 是 Promise 对象，返回的 Promise 对象就是入参的 Promise 对象
 - Promise.reject(value)
-    - 返回 Promise 的状态为 rejected
+  - 返回 Promise 的状态为 rejected
 - Promise.race([promise1, promise2])
-    - 返回最先结束的 Promise 任务结果，不管这个 Promise 是成功还是失败
+  - 返回最先结束的 Promise 任务结果，不管这个 Promise 是成功还是失败
 - Promise.all([promise1, promise2])
-    - 如果全部成功，数组防暑返回所有执行结果
-    - 如果有一个失败，只返回 rejected 的结果
+  - 如果全部成功，数组防暑返回所有执行结果
+  - 如果有一个失败，只返回 rejected 的结果
 - Promise.prototype.then(fn)
-    - fn 的参数为 value，value 是上一个任务的返回结果
-    - fn 函数一定要 return 一个结果或者新的 Promise 对象，才能让后面的 then 回调接收
+  - fn 的参数为 value，value 是上一个任务的返回结果
+  - fn 函数一定要 return 一个结果或者新的 Promise 对象，才能让后面的 then 回调接收
 - Promise.prototype.catch(fn)
-    - fn 的参数为 err，之前回调抛出的异常信息
+  - fn 的参数为 err，之前回调抛出的异常信息
 
 ### promise.all 异常处理
 
@@ -1621,9 +1612,9 @@ function getBannerList() {
   return new Promise((resolve, reject) => {
     setTimeout(function () {
       // 假设这里 reject 一个异常
-      reject(new Error('error'))
-    }, 300)
-  })
+      reject(new Error('error'));
+    }, 300);
+  });
 }
 
 function getStoreList() {
@@ -1636,11 +1627,10 @@ function getCategoryList() {
 
 function initLoad() {
   Promise.all([
-    getBannerList().catch(err => err),
-    getStoreList().catch(err => err),
-    getCategoryList().catch(err => err)
-  ]).then(res => {
-
+    getBannerList().catch((err) => err),
+    getStoreList().catch((err) => err),
+    getCategoryList().catch((err) => err),
+  ]).then((res) => {
     if (res[0] instanceof Error) {
       // 处理异常
     } else {
@@ -1658,10 +1648,10 @@ function initLoad() {
     } else {
       // 渲染数据
     }
-  })
+  });
 }
 
-initLoad()
+initLoad();
 ```
 
 ## PromiseAll 超时
@@ -1669,16 +1659,18 @@ initLoad()
 ```js
 // https://stackoverflow.com/questions/48577702/setting-a-timeout-for-each-promise-within-a-promise-all
 
-Promise.delay = function(t, val) {
+Promise.delay = function (t, val) {
   return new Promise((resolve) => {
     setTimeout(resolve.bind(null, val), t);
   });
 };
 
-Promise.raceAll = function(promises, timeoutTime, timeoutVal) {
-  return Promise.all(promises.map((p) => {
-    return Promise.race([p, Promise.delay(timeoutTime, timeoutVal)]);
-  }));
+Promise.raceAll = function (promises, timeoutTime, timeoutVal) {
+  return Promise.all(
+    promises.map((p) => {
+      return Promise.race([p, Promise.delay(timeoutTime, timeoutVal)]);
+    })
+  );
 };
 ```
 
@@ -1694,8 +1686,8 @@ const newBlob = new Blob(
   // endings 默认 'transparent'，保持 blob 中默认结束符
   {
     type: 'text/plain',
-    endings: 'transparent'
-  },
+    endings: 'transparent',
+  }
 );
 ```
 
@@ -1703,7 +1695,7 @@ const newBlob = new Blob(
 // blob 对象包含两个属性
 interface IBlob {
   size: number;
-  type: 'text/plain'
+  type: 'text/plain';
 }
 ```
 
@@ -1726,7 +1718,7 @@ interface IBlob {
 
   // slice([start, [, end]]) 返回一个新的 Blob 对象
   console.log(await blob.slice(0, 5).text()); // Hello
-}());
+})();
 ```
 
 ### 分片上传
@@ -1812,13 +1804,13 @@ data:[<mediatype>][;base64],<data>
   </head>
 
   <body>
-    <input type="file" accept="image/*" onchange="loadFile(event)">
-    <img id="output"/>
-    
+    <input type="file" accept="image/*" onchange="loadFile(event)" />
+    <img id="output" />
+
     <script>
-      const loadFile = function(event) {
+      const loadFile = function (event) {
         const reader = new FileReader();
-        reader.onload = function(){
+        reader.onload = function () {
           const output = document.querySelector('#output');
           output.src = reader.result;
         };
@@ -1856,8 +1848,8 @@ function compress(base64, quality, mimeType) {
   return new Promise((resolve) => {
     img.src = base64;
     img.onload = () => {
-      let targetWidth; let
-        targetHeight;
+      let targetWidth;
+      let targetHeight;
       if (img.width > MAX_WIDTH) {
         targetWidth = MAX_WIDTH;
         targetHeight = (img.height * MAX_WIDTH) / img.width;
@@ -1896,15 +1888,10 @@ function uploadFile(url, blob) {
   request.send(formData);
 }
 
-
 function loadFile(event) {
   const reader = new FileReader();
   reader.onload = async function () {
-    const compressedDataURL = await compress(
-      reader.result,
-      90,
-      'image/jpeg',
-    );
+    const compressedDataURL = await compress(reader.result, 90, 'image/jpeg');
     const compressedImageBlob = dataUrlToBlob(compressedDataURL);
     uploadFile('https://xxx.com/post', compressedImageBlob);
   };
@@ -1912,7 +1899,7 @@ function loadFile(event) {
 }
 ```
 
-### Blob 与 ArrayBuffer 
+### Blob 与 ArrayBuffer
 
 - Blob 对象是不可变的，而 ArrayBuffer 是可以通过 TypedArrays 或 DataView 来操作
 - ArrayBuffer 是存在内存中的，可以直接操作。而 Blob 可以位于磁盘、高速缓存内存和其他不可用的位置
@@ -1931,8 +1918,8 @@ function loadFile(event) {
 ```js
 // Called from the iframe
 const message = JSON.stringify({
-    message: 'Hello from iframe',
-    date: Date.now(),
+  message: 'Hello from iframe',
+  date: Date.now(),
 });
 window.parent.postMessage(message, '*');
 ```
@@ -1945,13 +1932,13 @@ frameEle.contentWindow.postMessage(message, '*');
 ### 接收信息
 
 ```js
-window.addEventListener('message', function(e) {
-    // Get the sent data
-    const data = e.data;
-    
-    // If you encode the message in JSON before sending them, 
-    // then decode here
-    // const decoded = JSON.parse(data);
+window.addEventListener('message', function (e) {
+  // Get the sent data
+  const data = e.data;
+
+  // If you encode the message in JSON before sending them,
+  // then decode here
+  // const decoded = JSON.parse(data);
 });
 ```
 
@@ -1967,7 +1954,7 @@ window.parent.postMessage(message, '*');
 ```
 
 ```js
-window.addEventListener('message', function(e) {
+window.addEventListener('message', function (e) {
   const data = JSON.parse(e.data);
   // Where does the message come from
   const channel = data.channel;
@@ -1979,7 +1966,7 @@ window.addEventListener('message', function(e) {
 ```js
 function returnAndFinally() {
   try {
-    console.log('1. I\'m picking up my ball and going home.');
+    console.log("1. I'm picking up my ball and going home.");
     return;
   } finally {
     console.log('2. finally run');
@@ -2033,7 +2020,7 @@ withoutCatch();
 // 2. What a wonderful phrase!
 ```
 
-## ES6模块 和 CommonJS
+## ES6 模块 和 CommonJS
 
 ### 输出形式
 
@@ -2059,18 +2046,18 @@ export * from 'fs'
 
 ### 本质差别
 
--  ES6 Module 的 import 和 export 都是静态的，静态意味着一个模块要暴露或引入的所有方法在编译阶段就全部确定了，导入模块的属性或者方法是强绑定的，包括基础类型，改动全局共享
--  而 CommonJS 则是普通的值传递或者引用传递
+- ES6 Module 的 import 和 export 都是静态的，静态意味着一个模块要暴露或引入的所有方法在编译阶段就全部确定了，导入模块的属性或者方法是强绑定的，包括基础类型，改动全局共享
+- 而 CommonJS 则是普通的值传递或者引用传递
 
 ```js
 // counter.js
 exports.count = 0;
 setTimeout(function () {
-  console.log('increase count to', exports.count++, 'in counter.js after 500ms')
+  console.log('increase count to', exports.count++, 'in counter.js after 500ms');
 }, 500);
 
 // commonjs.js
-const { count } = require('./counter')
+const { count } = require('./counter');
 setTimeout(function () {
   console.log('read count after 1000ms in commonjs is', count);
 }, 1000);
@@ -2338,12 +2325,12 @@ $el.off(eventName, eventHandler);
 el.removeEventListener(eventName, eventHandler);
 
 // 自定义事件
-$(el).trigger('custom-event', {key1: 'data'});
+$(el).trigger('custom-event', { key1: 'data' });
 if (window.CustomEvent) {
-  const event = new CustomEvent('custom-event', {detail: {key1: 'data'}});
+  const event = new CustomEvent('custom-event', { detail: { key1: 'data' } });
 } else {
   const event = document.createEvent('CustomEvent');
-  event.initCustomEvent('custom-event', true, true, {key1: 'data'});
+  event.initCustomEvent('custom-event', true, true, { key1: 'data' });
 }
 el.dispatchEvent(event);
 ```
@@ -2360,71 +2347,71 @@ el.dispatchEvent(event);
 ```js
 class RouterClass {
   constructor() {
-    this.isBack = false
-    this.routes = {}        // 记录路径标识符对应的cb
-    this.currentUrl = ''    // 记录hash只为方便执行cb
-    this.historyStack = []  // hash栈
-    window.addEventListener('load', () => this.render())
-    window.addEventListener('hashchange', () => this.render())
+    this.isBack = false;
+    this.routes = {}; // 记录路径标识符对应的cb
+    this.currentUrl = ''; // 记录hash只为方便执行cb
+    this.historyStack = []; // hash栈
+    window.addEventListener('load', () => this.render());
+    window.addEventListener('hashchange', () => this.render());
   }
-  
+
   /**
    * 初始化
    */
   static init() {
-    window.Router = new RouterClass()
+    window.Router = new RouterClass();
   }
-  
+
   /**
    * 记录path对应cb
    * @param path
    * @param cb 回调
    */
   route(path, cb) {
-    this.routes[path] = cb || function() {}
+    this.routes[path] = cb || function () {};
   }
-  
+
   /**
    * 入栈当前hash，执行cb
    */
   render() {
-    if (this.isBack) {      // 如果是由backoff进入，则置false之后return
-      this.isBack = false   // 其他操作在backoff方法中已经做了
-      return
+    if (this.isBack) {
+      // 如果是由backoff进入，则置false之后return
+      this.isBack = false; // 其他操作在backoff方法中已经做了
+      return;
     }
-    this.currentUrl = location.hash.slice(1) || '/'
-    this.historyStack.push(this.currentUrl)
-    this.routes[this.currentUrl]()
+    this.currentUrl = location.hash.slice(1) || '/';
+    this.historyStack.push(this.currentUrl);
+    this.routes[this.currentUrl]();
     // console.log('refresh事件   Stack：', this.historyStack, '   currentUrl:', this.currentUrl)
   }
-  
+
   /**
    * 路由后退
    */
   back() {
-    this.isBack = true
-    this.historyStack.pop()                   // 移除当前hash，回退到上一个
-    const { length } = this.historyStack
-    if (!length) return
-    let prev = this.historyStack[length - 1]  // 拿到要回退到的目标hash
-    location.hash = `#${ prev }`
-    this.currentUrl = prev
-    this.routes[prev]()                       // 执行对应cb
+    this.isBack = true;
+    this.historyStack.pop(); // 移除当前hash，回退到上一个
+    const { length } = this.historyStack;
+    if (!length) return;
+    let prev = this.historyStack[length - 1]; // 拿到要回退到的目标hash
+    location.hash = `#${prev}`;
+    this.currentUrl = prev;
+    this.routes[prev](); // 执行对应cb
     // console.log('点击后退，当前stack：', this.historyStack, '   currentUrl:', this.currentUrl)
   }
 }
 
+RouterClass.init();
+const BtnDom = document.querySelector('button');
+const ContentDom = document.querySelector('.content-div');
+const changeContent = (content) => (ContentDom.innerHTML = content);
 
-RouterClass.init()
-const BtnDom = document.querySelector('button')
-const ContentDom = document.querySelector('.content-div')
-const changeContent = content => ContentDom.innerHTML = content
+Router.route('/', () => changeContent('默认页面'));
+Router.route('/page1', () => changeContent('page1页面'));
+Router.route('/page2', () => changeContent('page2页面'));
 
-Router.route('/', () => changeContent('默认页面'))
-Router.route('/page1', () => changeContent('page1页面'))
-Router.route('/page2', () => changeContent('page2页面'))
-
-BtnDom.addEventListener('click', Router.back.bind(Router), false)
+BtnDom.addEventListener('click', Router.back.bind(Router), false);
 ```
 
 ### history
@@ -2432,58 +2419,57 @@ BtnDom.addEventListener('click', Router.back.bind(Router), false)
 ```js
 class RouterClass {
   constructor(path) {
-    this.routes = {}        // 记录路径标识符对应的cb
-    history.replaceState({ path }, null, path)
-    this.routes[path] && this.routes[path]()
-    window.addEventListener('popstate', e => {
-      console.log(e, ' --- e')
-      const path = e.state && e.state.path
-      this.routes[path] && this.routes[path]()
-    })
+    this.routes = {}; // 记录路径标识符对应的cb
+    history.replaceState({ path }, null, path);
+    this.routes[path] && this.routes[path]();
+    window.addEventListener('popstate', (e) => {
+      console.log(e, ' --- e');
+      const path = e.state && e.state.path;
+      this.routes[path] && this.routes[path]();
+    });
   }
-  
+
   /**
    * 初始化
    */
   static init() {
-    window.Router = new RouterClass(location.pathname)
+    window.Router = new RouterClass(location.pathname);
   }
-  
+
   /**
    * 记录path对应cb
    * @param path 路径
    * @param cb 回调
    */
   route(path, cb) {
-    this.routes[path] = cb || function() {}
+    this.routes[path] = cb || function () {};
   }
-  
+
   /**
    * 触发路由对应回调
    * @param path
    */
   go(path) {
-    history.pushState({ path }, null, path)
-    this.routes[path] && this.routes[path]()
+    history.pushState({ path }, null, path);
+    this.routes[path] && this.routes[path]();
   }
 }
 
+RouterClass.init();
+const ul = document.querySelector('ul');
+const ContentDom = document.querySelector('.content-div');
+const changeContent = (content) => (ContentDom.innerHTML = content);
 
-RouterClass.init()
-const ul = document.querySelector('ul')
-const ContentDom = document.querySelector('.content-div')
-const changeContent = content => ContentDom.innerHTML = content
+Router.route('/', () => changeContent('默认页面'));
+Router.route('/page1', () => changeContent('page1页面'));
+Router.route('/page2', () => changeContent('page2页面'));
 
-Router.route('/', () => changeContent('默认页面'))
-Router.route('/page1', () => changeContent('page1页面'))
-Router.route('/page2', () => changeContent('page2页面'))
-
-ul.addEventListener('click', e => {
+ul.addEventListener('click', (e) => {
   if (e.target.tagName === 'A') {
-    e.preventDefault()
-    Router.go(e.target.getAttribute('href'))
+    e.preventDefault();
+    Router.go(e.target.getAttribute('href'));
   }
-})
+});
 ```
 
 ## Cookie、localStorage、sessionStorage
@@ -2494,11 +2480,11 @@ ul.addEventListener('click', e => {
 
 ```js
 window.addEventListener('storage', function (event) {
-// key localStroage 中被影响的键
-// newValue 为这个键所赋的新值
-// oldValue 这个键修改前的值
-// url 当前发生改变的页面 URL
-})
+  // key localStroage 中被影响的键
+  // newValue 为这个键所赋的新值
+  // oldValue 这个键修改前的值
+  // url 当前发生改变的页面 URL
+});
 ```
 
 ## Workers
@@ -2507,7 +2493,7 @@ window.addEventListener('storage', function (event) {
 
 - 在与主线程分离的后台线程中运行一个脚本操作
 - 构造函数接受一个 JS 文件 URL，这个文件包含了将在 worker 线程中运行的代码
-- 主线程和 worker 线程之间都使用 `postMessage()` 方法来发送信息, 并且通过 `onmessage` 这个 event_handler 来接收信息（传递的信息包含在 Message 这个事件的 data 属性内) 
+- 主线程和 worker 线程之间都使用 `postMessage()` 方法来发送信息, 并且通过 `onmessage` 这个 event_handler 来接收信息（传递的信息包含在 Message 这个事件的 data 属性内)
 - 数据的交互是通过传递副本，而不是直接共享数据
 - 如果 JS 代码里面不包括动画渲染(100ms), 数据传输规模应该保持在 100KB 以下；如果 JS 代码里面包括动画渲染(16ms), 数据传输规模应该保持在 10KB 以下
 
@@ -2553,7 +2539,7 @@ self.onmessage = (event) => {
 - 本质上充当 Web 应用程序与浏览器之间的代理服务器
 - 能够创建有效的离线体验，拦截网络请求并基于网络是否可用以及更新的资源是否驻留在服务器上来采取适当的动作
 - Service worker 运行在 worker 上下文，因此它不能访问 DOM
-- 它设计为完全异步，同步API（如 XHR 和 localStorage）不能在 service worker 中使用
+- 它设计为完全异步，同步 API（如 XHR 和 localStorage）不能在 service worker 中使用
 - 使用 `ServiceWorkerContainer.register()` 方法首次注册 service worker
 
 # JSDoc
@@ -2561,7 +2547,7 @@ self.onmessage = (event) => {
 ```js
 /**
  * 定义对象格式
- * 
+ *
  * @namespace
  * @property {object}  defaults               - The default values for parties.
  * @property {number}  defaults.players       - The default number of players.
@@ -2570,23 +2556,23 @@ self.onmessage = (event) => {
  * @property {number}  defaults.treasure.gold - How much gold the party starts with.
  */
 var config = {
-    defaults: {
-        players: 1,
-        level:   'beginner',
-        treasure: {
-            gold: 0
-        }
-    }
+  defaults: {
+    players: 1,
+    level: 'beginner',
+    treasure: {
+      gold: 0,
+    },
+  },
 };
 
 /**
- * 
+ *
  * 定义参数格式
- * 
+ *
  * @typedef {Object} User
  * @property {string} email
  * @property {string} [nickName]
- * 
+ *
  * @param {User} user
  */
 function getUserInfo(user) {
@@ -2595,13 +2581,13 @@ function getUserInfo(user) {
 
 /**
  * 返回 Promise
- * 
+ *
  * @return {Promise<Number>} time
  */
 function getTime() {
-  return new Promise (resolve => {
+  return new Promise((resolve) => {
     // pass
-  })
+  });
 }
 ```
 
@@ -2661,12 +2647,14 @@ export function verCompare(v1: string, v2: string) {
 ```js
 var promise = document.querySelector('video').play();
 
-if (promise !== undefined) {  
-    promise.catch(error => {
-        // Auto-play was prevented
-        // Show a UI element to let the user manually start playback
-    }).then(() => {
-        // Auto-play started
+if (promise !== undefined) {
+  promise
+    .catch((error) => {
+      // Auto-play was prevented
+      // Show a UI element to let the user manually start playback
+    })
+    .then(() => {
+      // Auto-play started
     });
 }
 ```
@@ -2678,7 +2666,7 @@ if (promise !== undefined) {
 webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
 
 // iOS
-var mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes
+var mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes;
 ```
 
 ### 微信、QQ、QQ 浏览器
@@ -2687,19 +2675,19 @@ var mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes
 - 调用 jsbridge 的回调中调用 video 的 play（一般是用查询网络环境的接口）
 
 ```js
-  lib.wx.initWXConf().done(() => {
-    if (typeof window.WeixinJSBridge === 'undefined') {
-      console.log('no WeixinJSBridge');
-      if (document.addEventListener) {
-        document.addEventListener('WeixinJSBridgeReady', wxReadyFunc, false);
-      } else if (document.attachEvent) {
-        document.attachEvent('WeixinJSBridgeReady', wxReadyFunc);
-        document.attachEvent('onWeixinJSBridgeReady', wxReadyFunc);
-      }
-    } else {
-      window.WeixinJSBridge.invoke('getNetworkType', {}, wxReadyFunc);
+lib.wx.initWXConf().done(() => {
+  if (typeof window.WeixinJSBridge === 'undefined') {
+    console.log('no WeixinJSBridge');
+    if (document.addEventListener) {
+      document.addEventListener('WeixinJSBridgeReady', wxReadyFunc, false);
+    } else if (document.attachEvent) {
+      document.attachEvent('WeixinJSBridgeReady', wxReadyFunc);
+      document.attachEvent('onWeixinJSBridgeReady', wxReadyFunc);
     }
-  });
+  } else {
+    window.WeixinJSBridge.invoke('getNetworkType', {}, wxReadyFunc);
+  }
+});
 ```
 
 ## 下载视频
@@ -2712,19 +2700,17 @@ const xhr = new XMLHttpRequest();
 xhr.open('GET', url, true);
 xhr.responseType = 'blob';
 
-xhr.onprogress = function(pe) {
+xhr.onprogress = function (pe) {
   console.log('progress');
   if (pe.lengthComputable) {
     console.log((pe.loaded / pe.total) * 100);
   }
 };
 
-xhr.onload = function(e) {
+xhr.onload = function (e) {
   if (this.status == 200) {
     window.open(
-        window.URL.createObjectURL(
-            new Blob([this.response], { type: 'application/video' })
-        )
+      window.URL.createObjectURL(new Blob([this.response], { type: 'application/video' }))
     );
   }
 };
@@ -2744,13 +2730,13 @@ const dateFormatter = (formatter, date) => {
   const m = date.getMinutes();
   const s = date.getSeconds();
   return formatter
-      .replace(/YYYY|yyyy/g, Y)
-      .replace(/YY|yy/g, Y.substr(2, 2))
-      .replace(/MM/g, (M < 10 ? '0' : '') + M)
-      .replace(/DD/g, (D < 10 ? '0' : '') + D)
-      .replace(/HH|hh/g, (H < 10 ? '0' : '') + H)
-      .replace(/mm/g, (m < 10 ? '0' : '') + m)
-      .replace(/ss/g, (s < 10 ? '0' : '') + s);
+    .replace(/YYYY|yyyy/g, Y)
+    .replace(/YY|yy/g, Y.substr(2, 2))
+    .replace(/MM/g, (M < 10 ? '0' : '') + M)
+    .replace(/DD/g, (D < 10 ? '0' : '') + D)
+    .replace(/HH|hh/g, (H < 10 ? '0' : '') + H)
+    .replace(/mm/g, (m < 10 ? '0' : '') + m)
+    .replace(/ss/g, (s < 10 ? '0' : '') + s);
 };
 
 dateFormatter('YYYY-MM-DD HH:mm', '1995/02/15 13:55'); // 1995-02-15 13:55
@@ -2773,17 +2759,17 @@ const canvas = opts.canvas,
   context = canvas.getContext('2d'),
   oldWidth = canvas.width,
   oldHeight = canvas.height,
-  ratio = window.devicePixelRatio || 1
+  ratio = window.devicePixelRatio || 1;
 
-canvas.width = oldWidth * ratio
-canvas.height = oldHeight * ratio
+canvas.width = oldWidth * ratio;
+canvas.height = oldHeight * ratio;
 
-canvas.style.width = oldWidth + 'px'
-canvas.style.height = oldHeight + 'px'
+canvas.style.width = oldWidth + 'px';
+canvas.style.height = oldHeight + 'px';
 
-context.scale(ratio, ratio)
+context.scale(ratio, ratio);
 
-context.drawImage()
+context.drawImage();
 ```
 
 ## rem 适配移动端屏幕
@@ -2793,15 +2779,17 @@ function setRem() {
   // 自适应屏幕改变html的font-size大小
   (function (doc, win) {
     const docEl = doc.documentElement;
-    const resizeEvt = 'orientationchange' in window ?
-      'orientationchange' :
-      'resize';
+    const resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
     const recalc = function () {
       const clientWidth = docEl.clientWidth;
-      if (!clientWidth) { return; }
+      if (!clientWidth) {
+        return;
+      }
       docEl.style.fontSize = 20 * (clientWidth / 375) + 'px';
     };
-    if (!doc.addEventListener) { return; }
+    if (!doc.addEventListener) {
+      return;
+    }
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
   })(document, window);
@@ -2811,23 +2799,23 @@ function setRem() {
 ## 元素拖拽
 
 ```js
-function drag(id){
-  var obj = document.getElementById(id)
-  var disX = 0
-  var disY = 0
-  obj.onmousedown = function(ev){
-    disX = ev.pageX - obj.offsetLeft
-    disY = ev.pageY - obj.offsetTop
-    document.onmousemove = function(ev){
-      obj.style.left = ev.pageX - disX + 'px'
-      obj.style.top = ev.pageY - disY + 'px'
-    }
-    document.onmouseup = function(){
-      document.onmousemove = null
-      document.onmouseup = null
-    }
-  }
-  return false
+function drag(id) {
+  var obj = document.getElementById(id);
+  var disX = 0;
+  var disY = 0;
+  obj.onmousedown = function (ev) {
+    disX = ev.pageX - obj.offsetLeft;
+    disY = ev.pageY - obj.offsetTop;
+    document.onmousemove = function (ev) {
+      obj.style.left = ev.pageX - disX + 'px';
+      obj.style.top = ev.pageY - disY + 'px';
+    };
+    document.onmouseup = function () {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
+  return false;
 }
 ```
 
@@ -2849,26 +2837,30 @@ addTouchEffect(selector) {
 
 ```js
 const evt = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-window.addEventListener(evt, function () {
-  const width = document.documentElement.clientWidth;
-  const height = document.documentElement.clientHeight;
-  const print = $('#print');
-  if (width > height) {
-    print.width(width);
-    print.height(height);
-    print.css('top', 0);
-    print.css('left', 0);
-    print.css('transform', 'none');
-    print.css('transform-origin', '50% 50%');
-  } else {
-    print.width(height);
-    print.height(width);
-    print.css('top', (height - width) / 2);
-    print.css('left', 0 - (height - width) / 2);
-    print.css('transform', 'rotate(90deg)');
-    print.css('transform-origin', '50% 50%');
-  }
-}, false);
+window.addEventListener(
+  evt,
+  function () {
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.clientHeight;
+    const print = $('#print');
+    if (width > height) {
+      print.width(width);
+      print.height(height);
+      print.css('top', 0);
+      print.css('left', 0);
+      print.css('transform', 'none');
+      print.css('transform-origin', '50% 50%');
+    } else {
+      print.width(height);
+      print.height(width);
+      print.css('top', (height - width) / 2);
+      print.css('left', 0 - (height - width) / 2);
+      print.css('transform', 'rotate(90deg)');
+      print.css('transform-origin', '50% 50%');
+    }
+  },
+  false
+);
 ```
 
 ## switch 使用区间
@@ -2876,15 +2868,15 @@ window.addEventListener(evt, function () {
 ```js
 function getWaterState(tempInCelsius) {
   let state;
-  
+
   switch (true) {
-    case (tempInCelsius <= 0): 
+    case tempInCelsius <= 0:
       state = 'Solid';
       break;
-    case (tempInCelsius > 0 && tempInCelsius < 100): 
+    case tempInCelsius > 0 && tempInCelsius < 100:
       state = 'Liquid';
       break;
-    default: 
+    default:
       state = 'Gas';
   }
   return state;
@@ -2900,26 +2892,26 @@ function getWaterState(tempInCelsius) {
 
 ```js
 // 源代码
-let list = readHugeList()
+let list = readHugeList();
 let nextListItem = function () {
-  let item = list.pop()
+  let item = list.pop();
 
   if (item) {
     // process the list item...
-    nextListItem()
+    nextListItem();
   }
-}
+};
 
 // 改进代码
 let list = readHugeList();
 let nextListItem = function () {
-  let item = list.pop()
+  let item = list.pop();
 
   if (item) {
     // process the list item...
-    setTimeout(nextListItem, 0)
+    setTimeout(nextListItem, 0);
   }
-}
+};
 ```
 
 ## 前端动态生成屏幕快照
@@ -2969,16 +2961,16 @@ function escapeHTML(target) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
+    .replace(/'/g, '&#39;');
 }
 
 function unescapeHTML(target) {
   return String(target)
-    .replace(/&#39;/, '\'')
+    .replace(/&#39;/, "'")
     .replace(/&quot;/, '"')
     .replace(/&lt;/, '<')
     .replace(/&gt;/, '>')
-    .replace(/&amp;/, '&')
+    .replace(/&amp;/, '&');
 }
 ```
 
@@ -3002,25 +2994,15 @@ https://imweb.io/topic/5c7bc84ebaf81d7952094978
 - bottom 小于等于视窗高度
 - right 小于等于视窗宽度
 
-![05.png](https://qiniu.chenng.cn/2018-11-04-21-49-20.png)
+![05.png](./imgs/05.png)
 
 ```js
 function isInViewPort(element) {
   const viewWidth = window.innerWidth || document.documentElement.clientWidth;
   const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-  const {
-    top,
-    right,
-    bottom,
-    left,
-  } = element.getBoundingClientRect();
+  const { top, right, bottom, left } = element.getBoundingClientRect();
 
-  return (
-    top >= 0 &&
-    left >= 0 &&
-    right <= viewWidth &&
-    bottom <= viewHeight
-  );
+  return top >= 0 && left >= 0 && right <= viewWidth && bottom <= viewHeight;
 }
 
 // usage
@@ -3044,12 +3026,12 @@ https://github.com/w3c/IntersectionObserver/tree/master/polyfill
 const options = {
   // 表示重叠面积占被观察者的比例，从 0 - 1 取值，
   // 1 表示完全被包含
-  threshold: 1.0, 
+  threshold: 1.0,
 };
 
 const callback = (entries, observer) => {
   // ...
-}
+};
 
 const observer = new IntersectionObserver(callback, options);
 ```
@@ -3061,13 +3043,13 @@ observer.observe(target);
 
 // 上段代码中被省略的 callback
 const callback = function (entries, observer) {
-  entries.forEach(entry => {
-    entry.time;               // 触发的时间
-    entry.rootBounds;         // 根元素的位置矩形，这种情况下为视窗位置
+  entries.forEach((entry) => {
+    entry.time; // 触发的时间
+    entry.rootBounds; // 根元素的位置矩形，这种情况下为视窗位置
     entry.boundingClientRect; // 被观察者的位置举行
-    entry.intersectionRect;   // 重叠区域的位置矩形
-    entry.intersectionRatio;  // 重叠区域占被观察者面积的比例（被观察者不是矩形时也按照矩形计算）
-    entry.target;             // 被观察者
+    entry.intersectionRect; // 重叠区域的位置矩形
+    entry.intersectionRatio; // 重叠区域占被观察者面积的比例（被观察者不是矩形时也按照矩形计算）
+    entry.target; // 被观察者
   });
 };
 ```
@@ -3077,7 +3059,7 @@ const callback = function (entries, observer) {
   (<a href='https://codepen.io/ringcrl'>@ringcrl</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
-## H5软键盘兼容方案
+## H5 软键盘兼容方案
 
 https://segmentfault.com/a/1190000018959389#articleHeader9
 
@@ -3091,7 +3073,7 @@ Object.fromEntries(new URLSearchParams(location.search));
 
 ```js
 export function loadScript(src) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const tag = document.createElement('script');
     tag.type = 'text/javascript';
     tag.src = src;
@@ -3105,18 +3087,18 @@ export function loadScript(src) {
 ## 元素是否可滚动
 
 ```js
-const isScrollable = function(ele) {
-    // Compare the height to see if the element has scrollable content
-    const hasScrollableContent = ele.scrollHeight > ele.clientHeight;
+const isScrollable = function (ele) {
+  // Compare the height to see if the element has scrollable content
+  const hasScrollableContent = ele.scrollHeight > ele.clientHeight;
 
-    // It's not enough because the element's `overflow-y` style can be set as
-    // * `hidden`
-    // * `hidden !important`
-    // In those cases, the scrollbar isn't shown
-    const overflowYStyle = window.getComputedStyle(ele).overflowY;
-    const isOverflowHidden = overflowYStyle.indexOf('hidden') !== -1;
+  // It's not enough because the element's `overflow-y` style can be set as
+  // * `hidden`
+  // * `hidden !important`
+  // In those cases, the scrollbar isn't shown
+  const overflowYStyle = window.getComputedStyle(ele).overflowY;
+  const isOverflowHidden = overflowYStyle.indexOf('hidden') !== -1;
 
-    return hasScrollableContent && !isOverflowHidden;
+  return hasScrollableContent && !isOverflowHidden;
 };
 ```
 
@@ -3125,43 +3107,40 @@ const isScrollable = function(ele) {
 ```js
 const ele = document.getElementById('input');
 
-ele.addEventListener('keypress', function(e) {
-    // Get the code of pressed key
-    const key = e.which || e.keyCode;
+ele.addEventListener('keypress', function (e) {
+  // Get the code of pressed key
+  const key = e.which || e.keyCode;
 
-    // 0, 1, ..., 9 have key code of 48, 49, ..., 57, respectively
-    // Space has key code of 32
-    if (key != 32 && (key < 48 || key > 57)) {
-        // Prevent the default action
-        e.preventDefault();
-    }
+  // 0, 1, ..., 9 have key code of 48, 49, ..., 57, respectively
+  // Space has key code of 32
+  if (key != 32 && (key < 48 || key > 57)) {
+    // Prevent the default action
+    e.preventDefault();
+  }
 });
 
 // Track the current cursor's position
 const selection = {};
 
-ele.addEventListener('keydown', function(e) {
-    const target = e.target;
-    selection = {
-        selectionStart: target.selectionStart,
-        selectionEnd: target.selectionEnd,
-    };
+ele.addEventListener('keydown', function (e) {
+  const target = e.target;
+  selection = {
+    selectionStart: target.selectionStart,
+    selectionEnd: target.selectionEnd,
+  };
 });
 
-ele.addEventListener('input', function(e) {
-    const target = e.target;
+ele.addEventListener('input', function (e) {
+  const target = e.target;
 
-    if (/^[0-9s]*$/.test(target.value)) {
-        currentValue = target.value;
-    } else {
-        // Users enter the not supported characters
-        // Restore the value and selection
-        target.value = currentValue;
-        target.setSelectionRange(
-            selection.selectionStart,
-            selection.selectionEnd
-        );
-    }
+  if (/^[0-9s]*$/.test(target.value)) {
+    currentValue = target.value;
+  } else {
+    // Users enter the not supported characters
+    // Restore the value and selection
+    target.value = currentValue;
+    target.setSelectionRange(selection.selectionStart, selection.selectionEnd);
+  }
 });
 ```
 
@@ -3169,7 +3148,7 @@ ele.addEventListener('input', function(e) {
 
 ### 视口位置
 
-![05.png](https://qiniu.chenng.cn/2018-11-04-21-49-20.png)
+![05.png](./imgs/05.png)
 
 ```js
 // 单位为像素
@@ -3184,12 +3163,8 @@ DOMRect = object.getBoundingClientRect();
 ```js
 function get_page_offset() {
   const html = document.documentElement || document.body.parentNode;
-  const scrollX = typeof html.scrollLeft == 'number' ?
-    html.scrollLeft :
-    document.body.scrollLeft;
-  const scrollY = typeof html.scrollTop == 'number' ?
-    html.scrollTop :
-    document.body.scrollTop;
+  const scrollX = typeof html.scrollLeft == 'number' ? html.scrollLeft : document.body.scrollLeft;
+  const scrollY = typeof html.scrollTop == 'number' ? html.scrollTop : document.body.scrollTop;
   return {
     scrollX,
     scrollY,
@@ -3200,9 +3175,9 @@ function get_page_offset() {
 ## g 标签的宽高
 
 ```js
-document.getElementById("g1").getBBox();
+document.getElementById('g1').getBBox();
 
-document.getElementById("g1").getBoundingClientRect();
+document.getElementById('g1').getBoundingClientRect();
 ```
 
 ## 访问 DOM 树的所有元素
@@ -3244,16 +3219,22 @@ function findAllTags() {
 ```js
 // Full height, including the scroll part
 const fullHeight = Math.max(
-    document.body.scrollHeight, document.documentElement.scrollHeight,
-    document.body.offsetHeight, document.documentElement.offsetHeight,
-    document.body.clientHeight, document.documentElement.clientHeight
+  document.body.scrollHeight,
+  document.documentElement.scrollHeight,
+  document.body.offsetHeight,
+  document.documentElement.offsetHeight,
+  document.body.clientHeight,
+  document.documentElement.clientHeight
 );
 
 // Full width, including the scroll part
 const fullWidth = Math.max(
-    document.body.scrollWidth, document.documentElement.scrollWidth,
-    document.body.offsetWidth, document.documentElement.offsetWidth,
-    document.body.clientWidth, document.documentElement.clientWidth
+  document.body.scrollWidth,
+  document.documentElement.scrollWidth,
+  document.body.offsetWidth,
+  document.documentElement.offsetWidth,
+  document.body.clientWidth,
+  document.documentElement.clientWidth
 );
 ```
 
@@ -3261,7 +3242,7 @@ const fullWidth = Math.max(
 
 ```js
 const calculateSize = function (url) {
-  return new Promise(((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const image = document.createElement('img');
     image.addEventListener('load', (e) => {
       resolve({
@@ -3275,7 +3256,7 @@ const calculateSize = function (url) {
     });
 
     image.src = url;
-  }));
+  });
 };
 
 calculateSize('/path/to/image.png').then((data) => {
@@ -3296,24 +3277,24 @@ calculateSize('/path/to/image.png').then((data) => {
 const passwordEle = document.getElementById('password');
 const toggleEle = document.getElementById('toggle');
 
-toggleEle.addEventListener('click', function() {
-    const type = passwordEle.getAttribute('type');
-    
-    passwordEle.setAttribute(
-        'type',
-        // Switch it to a text field if it's a password field
-        // currently, and vice versa
-        type === 'password' ? 'text' : 'password'
-    );
+toggleEle.addEventListener('click', function () {
+  const type = passwordEle.getAttribute('type');
+
+  passwordEle.setAttribute(
+    'type',
+    // Switch it to a text field if it's a password field
+    // currently, and vice versa
+    type === 'password' ? 'text' : 'password'
+  );
 });
 ```
 
 ## 聚焦后全选
 
 ```js
-ele.addEventListener('focus', function(e) {
-    // Select the text
-    e.target.select();
+ele.addEventListener('focus', function (e) {
+  // Select the text
+  e.target.select();
 });
 ```
 
@@ -3330,7 +3311,7 @@ ele.scrollIntoView({ behavior: 'smooth' });
 - Function.prototype.toString() 现在返回精确字符，包括空格和注释
 
 ```js
-function /* a comment */ foo () {}
+function /* a comment */ foo() {}
 foo.toString(); // 'function /* comment */ foo () {}'
 ```
 
@@ -3390,7 +3371,7 @@ export function f(x: i32): i32 {
   if (x === 1 || x === 2) {
     return 1;
   }
-  return f(x - 1) + f(x - 2)
+  return f(x - 1) + f(x - 2);
 }
 ```
 
@@ -3404,9 +3385,9 @@ asc AssemblyScript/f.ts -o dist/f.wasm
 
 ```ts
 fetch('dist/f.wasm') // 从网络加载 f.wasm 文件
-  .then(res => res.arrayBuffer()) // 转成 ArrayBuffer
+  .then((res) => res.arrayBuffer()) // 转成 ArrayBuffer
   .then(WebAssembly.instantiate) // 编译为当前 CPU 架构的机器码 + 实例化
-  .then(mod => {
+  .then((mod) => {
     // 调用模块实例上的 f 函数计算
     console.log(mod.instance.exports.f(40));
   });
@@ -3440,9 +3421,9 @@ module.exports = {
         loader: 'assemblyscript-typescript-loader',
         options: {
           sourceMap: true,
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
 };
 ```
@@ -3452,9 +3433,7 @@ tsconfig.json
 ```json
 {
   "extends": "./node_modules/assemblyscript/std/portable.json",
-  "include": [
-    "./**/*.ts"
-  ]
+  "include": ["./**/*.ts"]
 }
 ```
 
@@ -3463,14 +3442,14 @@ tsconfig.json
 ## var 重复声明原理
 
 - 编译器负责词法分析、语法分析、代码生成
-    - 遇到 `var a` 会询问作用域是否存在 a
-        - 不存在让作用域声明新的变量 a
-        - 存在则忽略 `var` 继续向下执行
+  - 遇到 `var a` 会询问作用域是否存在 a
+    - 不存在让作用域声明新的变量 a
+    - 存在则忽略 `var` 继续向下执行
 - 引擎负责整个代码的编译以及运行
-    - 遇到 `a = 2` 会询问作用域是否存在 a
-        - 若存在则将 a 赋值为 2，因为编译器忽略了 `var`、并且作用域已经有 `a`
-        - 若不存在则让作用域声明一个变量 a 并赋值为 2
-        - `a = 2` 中 `a` 会被声明为全局变量其中涉及到 `LHS` 查询方式
+  - 遇到 `a = 2` 会询问作用域是否存在 a
+    - 若存在则将 a 赋值为 2，因为编译器忽略了 `var`、并且作用域已经有 `a`
+    - 若不存在则让作用域声明一个变量 a 并赋值为 2
+    - `a = 2` 中 `a` 会被声明为全局变量其中涉及到 `LHS` 查询方式
 - 作用域负责维护所有标识符（变量）
 - JS 中的 LHS 查询和 RHS 查询
 
@@ -3490,20 +3469,20 @@ JS 底层存储变量，会在变量机器码低位 1-3 位存储类型信息
 
 - Canvas 是浏览器封装好的一个绘图环境，在实际进行绘图操作时，浏览器仍然需要调用 OpenGL API
 - WebGL API 几乎就是 OpenGL API 未经封装，直接套了一层壳
-    - 在 WebGL 中，开发者是通过着色器来完成上述变换的。着色器是运行在显卡中的程序，以 GLSL 语言编写
-    - 绘制纹理的基本原理是，为每个顶点指定一个纹理坐标(在(0,0)与(1,1,)的正方形中)，然后传入纹理对象
+  - 在 WebGL 中，开发者是通过着色器来完成上述变换的。着色器是运行在显卡中的程序，以 GLSL 语言编写
+  - 绘制纹理的基本原理是，为每个顶点指定一个纹理坐标(在(0,0)与(1,1,)的正方形中)，然后传入纹理对象
 
 ## 浏览器架构
 
 - 用户界面
 - 主进程
 - 内核
-    - 渲染引擎
-    - JS 引擎
-        - 执行栈
-    - 事件触发线程
-        - 消息队列
-            - 微任务
-            - 宏任务
-    - 网络异步线程
-    - 定时器线程
+  - 渲染引擎
+  - JS 引擎
+    - 执行栈
+  - 事件触发线程
+    - 消息队列
+      - 微任务
+      - 宏任务
+  - 网络异步线程
+  - 定时器线程
