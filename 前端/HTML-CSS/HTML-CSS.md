@@ -924,13 +924,20 @@ const $el = $('test');
 
 #### 使用方法
 
-```css
+```less
 .shining {
   animation-name: shining;
   animation-duration: 1000ms;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
+
+  // 缩写
+  // animation: duration timing-function delay iteraion-count direction fill-mode pay-state name
+  // animation: duration timing-function delay name
+  // animation: duration iteraion-count name
+  // animation: duration name
+  animation: 1s infinite shining;
 }
 @keyframes shining {
   0% {
