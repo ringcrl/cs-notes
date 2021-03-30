@@ -1620,32 +1620,40 @@ user-select: none;
 
 三角形生成器：http://apps.eky.hk/css-triangle-generator/zh-hant
 
-```scss
-.left-side-triangle {
+```less
+.left-triangle {
   position: relative;
   &::before {
     content: '';
     position: absolute;
-    left: -16px;
     top: 50%;
     transform: translateY(-50%);
+
+    // 以下部分自动生成
     width: 0;
     height: 0;
     border-style: solid;
     border-width: 15px 15px 15px 0;
     border-color: transparent #efefef transparent transparent;
+
+    // 配合自动生成距离填写
+    left: -16px;
   }
   &::after {
     content: '';
     position: absolute;
-    left: -14px;
     top: 50%;
     transform: translateY(-50%);
+
+    // 以下部分自动生成
     width: 0;
     height: 0;
     border-style: solid;
     border-width: 15px 15px 15px 0;
     border-color: transparent #fff transparent transparent;
+
+    // 配合自动生成距离填写
+    left: -14px;
   }
 }
 ```
