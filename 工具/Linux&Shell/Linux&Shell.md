@@ -346,6 +346,14 @@ alias pc='proxychains4'
 
 defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
 
+## Parallels Desktop 联网
+
+```sh
+sudo vim /Library/Preferences/Parallels/network.desktop.xml
+
+# find <UseKextless>1</UseKextless> (value can be -1), and change the value to the <UseKextless>0</UseKextless> # if you can't to find this tag, then just create it under root tag <ParallelsNetworkConfig ...>here</ParallelsNetworkConfig>
+```
+
 ## 软件备忘
 
 - Chrome
