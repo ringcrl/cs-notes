@@ -20,6 +20,9 @@ vim ~/.python-version
 
 ```sh
 pip install pandas -i https://mirrors.ustc.edu.cn/pypi/web/simple/
+
+# 本地项目安装
+python setup.py install
 ```
 
 ## requirements.txt 项目依赖
@@ -95,6 +98,7 @@ print(int('1001001', 2)) # 73
 ```py
 import time
 
+# 时间戳
 now = time.time()
 
 # float: 1590752612.65
@@ -104,7 +108,7 @@ print time.time()
 print time.strftime('%Y-%m-%d')
 
 # str: Fri May 29 19:42:23 2020
-print time.ctime() 
+print time.ctime()
 
 # time.struct_time: time.struct_time(tm_year=2020, tm_mon=5, tm_mday=29, tm_hour=19, tm_min=45, tm_sec=6, tm_wday=4, tm_yday=150, tm_isdst=0)
 print time.localtime()
@@ -158,7 +162,7 @@ support.print_func("Runoob")
 ```py
 # from...import
 from support import print_func
- 
+
 print_func("Runoob")
 ```
 
@@ -171,7 +175,7 @@ def AddMoney():
   # 不加下面这行，相当于新生成局部变量
   global Money
   Money = Money + 1
- 
+
 print Money
 AddMoney()
 print Money
@@ -181,9 +185,9 @@ print Money
 
 ```py
 import math
- 
+
 content = dir(math) # ['__doc__', ...]
- 
+
 print math.__doc__ # 模块说明
 print math.__file__ # 模块地址
 print math.__name__ # 模块名字
@@ -221,10 +225,10 @@ test.py 导入函数
 ```py
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
- 
+
 from package_runoob.runoob1 import runoob1
 from package_runoob.runoob2 import runoob2
- 
+
 runoob1()
 runoob2()
 ```
@@ -236,7 +240,7 @@ test.py 导入模块
 # -*- coding: UTF-8 -*-
 from package_runoob import runoob1
 from package_runoob import runoob2
- 
+
 runoob1.runoob1()
 runoob2.runoob2()
 ```
@@ -260,6 +264,7 @@ int(str)
 ```
 
 ## list 列表
+
 ```py
 # 截取
 a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -692,18 +697,19 @@ def response(flow):
 ```py
 from os import path
 
-# __file__：/Users/ringcrl/Documents/saga/cs-notes/_test/test2.py
-# path.dirname(__file__)：/Users/ringcrl/Documents/saga/cs-notes/_test
-d = path.dirname(__file__)
+# 文件运行目录绝对路径
+# __file__：/Users/ringcrl/test.py
+dir_path = path.dirname(__file__) # /Users/ringcrl
 
-# /Users/ringcrl/Documents/saga/cs-notes/_test/txt_file.txt
-txt_file_path = path.join(d, 'txt_file.txt') 
+# /Users/ringcrl/txt_file.txt
+txt_file_path = path.join(dir_path, 'txt_file.txt')
 
 # 定位相对路径文件
-curr_dir = path.dirname(__file__)
-logfile_path = path.abspath(
-    path.join(curr_dir, '../log/scheduler.log')
-)
+logfile_path = path.abspath(path.join(dir_path, '../log/main.log'))
+
+# 删除整个目录
+import shutil
+shutil.rmtree(dir_path)
 ```
 
 ## sys 添加模块查找路径
@@ -878,7 +884,7 @@ def to_str(unicode_or_str):
 ## 连接 mysql 类型转换
 
 ```py
-def get_db_info(): 
+def get_db_info():
     with codecs.open('config/password.json', 'r', 'utf-8') as f:
         return json.loads(f.read())
 
@@ -905,7 +911,6 @@ with open('random.bin', 'wb') as f:
 with open('random.bin', 'rb') as f:
     print(f.read())
 ```
-
 
 ## 写文件 unicode 转成中文
 
@@ -955,7 +960,7 @@ def insert_batch(connect,sql):
         return e
 ```
 
-## 单进程当当top500
+## 单进程当当 top500
 
 ```py
 # -*- coding: utf-8 -*-
@@ -1008,7 +1013,7 @@ if __name__ == '__main__':
         main(i)
 ```
 
-## 多进程当当top500
+## 多进程当当 top500
 
 ```py
 # 修改调用部分
@@ -1021,7 +1026,7 @@ if __name__ == '__main__':
     pool.join()
 ```
 
-## 豆瓣top250写到xlsx
+## 豆瓣 top250 写到 xlsx
 
 ```py
 # -*- coding: utf-8 -*
@@ -1125,25 +1130,25 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('user-agent="MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"')
 
 # 指定浏览器分辨率
-chrome_options.add_argument('window-size=1920x3000') 
+chrome_options.add_argument('window-size=1920x3000')
 
 # 谷歌文档提到需要加上这个属性来规避bug
-chrome_options.add_argument('--disable-gpu') 
+chrome_options.add_argument('--disable-gpu')
 
  # 隐藏滚动条, 应对一些特殊页面
 chrome_options.add_argument('--hide-scrollbars')
 
 # 不加载图片, 提升速度
-chrome_options.add_argument('blink-settings=imagesEnabled=false') 
+chrome_options.add_argument('blink-settings=imagesEnabled=false')
 
 # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
-chrome_options.add_argument('--headless') 
+chrome_options.add_argument('--headless')
 
 # 以最高权限运行
 chrome_options.add_argument('--no-sandbox')
 
 # 手动指定使用的浏览器位置
-chrome_options.binary_location = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" 
+chrome_options.binary_location = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
 
 #添加crx插件
 chrome_options.add_extension('d:\crx\AdBlock_v2.17.crx')
@@ -1171,6 +1176,35 @@ def getPageSource(url):
     return driver.page_source
 ```
 
+## IO 操作
+
+```py
+# coding: utf-8
+
+import pickle
+import json
+
+def save_pkl(data, file):
+    with open(file, "wb") as f:
+        pickle.dump(data, f)
+
+
+def read_pkl(file):
+    with open(file, "rb") as f:
+        data = pickle.load(f)
+    return data
+
+def save_json(data, file):
+    with open(file, "w", encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def read_json(file):
+    with open(file, "r", encoding='utf-8') as f:
+        data = json.load(f)
+    return data
+```
+
 # 算法
 
 ## is_palindrome 判断回文
@@ -1185,7 +1219,7 @@ def is_palindrome(s):
             end -= 1
         else:
             return False
-    
+
     return True
 ```
 
@@ -1263,7 +1297,7 @@ overgeneral-exceptions=BaseException,
 
 ## 缩进
 
-4个空格
+4 个空格
 
 ```py
 # 换行并增加4个额外的空格（一级缩进）
@@ -1363,7 +1397,6 @@ def f(x=0, y=None, z=None):
     if z is None:
         z = {}
 ```
-
 
 ## 变量
 
