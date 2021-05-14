@@ -306,6 +306,19 @@ nav {
 - ~：后继，选中它之后所有的相邻节点，后继选择器只作用于一层，所以不包括后继节点的字节点
 - ||：列，选中表格中的一列
 
+not 选择器
+
+```css
+/* 
+  选择 .validation-btn 但是不包含 .validation-btn.disabled
+ */
+.validation-btn:not(.disabled):hover {
+  color: #ffffff;
+  background-color: #2864f0;
+  border: 1px solid #2864f0;
+}
+```
+
 ## @ 规则
 
 - @charset ： https://www.w3.org/TR/css-syntax-3/
