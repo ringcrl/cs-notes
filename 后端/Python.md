@@ -323,6 +323,34 @@ rank_dict = {rank: name for name, rank in chile_ranks.items()}
 chile_len_set = {len(name) for name in rank_dict.values()}
 print(rank_dict) # {1: 'ghost', 2: 'habanero', 3: 'cayenne'}
 print(chile_len_set) # {8, 5, 7}
+
+# 反向字典
+freq_map = {
+    "1min": "1分钟",
+    "5min": "5分钟",
+    "15min": "15分钟",
+    "30min": "30分钟",
+    "60min": "60分钟",
+    "D": "日线",
+    "W": "周线",
+    "M": "月线",
+}
+freq_inv = {v: k for k, v in freq_map.items()}
+print(freq_inv)
+# {'1分钟': '1min', '5分钟': '5min', '15分钟': '15min', '30分钟': '30min',
+#     '60分钟': '60min', '日线': 'D', '周线': 'W', '月线': 'M'}
+```
+
+## enum 枚举
+
+```py
+from enum import Enum
+
+class Mark(Enum):
+    D = "底分型"
+    G = "顶分型"
+
+print(Mark.D.value) # 底分型
 ```
 
 ## zip 并行遍历
