@@ -88,9 +88,14 @@ print(not x) # False
 
 ## int 数字
 
+数字操作：https://www.runoob.com/python/python-numbers.html
+
 ```py
 # 二进制转十进制
 print(int('1001001', 2)) # 73
+
+# 保留小数
+print(round(2.3333, 2)) # 2.33
 ```
 
 ## time 时间函数
