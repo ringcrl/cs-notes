@@ -570,6 +570,7 @@ sed 's/.*/"&"/' file
 
 # -i 修改后的数据替换原数据
 sed -i "" 's/"private": true/"private": false/' package.json
+sed -i "" "s/^image: [a-z|0-9./:]*/image:123/" docker-compose.yml
 ```
 
 ## SSH 登录
