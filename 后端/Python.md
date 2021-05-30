@@ -62,6 +62,13 @@ ps aux | grep xxx.py
 kill <pid>
 ```
 
+## 工具
+
+```sh
+# 查找无用代码
+https://github.com/jendrikseipp/vulture
+```
+
 # 语法
 
 ## 类型与运算
