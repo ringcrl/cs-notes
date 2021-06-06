@@ -273,6 +273,9 @@ int(str)
 
 # 字符串分割
 'a|b'.split('|') # ['a', 'b']
+
+# 字符串以xx开头
+'abc'.startswith('a') # True
 ```
 
 ## list 列表
@@ -315,6 +318,14 @@ print([x for x in numbers if x > 3]) # [4, 5, 6]
 # 合并、去重、排序两个数组
 def merge_arrays(arr1, arr2):
     return sorted(set(arr1 + arr2))
+```
+
+## for 循环
+
+```py
+fruits = ['banana', 'apple',  'mango']
+for index in range(len(fruits)):
+   print '当前水果 :', fruits[index]
 ```
 
 ## dict 字典
