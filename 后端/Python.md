@@ -324,8 +324,19 @@ def merge_arrays(arr1, arr2):
 
 ```py
 fruits = ['banana', 'apple',  'mango']
+
+# 无 index
+for fruit in fruits:
+    print f'当前水果 : {fruits[index]}'
+
+# 带 index 1
+for index, fruit in enumerate(fruits):
+    print f'当前水果 : {fruits[index]}'
+
+# 带 index 2
+
 for index in range(len(fruits)):
-   print '当前水果 :', fruits[index]
+   print f'当前水果 : {fruits[index]}'
 ```
 
 ## dict 字典
