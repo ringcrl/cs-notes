@@ -12,9 +12,9 @@ systemctl start nginx
 systemctl enable nginx
 
 # 停止 nginx 服务
-nginx -s stop 
+nginx -s stop
 # 重启 nginx 服务
-nginx -s reload 
+nginx -s reload
 
 # 设置为 root 用户
 vim /etc/nginx/nginx.conf
@@ -24,9 +24,11 @@ vim /etc/nginx/nginx.conf
 
 https://segmentfault.com/a/1190000002963355
 
-## incluce 配置
+## 配置
 
-http://blog.51cto.com/zhouxinyu1991/1827474
+incluce：http://blog.51cto.com/zhouxinyu1991/1827474
+
+具体配置参考 `./conf.d` 目录
 
 ## 更新证书
 
@@ -159,7 +161,7 @@ location ~* /js/.*/\.js
 - location =
 - location 完整路径
 - location ^~ 开头路径
-- location ~、~* 正则顺序
+- location ~、~\* 正则顺序
 - location 部分起始路径
 - location /
 
@@ -191,25 +193,25 @@ location / {
 # 11 个阶段
 
 - postread
-    - realip
-    - rewrite、find_config、rewrite
+  - realip
+  - rewrite、find_config、rewrite
 - preaccess
-    - limit_req、limit_conn
+  - limit_req、limit_conn
 - access
-    - access、auth_basic、auth_request
+  - access、auth_basic、auth_request
 - precontent
-    - try_files、mirrors
+  - try_files、mirrors
 - content
-    - concat、random_index、index、auto_index、static
+  - concat、random_index、index、auto_index、static
 - log
-    - log
+  - log
 
 # 指令
 
 ## add_header 添加头部
 
 - 仅当当前层级中没有 add_header 指令才会继承父级设置
-- http、server和location三处均可配置add_header，但起作用的是最接近的配置，往上的配置都会失效
+- http、server 和 location 三处均可配置 add_header，但起作用的是最接近的配置，往上的配置都会失效
 - 如果 location 中 rewrite 到另一个 location，最后结果仅出现第二个的 header
 - 不能继承父级配置，又不想在当前块重复指令，解决办法可以用 include 指令
 
@@ -245,17 +247,17 @@ server {
   server_name limit.chenng.cn;
   root html/;
   error_log logs/myerror.log info;
-  
+
   location / {
     # limit_conn
     limit_conn_status 500;
     limit_conn_log_level warming;
     limit_rate 50;
     limit conn addr 1;
-    
+
     # limit_req
     limit_req zone=one burst=1 nodelay;
-    
+
   }
 }
 ```
@@ -303,8 +305,8 @@ server {
 - `$remote_addr` 与 `$http_x_forwarded_for` 用以记录客户端的 ip 地址
 - `$remote_user` 用来记录客户端用户名称
 - `$time_local` 用来记录访问时间与时区
-- `$request` 用来记录请求的url与http协议
-- `$status` 用来记录请求状态；成功是200
+- `$request` 用来记录请求的 url 与 http 协议
+- `$status` 用来记录请求状态；成功是 200
 - `$body_bytes_s ent` 记录发送给客户端文件主体内容大小
 - `$http_referer` 用来记录从那个页面链接访问过来的
 - `$http_user_agent` 记录客户端浏览器的相关信息
@@ -347,19 +349,20 @@ proxy_pass http://127.0.0.1:$node_port$request_uri;
 浏览器缓存
 
 - 优点
-    - 使用有效的缓存，没有网络消耗，速度最快
-    - 即使有网络消耗，但对失效缓存使用 304 响应做到网络流量消耗最小化
+  - 使用有效的缓存，没有网络消耗，速度最快
+  - 即使有网络消耗，但对失效缓存使用 304 响应做到网络流量消耗最小化
 - 缺点
-    - 仅提升一个用户的体验
-  
+
+  - 仅提升一个用户的体验
+
 nginx 缓存
 
 - 优点
-    - 提升所有用户的体验
-    - 相比浏览器缓存，有效降低上有服务的负载
-    - 通过 304 响应减少 nginx 与上游服务器之间的流量消耗
+  - 提升所有用户的体验
+  - 相比浏览器缓存，有效降低上有服务的负载
+  - 通过 304 响应减少 nginx 与上游服务器之间的流量消耗
 - 缺点
-    - 用户仍然保持网络消耗
+  - 用户仍然保持网络消耗
 
 生产环境：同时使用浏览器缓存与 nginx 缓存
 
@@ -382,12 +385,12 @@ server {
 ### 优点
 
 - 传输数据量大幅度减少
-    - 以二进制方式传输
-    - 标头压缩
+  - 以二进制方式传输
+  - 标头压缩
 - 多路复用以及相关功能
-    - 消息优先级
+  - 消息优先级
 - 服务器消息推送
-    - 并行推送
+  - 并行推送
 
 ### 核心概念
 
@@ -402,7 +405,7 @@ server {
 server {
   server_name http2.chenng.cn;
   root html;
-  
+
   location / {
     http2_push /mirrot.txt;
     http2_push /video.mp4;
@@ -456,45 +459,44 @@ server {
 
 https://github.com/FRiCKLE/ngx_cache_purge
 
-
 # 优化
 
 ## 优化缓冲区-滑动窗口
 
 - net.ipv4.tcp_rmem = 4096
-    - 读取缓存最小值、默认值、最大值，单位字节
+  - 读取缓存最小值、默认值、最大值，单位字节
 - new.ipv4.tcp_wmen = 4096
-    - 写缓存最小值、默认值、最大值，单位字节
+  - 写缓存最小值、默认值、最大值，单位字节
 - net.ipv4.tcp_men = 1541646
-    - 系统无内存压力、启动压力模式阈值、最大值，单位为页的数量
+  - 系统无内存压力、启动压力模式阈值、最大值，单位为页的数量
 - new.ipv4.tcp_moderate_rcvbuf = 1
-    - 开启自动调整缓存模式
+  - 开启自动调整缓存模式
 
 ## 慢启动-拥塞控制
 
 - 慢启动
-    - 指数扩展拥塞矿口（cwnd 为拥塞窗口大小）
-        - 每收到 1 个 ACK，cwnd = cwnd + 1
-        - 每过一个 RTT，cwnd = cwnd * 2
+  - 指数扩展拥塞矿口（cwnd 为拥塞窗口大小）
+    - 每收到 1 个 ACK，cwnd = cwnd + 1
+    - 每过一个 RTT，cwnd = cwnd \* 2
 - 拥塞避免：窗口大于 threshold
-    - 线性扩展拥塞窗口
-        - 每收到 1 个 ACK，cwnd = cwnd + 1 / cwnd
-        - 每过 1 个 RTT，窗口加 1
+  - 线性扩展拥塞窗口
+    - 每收到 1 个 ACK，cwnd = cwnd + 1 / cwnd
+    - 每过 1 个 RTT，窗口加 1
 - 拥塞发生
-    - 急速降低拥塞窗口
-        - RTO 超时，threshold = cwnd / 2，cwnd = 1
-        - Fast Retransmit
+  - 急速降低拥塞窗口
+    - RTO 超时，threshold = cwnd / 2，cwnd = 1
+    - Fast Retransmit
 - 快速恢复
-    - 当 Fast Retransmit 出现时，cwnd 调整为 threshold + 3 * MSS
+  - 当 Fast Retransmit 出现时，cwnd 调整为 threshold + 3 \* MSS
 
 ## Nagle 算法
 
 仅针对 HTTP KeeyAlive 连接生效
 
 - Nagle 算法
-    - 避免一个连接上同时存在大量小报文
-        - 最多只存在一个小报文
-        - 合并多个小报文一起发送
-    - 提供宽带利用率
+  - 避免一个连接上同时存在大量小报文
+    - 最多只存在一个小报文
+    - 合并多个小报文一起发送
+  - 提供宽带利用率
 - 吞吐量优先：启用 Nagle 算法，tcp_nodelay off
 - 低延时优先：禁用 Nagle 算法，tcp_nodelay on
