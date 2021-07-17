@@ -2,27 +2,26 @@
 
 ## 安装
 
-pyenv 教程: https://github.com/pyenv/pyenv
-
 ```sh
-# 使用代理安装
-https_proxy=127.0.0.1:1081 pyenv install 2.7.16
+# pyenv 安装：https://github.com/pyenv/pyenv-installer
+
+# ~/.zshrc
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
 
 # 查看所有版本
 pyenv versions
+
+# 安装 python
+pyenv install 3.9.4
+
 # 全局设置版本
-pyenv global 2.7.16
-# 编辑当前 shell 使用的 python 版本
+pyenv global 3.9.4
+
+# 编辑当前 shell 使用的 python 版本：3.9.4
 vim ~/.python-version
-```
-
-## pip 代理
-
-```sh
-pip install pandas -i https://mirrors.ustc.edu.cn/pypi/web/simple/
-
-# 本地项目安装
-python setup.py install
 ```
 
 ## requirements.txt 项目依赖
