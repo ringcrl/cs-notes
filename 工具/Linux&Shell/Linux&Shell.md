@@ -1521,19 +1521,20 @@ https://github.com/antonmedv/fx
 
 ## 配置
 
-```bash
+```sh
 cp /usr/share/vim/vimrc ~/.vimrc
-
 vim ~/.vimrc
+```
 
-# vim 中文乱码
+```vimrc
+" vim 中文乱码
 set encoding=utf-8
 
-# 语法高亮
+" 语法高亮
 syntax enable
 syntax on
 
-# 显示行号
+" 显示行号
 set nu!
 ```
 
