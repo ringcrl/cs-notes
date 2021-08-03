@@ -513,6 +513,24 @@ curl --referer Referer_URL target_URL
 curl -I https://www.chenng.cn
 ```
 
+```sh
+# 带有头部信息下载文件
+curl -O 'https://xxx.com' \
+  -H 'pragma: no-cache' \
+  -H 'cache-control: no-cache' \
+  -H 'sec-ch-ua: "Chromium";v="92", " Not A;Brand";v="99", "Google Chrome";v="92"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36' \
+  -H 'content-type: text/plain;charset=UTF-8' \
+  -H 'accept: */*' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'referer: https://xxx.com' \
+  -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8' \
+  --compressed
+```
+
 ## grep 过滤与正则
 
 ```sh
