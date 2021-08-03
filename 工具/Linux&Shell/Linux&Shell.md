@@ -1435,6 +1435,12 @@ do
 done < /tmp/$$.list
 ```
 
+## 条件判断执行
+
+```sh
+git submodule foreach 'if [ -e package.json ]; then npm i; fi'
+```
+
 # 命令行工具
 
 ## autojump
