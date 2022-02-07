@@ -206,9 +206,7 @@ fc-list :lang=zh
 cd /usr/share/fonts/
 
 # 建立索引，更新字体缓存
-mkfontscale
-mkfontdir
-fc-cache
+mkfontscale && mkfontdir && fc-cache
 ```
 
 # Mac
@@ -385,6 +383,14 @@ https://support.apple.com/zh-cn/HT204904
 https://support.apple.com/zh-cn/HT201065
 
 # shell 命令
+
+## centos 使用 ubuntu 命令
+
+```sh
+# https://superuser.com/questions/618520/yum-install-libcairo2-dev-libjpeg8-dev-libpango1-0-dev-libgif-dev-build-essentia
+
+su -c 'yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel'
+```
 
 ## ls
 
