@@ -382,6 +382,10 @@ https://support.apple.com/zh-cn/HT204904
 
 https://support.apple.com/zh-cn/HT201065
 
+## VSC Project-Manager
+
+https://github.com/kbshl/alfred-vscode/issues/37
+
 # shell 命令
 
 ## centos 使用 ubuntu 命令
@@ -613,6 +617,9 @@ ssh-keygen
 
 ## 查看秘钥
 cat ~/.ssh/id_rsa.pub
+
+## 将本机公钥发送到服务器
+ssh-copy-id root@host
 
 ## 服务器配置，加入公钥内容
 vim ~/.ssh/authorized_keys
