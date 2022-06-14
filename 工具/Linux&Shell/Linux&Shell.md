@@ -1,121 +1,84 @@
 <!--linux-cheat-sheet-->
 
-Linux & Shell 小抄
+Mac & Linux Config
 
 <!--more-->
 
-# 基本
+# Mac
 
-## git 安装 / 配置
+## 环境配置
 
-yum install git-core
+```sh
+# Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-```bash
+# git
 # 显示中文
 git config --global core.quotepath false
-
 # 用户名与邮箱
 git config --global user.name "Chenng"
 git config --global user.email "ringcrl@foxmail.com"
-```
 
-## .bash_profile & .bashrc
+# oh-my-zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-- .bash_profile 登陆时执行
-- .bashrc 启动交互式 shell 时执行
+# zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+echo "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
 
-```sh
-# 登陆时执行，.bash_profile 存在则不会读取 .profile
-vim ~/.bash_profile
-
-# 添加下面内容到 ~/.bash_profile
-if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
-fi
-
-# hstr 输入提示：https://github.com/dvorka/hstr
-```
-
-## bash & zsh
-
-```sh
-# https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
-# https://github.com/robbyrussell/oh-my-zsh
-
-# 切换 zsh
-chsh -s /bin/zsh
-
-# 切换 bash
-chsh -s /bin/bash
-```
-
-## zsh-syntax-highlighting
-
-https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
-
-```sh
-# CentOS
-
-# git clone
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
-
-# add to plugins in .zshrc
-plugins=(
-  zsh-syntax-highlighting
-)
-
-# make it work
+# node
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | zsh
 source ~/.zshrc
+nvm install 16
+
+# tldr
+npm install -g tldr
+
+# pm2
+npm install -g pm2
+
+# whistle
+npm i -g whistle
+
+# fx json
+brew install fx
+
+# 允许安装不安全软件
+sudo spctl --master-disable
+
+# 重置 Launchpad
+defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
 ```
 
-## autosuggestions
+## 电脑设置
 
-https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+### 三指拖拽
 
-## nvm
+辅助功能 => 指针控制 => 触摸板选项 => 启动拖移 => 三指拖移
 
-https://github.com/creationix/nvm#git-install
+### 轻触点击
 
-```sh
-nvm install
-nvm alias default
-```
+触控板 => 光标与点按 => 轻点来点按
 
-### 删除 node pkg 安装包
+## 软件安装
 
-```sh
-sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*/node.*}
-```
+- [Snipaste 桌面截图工具](https://zh.snipaste.com/) 
+- [Alfred](https://xclient.info/s/alfred.html)
+- [Magnet](https://xclient.info/s/magnet.html)
+- [Charles](https://xclient.info/s/charles.html)
+- The Unarchiver
 
-### yarn
+## 系统还原
 
-npm install -g yarn
+重新安装 MacBook
+
+https://support.apple.com/zh-cn/HT204904
+
+出售或赠送 Mac 前该怎么做
+
+https://support.apple.com/zh-cn/HT201065
 
 # Linux
-
-## 安装源码包
-
-```sh
-# 依赖项
-yum -y install gcc \
-   automake \
-   autoconf \
-   libtool \
-   make \
-   ncurses-devel \
-   ncurses
-```
-
-```sh
-# 定制软件安装的功能/配置，生成 Makefile 文件
-./configure
-
-# 编译
-make
-
-# 安装
-make install
-```
 
 ## firewalld 防火墙
 
@@ -153,14 +116,6 @@ AllowUsers common # 只允许 common 登陆
 service sshd restart
 ```
 
-## zshrc 切换语言
-
-```sh
-vim ~/.zshrc
-
-LANG=en_US.UTF-8
-```
-
 ## resolve.conf 名字服务
 
 ```sh
@@ -172,20 +127,6 @@ vim /etc/hosts
 
 # 查看网址 ip
 host www.chenng.cn
-```
-
-## sqlite3 数据库
-
-```sh
-# 安装
-apt-get install sqlite3 libsqlite3-dev
-yum install sqlite sqlite-devel
-
-# 使用
-sqlite3 books.db
-> CREATE TABLE books (title string, author string);
-> INSERT INTO books (title, author) VALUES('Notes', 'Chenng');
-> SELECT * FROM books;
 ```
 
 ## 安装字体
@@ -208,183 +149,6 @@ cd /usr/share/fonts/
 # 建立索引，更新字体缓存
 mkfontscale && mkfontdir && fc-cache
 ```
-
-# Mac
-
-## 轻点确认设置
-
-辅助功能 => 鼠标与触控板 => 触摸板选项 => 启动拖移 => 三指拖移
-
-## 将 F1、F2 作标准键
-
-系统偏好设置 => 键盘 => 将 F1、F2 等键作标准功能键
-
-## 全键盘控制
-
-系统偏好设置 => 键盘 => 快捷键 => 所有控制
-
-## finder 快捷键
-
-键盘 => 快捷键 => 服务
-
-```sh
-New Iterm2 Window Here => control + cmd + J
-iCloud/自动操作 | http://t.cn/RK0jORE
-Open With VSCode => control + cmd + K
-```
-
-## G502 鼠标快捷键
-
-电脑快捷键
-
-```
-键盘 => 快捷键
-
-调度中心 shift + cmd + F10
-显示桌面 shift + cmd + F11
-显示启动台 shift + cmd + F12
-```
-
-Chrome 前进后退
-
-```
-前进 cmd + ]
-返回 cmd + [
-```
-
-## 允许安装不安全软件
-
-sudo spctl --master-disable
-
-## iTrem、rz/sz 传文件
-
-https://www.iterm2.com
-
-http://www.jianshu.com/p/52ff25407621
-
-```sh
-rz # 上传命令
-
-sz # 下载命令
-```
-
-## Homebrew
-
-http://brew.sh/index_zh-cn.html
-
-```sh
-# mysql
-brew install mysql
-
-# 设置密码
-mysql_secure_installation
-
-# 连接数据库
-mysql -uroot
-
-# 开机自启动
-brew services start mysql
-
-# 非开机自启动
-mysql.server start
-```
-
-## shadowsocks
-
-https://shadowsocks.se
-
-https://github.com/shadowsocks/ShadowsocksX-NG/releases/
-
-### 终端翻墙
-
-【复制终端代理命令】，快捷命令 `ss`
-
-```bash
-echo "alias ss='export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;'" >> ~/.zshrc
-```
-
-### 配置 PAC
-
-```
-! Put user rules line by line in this file.
-! See https://adblockplus.org/en/filter-cheatsheet
-
-mozilla.org
-```
-
-## proxychains-ng
-
-proxychains4 安装
-
-```sh
-# 安装 proxychains4
-brew install proxychains-ng
-
-# 查看 socks5 的端口，配置 proxychains4
-vim ~/.ShadowsocksX-NG/gfwlist.js
-vim /usr/local/etc/proxychains.conf
-
-# 把 socks4 去掉，在最后一行添加
-socks5 127.0.0.1 1086
-
-# 在命令之前加上 proxychains4 即可使用
-proxychains4 git clone ...
-```
-
-proxychains4 配置别名 pc
-
-```sh
-vim ~/.zshrc
-
-# proxychain-ng config
-alias pc='proxychains4'
-```
-
-## 重置 Launchpad
-
-defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
-
-## Parallels Desktop 联网
-
-```sh
-sudo vim /Library/Preferences/Parallels/network.desktop.xml
-
-# find <UseKextless>1</UseKextless> (value can be -1), and change the value to the <UseKextless>0</UseKextless> # if you can't to find this tag, then just create it under root tag <ParallelsNetworkConfig ...>here</ParallelsNetworkConfig>
-```
-
-## 软件备忘
-
-- Chrome
-- Alfred
-- Paste
-- iStat
-- Postman
-- Reactotron
-- Helm
-- TablePlus
-- FileZilla
-- Magnet
-- 百度网盘
-- Marp（markdown 制作 PPT）
-- Charles
-- The Unarchiver
-- IINA 播放器
-- [Motrix](https://motrix.app/)
-- [Snipaste](https://zh.snipaste.com/) 桌面截图工具
-
-## 系统操作
-
-重新安装 MacBook
-
-https://support.apple.com/zh-cn/HT204904
-
-出售或赠送 Mac 前该怎么做
-
-https://support.apple.com/zh-cn/HT201065
-
-## VSC Project-Manager
-
-https://github.com/kbshl/alfred-vscode/issues/37
 
 # shell 命令
 
@@ -815,6 +579,9 @@ find . -type l # 列出符号链接
 find . -name '*.md' -atime -7 # 7天内修改过的 md 文件，-atime 天，-mmin 分钟
 find . -name '*.md' -size +10k # 大于 10k 的 md 文件
 find . -name 'node_modules' -prune -o -name '*.md' # 排除 node_modules 文件夹
+
+# 查找后删除
+find . -name ".DS_Store" | xargs rm -f
 ```
 
 ## nohup 持续运行
@@ -940,7 +707,7 @@ filepath=$(cd "$(dirname "$0")"; pwd)
 ls $PWD/工具/Linux\&Shell/Linux\&Shell.md
 ```
 
-# Shell 脚本基础
+# Shell 脚本
 
 ```sh
 #!/bin/bash
@@ -1471,88 +1238,6 @@ done < /tmp/$$.list
 ```sh
 git submodule foreach 'if [ -e package.json ]; then npm i; fi'
 ```
-
-# 命令行工具
-
-## autojump
-
-```sh
-# https://github.com/wting/autojump
-
-# Mac
-brew install autojump
-# vim ~/.zshrc
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-# CentOS
-yum install autojump
-# vim ~/.zshrc
-plugins=(
-  autojump
-)
-```
-
-## tldr
-
-```sh
-npm install -g tldr
-```
-
-## pm2
-
-```sh
-npm install -g pm2
-```
-
-## locate
-
-```sh
-# Linux
-yum -y install mlocate
-updatedb
-
-# Mac
-
-alias updatedb='/usr/libexec/locate.updatedb'
-```
-
-## nodemon
-
-```sh
-npm install -g nodemon
-```
-
-## tree
-
-```sh
-# Linux
-yum -y install tree
-
-# Mac
-brew install tree
-```
-
-## lazygit
-
-https://github.com/jesseduffield/lazygit
-
-```sh
-# CentOS
-# 下载 lazygit_0.5_Linux_x86_64.tar.gz
-alias lg="$HOME/script/lazygit"
-```
-
-## torrent
-
-https://github.com/maxogden/torrent
-
-## httpie
-
-https://httpie.org/doc
-
-## fx json 解析器
-
-https://github.com/antonmedv/fx
 
 # Vim
 
