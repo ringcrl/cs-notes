@@ -60,6 +60,10 @@ defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
 
 触控板 => 光标与点按 => 轻点来点按
 
+### 壁纸
+
+- [VSC Keyboard Shortcuts Reference](https://go.microsoft.com/fwlink/?linkid=832143)
+
 ## 软件安装
 
 - [Snipaste 桌面截图工具](https://zh.snipaste.com/) 
