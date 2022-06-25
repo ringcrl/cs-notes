@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes</title>
+    <script src="./libs/vue.js"></script>
+    <script src="./libs/axios.js"></script>
+    <!-- https://bulma.io/documentation/overview/start/ -->
+    <link rel="stylesheet" href="./libs/bulma.css" />
+  </head>
+  <body>
+    <div id="app" style="padding: 15px">
+      <article class="message is-info">
+        <div class="message-header">
+          <p style="display: flex; align-items: center">
+            <span>内容控制</span>
+            <button
+              style="margin-left: 10px"
+              class="button is-small is-link"
+              @click="toggleMode"
+            >
+              {{mode === 'create' ? '切换到复习' : '切换到新建'}}
+            </button>
+          </p>
+        </div>
+
+        <div
+          v-if="mode === 'review'"
+          class="message-body"
+          style="display: flex"
+        >
+          <!-- 复习模式筛选 -->
+          <div style="display: flex; align-items: center">
+            <div style="display: flex; align-items: center">
+              <span style="margin-right: 10px">筛选类型</span>
+              <div style="margin-right: 10px" class="select is-small">
+                <select v-model="filterType">
+                  <option v-for="option in options" :key="option">
+                    {{option}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <button
+              style="margin-right: 10px"
+              class="button is-small is-info"
+              @click="updateIndex"
+            >
+              随机一条
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="isShowAnswer = !isShowAnswer"
+            >
+              答案显隐
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 创建 -->
+      <div v-if="mode === 'create'" class="block box">
+        <div class="columns">
+          <div class="column">
+            <p>问题</p>
+            <textarea
+              class="textarea block question"
+              v-model="question"
+              cols="20"
+              rows="5"
+              style="resize: none"
+            ></textarea>
+          </div>
+          <div class="column">
+            <p>答案</p>
+            <textarea
+              class="textarea block answer"
+              v-model="answer"
+              cols="20"
+              rows="5"
+              style="resize: none"
+            ></textarea>
+          </div>
+        </div>
+        <div class="block" style="display: flex; align-items: center">
+          <span style="margin-right: 10px">类型</span>
+          <div style="margin-right: 10px" class="select is-small">
+            <select v-model="type">
+              <option v-for="option in options" :key="option">
+                {{option}}
+              </option>
+            </select>
+          </div>
+          <button class="button block is-info is-small" @click="addContent">
+            新建
+          </button>
+        </div>
+      </div>
+
+      <!-- 复习 -->
+      <div v-if="mode === 'review' && contentList.length > 0">
+        <div class="box">
+          <div class="block columns">
+            <div class="column">
+              <p>问题</p>
+              <textarea
+                class="textarea block question"
+                v-model="newQuestion"
+                cols="20"
+                rows="10"
+                style="resize: none"
+              ></textarea>
+            </div>
+            <div class="column">
+              <p>{{ isShowAnswer ? '答案' : '答案回忆' }}</p>
+              <textarea
+                v-if="isShowAnswer"
+                class="textarea block answer"
+                v-model="newAnswer"
+                cols="20"
+                rows="10"
+                style="resize: none"
+              ></textarea>
+              <textarea
+                v-if="!isShowAnswer"
+                class="textarea block answer"
+                v-model="recallAnswer"
+                cols="20"
+                rows="10"
+                style="resize: none"
+              ></textarea>
+            </div>
+          </div>
+          <div class="block" style="display: flex; align-items: center">
+            <span style="margin-right: 10px">类型</span>
+            <div style="margin-right: 10px" class="select is-small">
+              <select v-model="newType">
+                <option v-for="option in options" :key="option">
+                  {{option}}
+                </option>
+              </select>
+            </div>
+            <button
+              style="margin-right: 10px"
+              class="button is-info is-small"
+              @click="setContent(contentList[currContentIndex]?.id)"
+            >
+              更新
+            </button>
+            <button
+              style="margin-right: 10px"
+              class="button is-danger is-small"
+              @click="delContent(contentList[currContentIndex]?.id)"
+            >
+              删除
+            </button>
+          </div>
+        </div>
+        <div v-if="contentList.length > 0" class="box">
+          <ul>
+            <li
+              v-for="(item, index) in contentList"
+              style="display: flex; align-items: center; margin-top: 10px"
+            >
+              <button
+                class="button is-small is-danger"
+                style="margin-right: 10px"
+                @click="delContent(item.id)"
+              >
+                删除
+              </button>
+              <p
+                style="
+                  width: 80%;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  cursor: pointer;
+                "
+                @click="onListItemClick(index)"
+              >
+                {{item.question}}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>

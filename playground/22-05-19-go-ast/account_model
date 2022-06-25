@@ -1,0 +1,14 @@
+package admin
+
+// CreateAccountRequest 创建账号请求参数
+type CreateAccountRequest struct {
+	Phone  string  `validate:"regexp=^\\s{0}$|^1[3-9]\\d{9}$"` // 手机号
+	Nick   string  `validate:"max=20"`                    // 昵称
+	Remark *string `validate:"max=30"`                    // 备注信息
+	Role   string  `validate:"nonzero,enum=Admin|Member"` // 角色：Admin：管理员，Member：普通成员
+}
+
+// CreateAccountResponse 创建账号回包
+type CreateAccountResponse struct {
+	TfUid string
+}

@@ -1,0 +1,37 @@
+{
+  "tracks": [
+    {
+      "id": "38141d02-427b-4f16-a4bd-113f35e84e7d",
+      "type": "video",
+      "order": 0,
+      "items": [
+        {
+          "id": "478a816d-1579-4b2a-9732-0b4eb4d51bc9",
+          "start_time": 0,
+          "duration": 32680,
+          "type": "video",
+          "section": {
+            "from": 0,
+            "to": 32680
+          },
+          "asset_id": "604ae2e7adaf8f000164b74a",
+          "filter_asset_id": "",
+          "width": 810,
+          "height": 540,
+          "position": {
+            "x": 480,
+            "y": 270
+          },
+          "operations": [
+            {
+              "type": "image_mirror",
+              "params": {
+                "angle": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

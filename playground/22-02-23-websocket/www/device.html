@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv = "X-UA-Compatible" content = "chrome=1" >
+  <title>设备</title>
+</head>
+<body>
+  <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+  <script>
+    // VConsole will be exported to `window.VConsole` by default.
+    var vConsole = new window.VConsole();
+  </script> 
+  <h1 id="info">传输照片到电脑</h1>
+  <input class="file-upload" type="file" />
+  <script src="./lib/socket.io.js"></script>
+  <script src="./script/device.js"></script>
+
+</body>
+</html>

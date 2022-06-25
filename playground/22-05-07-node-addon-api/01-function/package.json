@@ -1,0 +1,13 @@
+{
+  "name": "01-function",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "node-gyp rebuild",
+    "test": "node main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "gypfile": true
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ffmpeg</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>上传视频，转为480P</h3>
+  <video id="output-video" controls></video><br />
+  <input type="file" id="uploader">
+  <p id="message" />
+
+  <script src="./ffmpeg.min.js"></script>
+  <script src="./main.js"></script>
+</body>
+
+</html>

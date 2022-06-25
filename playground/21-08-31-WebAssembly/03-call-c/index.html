@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>call-c</title>
+    <script src="./a.out.js"></script>
+  </head>
+  <body>
+    <button class="mybutton">运行C函数</button>
+    <script>
+      document
+        .querySelector(".mybutton")
+        .addEventListener("click", function () {
+          const res = Module.ccall(
+            "myFunction", // name of C function
+            null, // return type
+            null, // argument types
+            null // arguments
+          );
+          console.log('c返回的结果:', res)
+        });
+    </script>
+  </body>
+</html>

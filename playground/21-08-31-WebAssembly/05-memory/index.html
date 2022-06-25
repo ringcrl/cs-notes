@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>memory</title>
+</head>
+<body>
+  <script>
+    // 初始和最大的单位是 WebAssembly pages ——这些页面的大小固定为64KB。
+    // 这意味着上述内存实例的初始大小为640KB，最大大小为6.4MB。
+    var memory = new WebAssembly.Memory({initial:10, maximum:100});
+    console.log(memory);
+
+    // 设置内存
+    new Uint32Array(memory.buffer)[0] = 42; // 将42写入线性内存的第一个单词
+    console.log(new Uint32Array(memory.buffer)[0]) // 42
+
+    // 主动增加内存
+    memory.grow(1); // 增加 64KB 内存，如果超过一开始初始化的 maximum 会报错 WebAssembly.RangeError
+  </script>
+</body>
+</html>

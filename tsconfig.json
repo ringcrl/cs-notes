@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "dist",
-    "sourceMap": false,
-    "target": "ES5",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "target": "ES2017",
+    "module": "CommonJS",
+    "noImplicitAny": true,
     "removeComments": true,
-    "declaration": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmitOnError": true
+    "preserveConstEnums": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "strictNullChecks": true
   },
   "include": [
-    "_test/*.ts"
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
   ]
 }

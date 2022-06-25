@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>list-drag</title>
+  <link rel="stylesheet/less" type="text/css" href="styles.less" />
+  <script src="../assets/libs/less@4.js"></script>
+  <script src="../assets/libs/vue.min.js"></script>
+</head>
+
+<!-- https://juejin.cn/post/6909287804510371847 -->
+
+<body>
+  <div id="app">
+    <transition-group name="drag" class="list" tag="ul">
+      <li @dragenter="dragenter($event, index)" @dragover="dragover($event, index)" @dragstart="dragstart(index)"
+        draggable v-for="(item, index) in list" :key="item.label" class="list-item">
+        {{item.label}}
+      </li>
+    </transition-group>
+  </div>
+  <script src="main.js"></script>
+</body>
+
+</html>

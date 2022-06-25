@@ -1,0 +1,15 @@
+{
+  "name": "22-05-07-node-addon-api",
+  "version": "1.0.0",
+  "description": "https://github.com/ringcrl/node-addon-examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-addon-api": "^5.0.0",
+    "node-gyp": "^9.0.0"
+  }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>serviceWorker</title>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./service-worker.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        });
+      }
+    </script>
+    <script src="//vs-cdn.tencent-cloud.com/vs/f241617c4eadb527eee813a28a1b7918dbca1a98/js/app.bb48f5a4.js"></script>
+    <link rel="stylesheet" href="//vs-cdn.tencent-cloud.com/vs/f241617c4eadb527eee813a28a1b7918dbca1a98/css/submodules.7176a96b.css">
+  </head>
+  <body>
+    <img src="//vs-cdn.tencent-cloud.com/vs/f241617c4eadb527eee813a28a1b7918dbca1a98/img/cme-logo-black.48fee983.png" alt="">
+  </body>
+</html>

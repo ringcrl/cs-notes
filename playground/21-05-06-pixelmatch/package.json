@@ -1,0 +1,15 @@
+{
+  "name": "21-05-06-pixelmatch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jimp": "^0.16.1",
+    "pixelmatch": "^5.2.1"
+  }
+}

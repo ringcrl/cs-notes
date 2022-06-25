@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>percent-diff</title>
+  <style>
+    input {
+      width: 95%;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h3>涨跌百分比</h3>
+    <div>
+      <input type="text" placeholder="输入原始金额" v-model="inputVal">
+    </div>
+    <div>
+      <input v-model="inputRange" type="range" step="0.4">
+    </div>
+    <p style="white-space: pre;">{{result}}</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="./main.js"></script>
+</body>
+</html>

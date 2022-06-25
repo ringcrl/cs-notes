@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>video.js</title>
+    <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet" />
+    <script src="../../assets/libs/videojs@7.15.4.js"></script>
+  </head>
+  <body>
+    <video
+      id="my-player"
+      class="video-js"
+      controls
+      preload="auto"
+      data-setup="{}"
+    ></video>
+
+    <script>
+      var player = videojs('my-player');
+      player.src({
+        src: "https://xxx",
+        type: "application/x-mpegURL",
+      });
+
+      let currTime = 1
+      let retryTime = 5
+      player.currentTime(currTime)
+      while(player.currentTime() !== currTime && retryTime > 0) {
+        currTime += 1
+        player.currentTime(currTime)
+        console.log(player.currentTime())
+        retryTime--
+      }
+    </script>
+  </body>
+</html>
+
+<head> </head>

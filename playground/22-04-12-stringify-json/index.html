@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>转换配置项</title>
+</head>
+<body>
+  <textarea name="" id="json-input" placeholder="输入json" cols="100" rows="10"></textarea>
+  <div><button id="transform-btn">转换</button></div>
+  <div id="result"></div>
+  <script>
+    const jsonInputEl = document.getElementById('json-input');
+    const transformBtnEl = document.getElementById('transform-btn');
+    const resultEl = document.getElementById('result')
+    transformBtnEl.addEventListener('click', () => {
+      try {
+        resultEl.innerHTML = `"${yasuo(jsonInputEl.value)}"`
+      } catch (err) {
+        resultEl.innerHTML = err.message;
+      }
+    })
+
+    function yasuo(_text) {
+        const ii = 3
+        var text = _text;
+        if ((ii == 1 || ii == 3)) {
+            text = text.split("\n").join(" ");
+            var t = [];
+            var inString = false;
+            for (var i = 0, len = text.length; i < len; i++) {
+                var c = text.charAt(i);
+                if (inString && c === inString) {
+                    if (text.charAt(i - 1) !== '\\') {
+                        inString = false
+                    }
+                } else if (!inString && (c === '"' || c === "'")) {
+                    inString = c
+                } else if (!inString && (c === ' ' || c === "\t")) {
+                    c = ''
+                }
+                t.push(c)
+            }
+            text = t.join('')
+        }
+        if ((ii == 2 || ii == 3)) {
+            text = text.replace(/\\/g, "\\\\").replace(/\"/g, "\\\"")
+        }
+        if (ii == 4) {
+            text = text.replace(/\\\\/g, "\\").replace(/\\\"/g, '\"')
+        }
+        return text
+    }
+  </script>
+</body>
+</html>

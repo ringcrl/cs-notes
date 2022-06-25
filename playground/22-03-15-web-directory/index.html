@@ -1,0 +1,24 @@
+<style>
+  span {
+    border: 1px solid;
+  }
+  .dropArea {
+    border: 10px dashed;
+    height: 150px;
+  }
+</style>
+<span id="uploadFileButton">上传文件</span>
+<span id="uploadDirectoryButton">上传文件夹</span>
+<section class="dropArea" id="dropArea">把文件拽进来</section>
+<script src="./SuperLoader.js"></script>
+<script>
+  new Superloader({
+    uploadFileEl: document.getElementById("uploadFileButton"),
+    uploadDirectoryEl: document.getElementById("uploadDirectoryButton"),
+    dropAreaEl: document.getElementById("dropArea"),
+    // “三合一”的成功回调，参数 file：文件实体，path：相对路径
+    successCallback: ({ file, path }) => {
+      console.log("文件名称：" + file.name + "，相对路径：" + path);
+    },
+  });
+</script>

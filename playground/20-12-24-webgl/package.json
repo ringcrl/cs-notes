@@ -1,0 +1,19 @@
+{
+  "name": "webgl-texture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main-image.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gl": "^4.9.0",
+    "glfw-raub": "^4.5.0",
+    "image-output": "^2.4.2",
+    "image-raub": "^3.1.4",
+    "node-gles": "0.0.17",
+    "webgl-raub": "^2.1.0"
+  }
+}

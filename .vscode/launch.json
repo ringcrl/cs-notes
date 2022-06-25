@@ -2,36 +2,33 @@
   "version": "1.0.0",
   "configurations": [
     {
+      "name": "C++",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb",
+      "preLaunchTask": "C/C++: clang++ 生成活动文件"
+    },
+    {
       "name": "JS",
       "type": "node",
       "request": "launch",
       "program": "${file}",
       "cwd": "${workspaceFolder}",
-      "outputCapture": "std"
+      "outputCapture": "std",
+      "runtimeExecutable": "node"
     },
     {
-      "name": "TS-NODE",
+      "name": "TS",
       "type": "node",
       "request": "launch",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${file}"]
-    },
-    {
-      "name": "Webpack",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
-      "args": ["--config=build/webpack.build-lib.js"]
-    },
-    {
-      "name": "Jest",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": ["--testPathPattern=${file}", "--config=jest.config.js", "--runInBand"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true
     },
     {
       "name": "Python",

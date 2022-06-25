@@ -1,0 +1,13 @@
+{
+  "name": "02-class",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node-gyp rebuild",
+    "test": "node main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "gypfile": true
+}

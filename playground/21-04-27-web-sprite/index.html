@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>web-sprite</title>
+    <style>
+      .sprite-wrapper-1 {
+        /* 宽度100，高度150，竖排三个图 */
+        background-image: url(./assets/sprite-vertrical.png),
+          url(./assets/sprite-vertrical.png),
+          url(./assets/sprite-vertrical.png);
+        background-repeat: no-repeat;
+
+        /* 原始尺寸 */
+        background-size: 100px;
+        background-position: 0px 0px, 100px -50px, 200px -100px;
+        height: 50px;
+      }
+      .sprite-wrapper-2 {
+        /* 宽度100，高度150，竖排三个图 */
+        background-image: url(./assets/sprite-vertrical.png),
+          url(./assets/sprite-vertrical.png),
+          url(./assets/sprite-vertrical.png);
+        background-repeat: no-repeat;
+
+        /* 1.5X 高度 */
+        background-size: 150px;
+        background-position: 0px 0px, 150px -75px, 300px -150px;
+        height: 75px;
+      }
+
+      .sprite-wrapper-3 {
+        height: 64px;
+        /* 142*80 */
+        background-image: url("https://1810000003.vod2.myqcloud.com/8d388657vodtranscq1810000003/08342f75387702291478644026/imageSprite/imageSprite_20056_0.jpg"),
+          url("https://1810000003.vod2.myqcloud.com/8d388657vodtranscq1810000003/08342f75387702291478644026/imageSprite/imageSprite_20056_0.jpg");
+        background-repeat: no-repeat;
+        /* background-position: 0px -160px, 142px -320px;
+        background-size: 142px; */
+        background-position: 0px -128px, 113.6px -256px;
+        background-size: 113.6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sprite-wrapper-1"></div>
+
+    <div class="sprite-wrapper-2"></div>
+
+    <div class="sprite-wrapper-3"></div>
+  </body>
+</html>

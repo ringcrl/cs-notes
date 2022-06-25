@@ -1,0 +1,89 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+html, body{
+	height: 100%;
+	overflow:hidden;
+}
+h1 {
+	text-align: center;
+	height: 60px;
+}
+.app {
+	display: flex;
+}
+
+#qrcode {
+	flex: 1;
+	height: calc(100vh - 60px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#qrcode img {
+	width: 90%;
+}
+.container {
+	flex: 2;
+	perspective: 1200;
+	-webkit-perspective: 1200;
+	position: relative;
+	height: 800px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+.adjust {
+	transform-style: preserve-3d;
+	height: 600px;
+}
+.box {
+	width: 300px;
+	height: 100%;
+	transform-style: preserve-3d;
+}
+.box figure {
+	position: absolute;
+	border: 1px solid black;
+	box-sizing: border-box;
+	text-align: center;
+}
+.box .front, .box .back{
+	width: 328px;
+	height: 648px;
+}
+.box .right, .box .left {
+	width: 50px;
+	height: 648px;
+	left: 150px;
+}
+.box .top, .box .bottom {
+	width: 328px;
+	height: 50px;
+	top: 275px;
+}
+.box .front  { background: hsla( 000, 100%, 50%, 0.7 ); }
+.box .back   { background: hsla( 160, 100%, 50%, 0.7 ); }
+.box .right  { background: hsla( 120, 100%, 50%, 0.7 ); }
+.box .left   { background: hsla( 180, 100%, 50%, 0.7 ); }
+.box .top    { background: hsla( 240, 100%, 50%, 0.7 ); }
+.box .bottom { background: hsla( 300, 100%, 50%, 0.7 ); }
+.box .front  { /*这个距离乘以2为前后面的距离*/
+     transform: translateZ( 25px );
+}
+.box .back   { /*front面沿着x轴旋转180度，做后面*/
+   transform: rotateY(-180deg) translateZ(25px);
+}
+.box .right {                 /*这个距离乘以2为左右面的距离*/
+   transform: rotateY(   90deg ) translateZ( 150px );
+}
+.box .left {  /*front面沿着y轴旋转90度，做侧面*/
+   transform: rotateY(  -90deg ) translateZ( 175px );
+}
+.box .top {                   /*这个距离乘以2为长方体高*/
+   transform: rotateX(   90deg ) translateZ( 300px );
+}
+.box .bottom { /*front面沿着x轴旋转90度，做底面*/
+   transform: rotateX(  -90deg ) translateZ( 348px );
+}

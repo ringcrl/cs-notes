@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MSE-for-Audio</title>
+    <style>
+      #main {
+        line-height: 1.5em;
+        margin: auto;
+        max-width: 800px;
+      }
+
+      .play-overlay,
+      .waveform,
+      .waveform-container {
+        margin: auto;
+        min-height: 300px;
+        width: 750px;
+      }
+
+      .play-overlay {
+        background: url(./assets/yt_play.png);
+        background-color: #eee;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 80px 60px;
+        opacity: 0.3;
+        position: absolute;
+        z-index: 10;
+      }
+
+      .play-overlay:hover {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+
+      <div class="waveform-container">
+        <span class="play-overlay"></span>
+        <div id="waveform_mp4_gapless" class="waveform"></div>
+      </div>
+  
+    </div>
+
+    <script src="./assets/wavesurfer.min.js"></script>
+    <script src="./assets/peaks.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "22-03-08-read-dir-chinese",
+  "version": "1.0.0",
+  "description": "",
+  "main": "read-dir-chinese.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hash-string": "^1.0.0"
+  }
+}

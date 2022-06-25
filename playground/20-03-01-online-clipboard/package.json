@@ -1,0 +1,30 @@
+{
+  "name": "online-clipboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel ./app/index.html --open",
+    "build": "rimraf ./dist && parcel build ./app/index.html --public-url ./"
+  },
+  "keywords": [],
+  "author": "Chenng",
+  "license": "ISC",
+  "dependencies": {
+    "add": "^2.0.6",
+    "axios": "^0.18.1",
+    "clipboard": "^2.0.4",
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0",
+    "minireset.css": "^0.0.3",
+    "promise-mysql": "^3.3.1",
+    "vconsole": "^3.2.0",
+    "yarn": "^1.22.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "cssnano": "^4.1.7",
+    "rimraf": "^2.6.2"
+  }
+}

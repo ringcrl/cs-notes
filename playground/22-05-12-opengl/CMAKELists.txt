@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.10)
+project(test_opengl)
+
+set(CMAKE_VERBOSE_MAKEFILE OFF)
+
+set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wformat")
+
+# glfw 和 glew 的头文件目录
+include_directories(./deps/GLEW/include ./deps/GLFW/include)
+
+# glew的库目录路径
+link_directories(./deps/GLEW/lib)
+# glfw的库目录路径
+link_directories(./deps/GLFW/lib)
+
+# 添加执行文件
+aux_source_directory("./" SRCS)
+add_executable(test_opengl ${SRCS})
+
+# 指定glew库
+target_link_libraries(test_opengl libGLEW.a)
+# 指定glfw库
+target_link_libraries(test_opengl libglfw.3.3.dylib)
+
+# 添加一个 Apple 特定条件以与 OpenGL 框架链接
+if (APPLE)
+  target_link_libraries(test_opengl "-framework OpenGL")
+endif()

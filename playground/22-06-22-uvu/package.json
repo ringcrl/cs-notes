@@ -1,0 +1,14 @@
+{
+  "name": "22-06-22-uvu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node main.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "uvu": "^0.5.4"
+  }
+}
