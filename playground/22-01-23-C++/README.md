@@ -1868,6 +1868,58 @@ int main() {
 
 ```
 
+## operator new override 观察 heap 内存分配
+
+```cpp
+#include <iostream>
+
+void *operator new(size_t size) {
+  std::cout << "operator new "<< size << "bytes" << std::endl;
+  return malloc(size);
+}
+
+struct Object {
+  int x, y, z;
+};
+
+int main() {
+  Object *obj = new Object;
+  obj->x = 1;
+  obj->y = 2;
+  obj->z = 3;
+  std::cout << obj->x << " " << obj->y << " " << obj->z << std::endl;
+  delete obj;
+  return 0;
+}
+
+```
+
+# rvalue 和 lvalue
+
+```cpp
+#include <iostream>
+#include <string>
+
+// 可接受 rvalue 和 lvalue：const std::string &name
+// 仅接受 rvalue：std::string &&name
+// 仅接受 lvalue：std::string name
+void PrintName(const std::string &name) {
+  std::cout << name << std::endl;
+}
+
+int main() {
+  std::string firstName = "Ring ";
+  std::string lastName = "Chenng";
+
+  std::string fullName = firstName + lastName;
+
+  PrintName(fullName);
+
+  PrintName(firstName + lastName);
+}
+
+```
+
 # 应用
 
 ## 获取文件路径
