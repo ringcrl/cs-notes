@@ -1894,7 +1894,7 @@ int main() {
 
 ```
 
-# rvalue 和 lvalue
+## rvalue 和 lvalue
 
 ```cpp
 #include <iostream>
@@ -1916,6 +1916,56 @@ int main() {
   PrintName(fullName);
 
   PrintName(firstName + lastName);
+}
+
+```
+
+## std::move
+
+```cpp
+#include <iostream>
+#include <string>
+
+
+int main() {
+  std::string str1 = "Chenng";
+  std::string str2 = std::move(str1);
+
+  std::cout << "str1 " << str1 << std::endl; // ""
+  std::cout << "str2 " << str2 << std::endl; // "Chenng"
+}
+
+```
+
+## std::unordered_map 对象与迭代
+
+```cpp
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <map>
+
+int main() {
+  using ScoreMap = std::unordered_map<std::string, int>;
+  // using ScoreMap = std::map<std::string, int>;
+  ScoreMap map;
+  map["Alice"] = 25;
+  map["Bob"] = 42;
+
+  // 迭代1：
+  for (ScoreMap::const_iterator it = map.begin(); it != map.end(); it++) {
+    std::cout << it->first << ": " << it->second << std::endl;
+  }
+
+  // 迭代2：
+  for (auto kv : map) {
+    std::cout << kv.first << ": " << kv.second << std::endl;
+  }
+
+  // 迭代3：
+  for (auto [key, value] : map) {
+    std::cout << key << ": " << value << std::endl;
+  }
 }
 
 ```

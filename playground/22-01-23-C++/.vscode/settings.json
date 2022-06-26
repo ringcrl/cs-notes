@@ -70,7 +70,10 @@
     "fstream": "cpp",
     "iomanip": "cpp",
     "stack": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    "numeric": "cpp",
+    "__tree": "cpp",
+    "map": "cpp"
   },
   "cortex-debug.showRTOS": true
 }
