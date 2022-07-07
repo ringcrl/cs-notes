@@ -75,5 +75,6 @@
     "__tree": "cpp",
     "map": "cpp"
   },
-  "cortex-debug.showRTOS": true
+  "cortex-debug.showRTOS": true,
+  "cmake.cmakePath": "/opt/homebrew/bin/cmake",
 }
