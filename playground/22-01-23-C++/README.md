@@ -22,6 +22,13 @@ https://code.visualstudio.com/docs/cpp/config-linux
 
 https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/how-to.md#create-a-new-project
 
+```json
+// .vscode/settings.json
+{
+  "cmake.cmakePath": "which_cmake",
+}
+
+```
 
 # 语法基础
 
