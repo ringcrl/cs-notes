@@ -3,6 +3,9 @@
 ```sh
 # 启动服务
 pm2 start notes-server.js
+
+# 访问服务
+http://127.0.0.1:9999
 ```
 
 # sqlite3 操作
