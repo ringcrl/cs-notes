@@ -1,2 +1,4 @@
 main.cpp
 build
+tmp/*
+!tmp/.gitkeep
