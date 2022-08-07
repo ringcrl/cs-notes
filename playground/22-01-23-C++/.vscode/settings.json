@@ -73,7 +73,9 @@
     "future": "cpp",
     "numeric": "cpp",
     "__tree": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "list": "cpp",
+    "set": "cpp"
   },
   "cortex-debug.showRTOS": true,
   "cmake.cmakePath": "/opt/homebrew/bin/cmake",
