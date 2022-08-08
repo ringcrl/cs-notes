@@ -1,5 +1,8 @@
 # Docker 挂载开发
 
 ```sh
-docker run -it -v local_path:/workspace -w /workspace image_name
+# 当前目录下
+docker run -it -v $PWD:/workspace -w /workspace docker_image_name
+
+# 非当前目录场景，$PWD 替换为 path_local_dir
 ```
