@@ -18,6 +18,8 @@ npm install standard ts-standard --save-dev
   "standard.autoFixOnSave": true,
   "standard.nodePath": "/Users/ringcrl/.nvm/versions/node/v16.15.1/bin/node",
 }
+
+# standard 配置，参考 package.json
 ```
 
 ## 提交校验
