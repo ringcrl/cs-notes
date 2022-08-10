@@ -1977,6 +1977,17 @@ int main() {
 
 ```
 
+## extern 共享全局变量
+
+```cpp
+// file_1.cc defines and initializes a const that is accessible to other files
+extern const int bufSize = fcn();
+
+// file_1.h
+extern const int bufSize;// same bufSize as defined in file_1.cc
+
+```
+
 # 应用
 
 ## 获取文件路径

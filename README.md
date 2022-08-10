@@ -8,8 +8,8 @@
 [JavaScript Standard Style](https://github.com/standard/standard)
 
 ```sh
-# npm 依赖：ts-standard
-npm install ts-standard --save-dev
+# standard 依赖
+npm install standard ts-standard --save-dev
 
 # vsc 插件：StandardJS
 
