@@ -1,0 +1,26 @@
+{
+  "name": "Hover speech",
+  "version": "1.0",
+  "description": "Read the text which mouse point",
+  "permissions": [
+    "storage",
+    "tabs",
+    "cookies"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "./main.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
