@@ -1,0 +1,6 @@
+# popclip ticktick
+name: 滴答清单
+icon: symbol:doc.badge.plus
+requirements: [copy]
+before: copy
+shortcut name: ticktick
