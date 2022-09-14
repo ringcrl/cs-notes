@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Extension Description</key>
+	<string>Paste the current date and time.</string>
+	<key>Extension Identifier</key>
+	<string>com.pilotmoon.popclip.extension.timestamp</string>
+	<key>Extension Image File</key>
+	<string>clock.png</string>
+	<key>Extension Name</key>
+	<string>Timestamp</string>
+</dict>
+</plist>
