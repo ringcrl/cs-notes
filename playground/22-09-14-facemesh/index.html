@@ -4,14 +4,8 @@
     <meta charset="utf-8" />
     <script src="./camera_utils.js" crossorigin="anonymous"></script>
     <script src="./control_utils.js" crossorigin="anonymous"></script>
-    <script
-      src="./drawing_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="./face_mesh.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="./drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="./face_mesh.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -25,7 +19,6 @@
       const canvasCtx = canvasElement.getContext("2d");
 
       function onResults(results) {
-        console.log(results)
         canvasCtx.save();
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(
@@ -68,7 +61,7 @@
           }
         }
         canvasCtx.restore();
-        results = null
+        results = null;
       }
 
       const faceMesh = new FaceMesh({
