@@ -7251,6 +7251,7 @@ var createMediapipeSolutionsWasm = (function () {
       }
     }
     function _emscripten_resize_heap(requestedSize) {
+      console.log('FIXME: 内存增大', requestedSize)
       var oldSize = HEAPU8.length;
       requestedSize = requestedSize >>> 0;
       assert(requestedSize > oldSize);
