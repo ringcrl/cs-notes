@@ -48,7 +48,10 @@ function onResults(results) {
   return results
 }
 
-let faceMesh = createFaceMesh()
+let currFaceMesh = createFaceMesh()
+currFaceMesh.onResults(onResults)
+
+let backupFaceMesh = createFaceMesh()
 
 function createFaceMesh() {
   const faceMesh = new FaceMesh({
@@ -62,26 +65,33 @@ function createFaceMesh() {
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.5,
   });
-  faceMesh.onResults(onResults);
 
   return faceMesh
 }
 
 const camera = new Camera(videoElement, {
   onFrame: async () => {
-    if (faceMesh) {
-      await faceMesh.send({ image: videoElement });
+    if (currFaceMesh) {
+      await currFaceMesh.send({ image: videoElement });
     }
+
   },
   width: 1280,
   height: 720,
 });
 camera.start();
 
-// 由于内存泄露，需要彻底释放
+// // 由于内存泄露，需要彻底释放
 setInterval(() => {
-  faceMesh.close()
-  faceMesh = null
+  const currHeap = (currFaceMesh?.g?.h?.HEAP8.length || 0) / 1024 / 1024 // MB 当前占用内存
+  if (currHeap > 1000) {
+    // 通过内存判断是否需要替换
+    let tmp = currFaceMesh
+    backupFaceMesh.onResults(onResults)
+    currFaceMesh = backupFaceMesh
+    tmp.close()
+    tmp = null
+    backupFaceMesh = createFaceMesh()
+  }
 
-  faceMesh = createFaceMesh()
-}, 10000)
+}, 3000)
