@@ -3,4 +3,4 @@ name: 滴答清单
 icon: symbol:doc.badge.plus
 requirements: [copy]
 before: copy
-shortcut name: 添加到清单
+shortcut name: 添加剪切板到清单
