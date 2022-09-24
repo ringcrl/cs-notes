@@ -1,0 +1,18 @@
+{
+  "name": "babel-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/generator": "^7.19.0",
+    "@babel/parser": "^7.19.1",
+    "@babel/template": "^7.18.10",
+    "@babel/traverse": "^7.19.1",
+    "@babel/types": "^7.19.0"
+  }
+}
