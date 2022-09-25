@@ -7,11 +7,15 @@ function main () {
   // Get a reference to the container element
   const container = document.querySelector('#scene-container')
 
-  // 1. Create an instance of the World app
+  // Create an instance of the World app
   const world = new World(container)
 
-  // 2. Render the scene
-  world.render()
+  // produce a single frame (render on demand)
+  // 按需渲染
+  // world.render();
+
+  // start the animation loop
+  world.start();
 }
 
 // call main to start the app
