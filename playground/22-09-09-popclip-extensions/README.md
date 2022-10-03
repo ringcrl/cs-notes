@@ -2,10 +2,16 @@
 
 https://github.com/pilotmoon/PopClip-Extensions
 
-## 方案一
+## Config.plist 方案
 
-参考 `zmji.popclipext` 编写 `Config.plist` 配置文件
+`zmji.popclipext`
 
-## 方案二
+## yaml 方案
 
-参考 `Ticktick` 编写 yaml 文件，选中所有文本后点击安装
+`Ticktick.yaml`
+
+## JS 方案
+
+`Enpuz.popclipext`
+
+https://pilotmoon.github.io/PopClip-Extensions/index.html
