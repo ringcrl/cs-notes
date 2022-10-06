@@ -1,7 +1,7 @@
 {
   "popclip version": 3785,
   "identifier": "com.saga.popclip.extension.enpuz",
-  "name": "句子分析",
+  "name": "拆句子",
   "javascript file": "enpuz.js",
   "description": ""
 }

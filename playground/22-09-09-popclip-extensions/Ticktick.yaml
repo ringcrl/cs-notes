@@ -1,5 +1,5 @@
 # popclip ticktick
-name: 滴答清单
+name: 加清单
 icon: symbol:doc.badge.plus
 requirements: [copy]
 before: copy
