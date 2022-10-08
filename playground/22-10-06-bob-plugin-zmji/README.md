@@ -1,7 +1,9 @@
 ```sh
-# 启动服务
-pm2 start ts-node -- -T src/zmji-server.ts
-# pm2 start ts-node -- -P tsconfig.server.json src/zmji-server.ts
+# 安装依赖
+npm i
 
-# 访问服务：http://127.0.0.1:11111/word/leak
+# 启动服务
+npm run server
+
+# 测试服务：http://127.0.0.1:11111/word/leak
 ```
