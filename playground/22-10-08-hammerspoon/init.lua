@@ -1,5 +1,5 @@
 -- 滴答清单移动到底部对齐
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "return", function()
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Down", function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
 
