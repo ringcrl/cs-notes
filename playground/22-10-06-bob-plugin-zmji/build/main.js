@@ -4622,21 +4622,28 @@ var ServiceErrorEnum;
 // src/main.ts
 function translate(query, completion) {
   if (!query.text || query.text.split(" ").length > 2) {
-    completion({
+    return completion({
       error: {
         type: "notFound"
       }
     });
-    return;
   }
-  let text = query.text;
+  const text = query.text;
   api.$http.get({
     url: `http://127.0.0.1:11111/word/${text}`,
     handler: (res) => {
       api.$log.error(JSON.stringify(res.data));
+      const list = res.data;
+      if (list.length === 0) {
+        return completion({
+          error: {
+            type: "notFound"
+          }
+        });
+      }
       completion({
         result: {
-          toParagraphs: res.data
+          toParagraphs: list
         }
       });
     }
