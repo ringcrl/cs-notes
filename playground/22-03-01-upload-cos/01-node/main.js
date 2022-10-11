@@ -4,24 +4,27 @@ const COS = require('cos-nodejs-sdk-v5')
 const fs = require('fs')
 const { v4: uuid } = require('uuid')
 
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+
+const {
+  SecretId, SecretKey, Bucket, Region, Key
+} = process.env
+
 const {
   p
 } = argv
 
-// const filePath = p;
-const filePath = '/Users/ringcrl/Documents/saga/playground/assets/videos/01.mp4' // mock
+let filePath
+if (p) {
+  filePath = p
+} else {
+  console.log(`
 
-if (!filePath) {
-  console.log('请输入文件路径: node main.js -p path_to_file')
-  process.exit(1)
+请输入文件路径: node main.js -p path_to_file，即将进行临时文件上传
+
+`)
+  filePath = path.resolve(__dirname, '../package.json')
 }
-
-require('dotenv')
-  .config({ path: path.resolve('.', '.env') })
-
-const {
-  SecretId, SecretKey, Bucket, Region, Key, CName
-} = process.env;
 
 (async () => {
   const fileInfo = fs.statSync(filePath)
