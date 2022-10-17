@@ -27,8 +27,9 @@
       "name": "TS",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${file}"]
+      "runtimeArgs": ["-r", "ts-node/register/transpile-only"],
+      "args": ["${file}"],
+      "runtimeExecutable": "/Users/ringcrl/.nvm/versions/node/v18.9.0/bin/node"
     },
     {
       "name": "Python",

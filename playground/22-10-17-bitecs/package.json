@@ -1,0 +1,21 @@
+{
+  "name": "22-10-17-bitecs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html -p 8000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bitecs": "^0.3.38",
+    "phaser": "^3.55.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
+    "typescript": "^4.8.4"
+  }
+}
