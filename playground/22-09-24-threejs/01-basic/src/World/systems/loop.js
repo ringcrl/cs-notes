@@ -1,39 +1,39 @@
-import { Clock } from '../../../vendor/three/build/three.js';
+import { Clock } from '../../../vendor/three/build/three.js'
 
-const clock = new Clock();
+const clock = new Clock()
 
 class Loop {
-  constructor(camera, scene, renderer) {
-    this.camera = camera;
-    this.scene = scene;
-    this.renderer = renderer;
-    this.updatables = [];
+  constructor (camera, scene, renderer) {
+    this.camera = camera
+    this.scene = scene
+    this.renderer = renderer
+    this.updatables = []
   }
 
-  start() {
+  start () {
     this.renderer.setAnimationLoop(() => {
       // tell every animated object to tick forward one frame
-      this.tick();
+      this.tick()
 
       // render a frame
-      this.renderer.render(this.scene, this.camera);
-    });
+      this.renderer.render(this.scene, this.camera)
+    })
   }
 
-  stop() {
-    this.renderer.setAnimationLoop(null);
+  stop () {
+    this.renderer.setAnimationLoop(null)
   }
 
-  tick() {
+  tick () {
     // only call the getDelta function once per frame!
-    const delta = clock.getDelta();
+    const delta = clock.getDelta()
 
     // console.log(
     //   `The last frame rendered in ${delta * 1000} milliseconds`,
     // );
 
     for (const object of this.updatables) {
-      object.tick(delta);
+      object.tick(delta)
     }
   }
 }

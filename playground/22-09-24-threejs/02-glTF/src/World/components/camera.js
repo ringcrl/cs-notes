@@ -1,11 +1,11 @@
-import { PerspectiveCamera } from '../../../vendor/three/build/three.module.js';
+import { PerspectiveCamera } from '../../../vendor/three/build/three.module.js'
 
-function createCamera() {
-  const camera = new PerspectiveCamera(35, 1, 0.1, 100);
+function createCamera () {
+  const camera = new PerspectiveCamera(35, 1, 0.1, 100)
 
-  camera.position.set(-1.5, 1.5, 6.5);
+  camera.position.set(-1.5, 1.5, 6.5)
 
-  return camera;
+  return camera
 }
 
-export { createCamera };
+export { createCamera }

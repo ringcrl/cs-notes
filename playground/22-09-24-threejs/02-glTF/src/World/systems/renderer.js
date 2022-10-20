@@ -1,11 +1,11 @@
-import { WebGLRenderer } from '../../../vendor/three/build/three.module.js';
+import { WebGLRenderer } from '../../../vendor/three/build/three.module.js'
 
-function createRenderer() {
-  const renderer = new WebGLRenderer({ antialias: true });
+function createRenderer () {
+  const renderer = new WebGLRenderer({ antialias: true })
 
-  renderer.physicallyCorrectLights = true;
+  renderer.physicallyCorrectLights = true
 
-  return renderer;
+  return renderer
 }
 
-export { createRenderer };
+export { createRenderer }

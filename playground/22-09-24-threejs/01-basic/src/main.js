@@ -15,7 +15,7 @@ function main () {
   // world.render();
 
   // start the animation loop
-  world.start();
+  world.start()
 }
 
 // call main to start the app
