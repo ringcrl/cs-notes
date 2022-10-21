@@ -4,6 +4,7 @@
       "es2017",
       "dom"
     ],
+    "jsx": "react",
     "target": "ES2017",
     "module": "CommonJS",
     "noImplicitAny": true,

@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.11.5"
+  },
+  "alias": {
+    "process": false
   }
 }

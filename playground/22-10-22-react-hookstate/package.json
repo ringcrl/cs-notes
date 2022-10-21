@@ -1,0 +1,26 @@
+{
+  "name": "22-10-22-react-hookstate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html -p 8000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hookstate/core": "^4.0.0-rc21",
+    "dayjs": "^1.11.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "process": "^0.11.10"
+  },
+  "alias": {
+    "process": false
+  }
+}
