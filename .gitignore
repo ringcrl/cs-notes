@@ -8,6 +8,7 @@ publish/
 dist/
 __pycache__
 **/*.out
+.parcel-cache
 
 # Dependency directories
 node_modules/

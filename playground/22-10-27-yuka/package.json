@@ -1,0 +1,20 @@
+{
+  "name": "22-10-27-yuka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.145.0",
+    "yuka": "^0.7.8"
+  },
+  "devDependencies": {
+    "@types/yuka": "^0.7.1",
+    "@types/three": "^0.144.0"
+  }
+}
