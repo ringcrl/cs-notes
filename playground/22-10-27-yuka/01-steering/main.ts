@@ -1,12 +1,15 @@
-
 import * as YUKA from 'yuka'
 import * as THREE from 'three'
 
-let renderer, scene, camera
+let renderer: THREE.Renderer
+let camera: THREE.Camera
+let scene: THREE.Scene
 
-let entityManager, time, vehicle
+let entityManager: YUKA.EntityManager
+let time: YUKA.Time
+let vehicle: YUKA.Vehicle
 
-const obstacles = []
+const obstacles: YUKA.GameEntity[] = []
 
 init()
 animate()
@@ -44,7 +47,7 @@ function init () {
   renderer.setSize(window.innerWidth, window.innerHeight)
   document.body.appendChild(renderer.domElement)
 
-  //
+  // resize
 
   window.addEventListener('resize', onWindowResize, false)
 
@@ -54,11 +57,8 @@ function init () {
   time = new YUKA.Time()
 
   const path = new YUKA.Path()
-  // path.loop = true
-  path.add(new YUKA.Vector3(10, 0, 10))
-  path.add(new YUKA.Vector3(10, 0, -10))
-  path.add(new YUKA.Vector3(-10, 0, -10))
-  path.add(new YUKA.Vector3(-10, 0, 10))
+  path.loop = false
+  path.add(new YUKA.Vector3(10, 0, 0))
 
   vehicle = new YUKA.Vehicle()
   vehicle.maxSpeed = 3
@@ -66,6 +66,7 @@ function init () {
 
   vehicle.boundingRadius = vehicleGeometry.boundingSphere.radius
   vehicle.smoother = new YUKA.Smoother(20)
+  vehicle.position.set(-10, 0, 0)
 
   entityManager.add(vehicle)
 
@@ -107,32 +108,14 @@ function setupObstacles () {
   const material = new THREE.MeshPhongMaterial({ color: 0xff0000 })
 
   const mesh1 = new THREE.Mesh(geometry, material)
-  // const mesh2 = new THREE.Mesh(geometry, material)
-  // const mesh3 = new THREE.Mesh(geometry, material)
 
-  mesh1.position.set(0, 0, 10)
-  // mesh2.position.set(12, 0, 0)
-  // mesh3.position.set(4, 0, -10)
+  mesh1.position.set(0, 0, 0)
 
   scene.add(mesh1)
-  // scene.add(mesh2)
-  // scene.add(mesh3)
 
   const obstacle1 = new YUKA.GameEntity()
   obstacle1.position.copy(mesh1.position)
   obstacle1.boundingRadius = geometry.boundingSphere.radius
   entityManager.add(obstacle1)
   obstacles.push(obstacle1)
-
-  // const obstacle2 = new YUKA.GameEntity()
-  // obstacle2.position.copy(mesh2.position)
-  // obstacle2.boundingRadius = geometry.boundingSphere.radius
-  // entityManager.add(obstacle2)
-  // obstacles.push(obstacle2)
-
-  // const obstacle3 = new YUKA.GameEntity()
-  // obstacle3.position.copy(mesh3.position)
-  // obstacle3.boundingRadius = geometry.boundingSphere.radius
-  // entityManager.add(obstacle3)
-  // obstacles.push(obstacle3)
 }

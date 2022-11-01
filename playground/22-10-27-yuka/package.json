@@ -4,17 +4,20 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "parcel index.html"
+    "dev-steering": "parcel 01-steering/index.html",
+    "dev-graph": "parcel 02-graph/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "three": "^0.145.0",
     "yuka": "^0.7.8"
   },
   "devDependencies": {
-    "@types/yuka": "^0.7.1",
-    "@types/three": "^0.144.0"
+    "@types/dat.gui": "^0.7.7",
+    "@types/three": "^0.144.0",
+    "@types/yuka": "^0.7.1"
   }
 }
