@@ -30,6 +30,7 @@ init()
 
 function init (): void {
   scene = new THREE.Scene()
+  scene.background = new THREE.Color(1, 1, 1)
 
   camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000)
   camera.position.set(50, 50, 0)
@@ -51,11 +52,11 @@ function init (): void {
 
   // graph
 
-  graph = YUKA.GraphUtils.createGridLayout(50, 10)
+  graph = YUKA.GraphUtils.createGridLayout(30, 10)
 
+  // 0.25 球的大小
   const graphHelper = createGraphHelper(graph, 0.25)
   scene.add(graphHelper)
-
   graphHelper.traverse((child: any) => {
     if (child.isMesh !== undefined) nodes.push(child)
   })
@@ -71,8 +72,6 @@ function init (): void {
 
 function performSearch (): void {
   const graphSearch = new YUKA[params.algorithm](graph, from, to)
-
-  debugger
 
   graphSearch.search()
 
