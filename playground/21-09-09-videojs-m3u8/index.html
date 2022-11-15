@@ -20,19 +20,11 @@
     <script>
       var player = videojs('my-player');
       player.src({
-        src: "https://xxx",
+        src: window.location.href.split('#')[1],
         type: "application/x-mpegURL",
       });
 
-      let currTime = 1
-      let retryTime = 5
-      player.currentTime(currTime)
-      while(player.currentTime() !== currTime && retryTime > 0) {
-        currTime += 1
-        player.currentTime(currTime)
-        console.log(player.currentTime())
-        retryTime--
-      }
+      player.play()
     </script>
   </body>
 </html>
