@@ -165,6 +165,23 @@ pre span.key {
 .grid_item.active {
 	background-color: #FF703F;
 }
+
+.grid_item.active_start {
+	background-color: red;
+}
+
+.grid_item.active_path {
+	background-color: green;
+}
+
+.grid_item.active_end {
+	background-color: pink;
+}
+
+.grid_item.wall.active_path {
+  background-color: red;
+}
+
 .grid_item.finish {
 
 }
