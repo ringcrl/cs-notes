@@ -7,23 +7,7 @@
 		<link rel="stylesheet" type="text/css" media="screen, projection" href="demo.css" />
 	</head>
 <body>
-	<div id="header"> 
-        <h1>javascript-astar</h1>
-        <div class='buttons'>
-            <a class='btn' href='http://github.com/bgrins/javascript-astar'>Github</a> 
-            <a class='btn' href='http://www.briangrinstead.com/blog/astar-search-algorithm-in-javascript-updated'>Article</a>
-        </div>
-        <div class="links">
-            <a href='../'>Home</a> |
-            <a href='../demo/'>Demo</a> |
-            <a href='../test/'>Tests</a> |
-            <a href='../benchmark/'>Benchmark</a>
-        </div>
-	</div>
-
 	<div id="content">
-		<h2>Demonstration</h2>
-
 	    <div id="controls" class='clear'>
 
 	    		<!-- <label for="selectWallFrequency">Wall Frequency: </label>
@@ -34,27 +18,35 @@
 	    			<option value=".4">40%</option>
 	    		</select>
 	    		<br /> -->
+
 	    		<!-- <label for="selectGridSize">Grid Size: </label>
 	    		<select id="selectGridSize" name="selectGridSize">
 	    			<option value="96" selected="selected">96*96</option>
 	    		</select>
 	    		<br /> -->
-	    		<label for="checkDebug">Show search info?</label>
+
+	    		<!-- <label for="checkDebug">Show search info?</label>
 	    		<input type="checkbox" name="checkDebug" id="checkDebug" />
-	    		<br />
+	    		<br /> -->
+
 	    		<label for="searchDiagonal">Allow diagonal movement?</label>
-	    		<input type="checkbox" name="searchDiagonal" id="searchDiagonal" />
+	    		<input type="checkbox" checked name="searchDiagonal" id="searchDiagonal" />
 	    		<br />
+
 	    		<label for="checkClosest">Closest node if target unreachable?</label>
 	    		<input type="checkbox" name="checkClosest" id="checkClosest" />
 	    		<br />
-	    		<label for="generateWeights">Add random weights?</label>
+
+	    		<!-- <label for="generateWeights">Add random weights?</label>
 	    		<input type="checkbox" name="generateWeights" id="generateWeights" />
-	    		<br />
-	    		<label for="displayWeights">Display weight values?</label>
+	    		<br /> -->
+
+	    		<!-- <label for="displayWeights">Display weight values?</label>
 	    		<input type="checkbox" name="displayWeights" id="displayWeights" />
-	    		<br />
-	    		<input type="button" id="btnGenerate" value="Generate New Map" />
+	    		<br /> -->
+
+	    		<!-- <input type="button" id="btnGenerate" value="Generate New Map" /> -->
+
 	    		<fieldset id='weightsKey'>
 	    			<legend>Key:</legend>
 	    			<div>
@@ -75,8 +67,6 @@
 	    </div>
 
 	</div>
-	<div id="footer"></div>
-
 	<script type='text/javascript' src='./jquery-1.7.1.min.js'></script>
 	<script type='text/javascript' src='./astar.js'></script>
 	<script type='text/javascript' src='./demo.js'></script>
