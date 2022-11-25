@@ -8,7 +8,7 @@ body {
 }
 
 .clearfix {
-  *zoom: 1;
+  zoom: 1;
 }
 .clearfix:before, .clearfix:after {
   display: table;
@@ -204,7 +204,7 @@ pre span.key {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  *margin-left: .3em;
+  margin-left: .3em;
 }
 .btn:hover,
 .btn:active,
@@ -217,7 +217,7 @@ pre span.key {
   background-color: #cccccc \9;
 }
 .btn:first-child {
-  *margin-left: 0;
+  margin-left: 0;
 }
 .btn:hover {
   color: #333333;
@@ -446,25 +446,25 @@ pre span.key {
   background-color: #0c0c0c \9;
 }
 button.btn, input[type="submit"].btn {
-  *padding-top: 2px;
-  *padding-bottom: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 button.btn::-moz-focus-inner, input[type="submit"].btn::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
 button.btn.large, input[type="submit"].btn.large {
-  *padding-top: 7px;
-  *padding-bottom: 7px;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 button.btn.small, input[type="submit"].btn.small {
-  *padding-top: 3px;
-  *padding-bottom: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 .btn-group {
   position: relative;
-  *zoom: 1;
-  *margin-left: .3em;
+  zoom: 1;
+  margin-left: .3em;
 }
 .btn-group:before, .btn-group:after {
   display: table;
@@ -474,7 +474,7 @@ button.btn.small, input[type="submit"].btn.small {
   clear: both;
 }
 .btn-group:first-child {
-  *margin-left: 0;
+  margin-left: 0;
 }
 .btn-group + .btn-group {
   margin-left: 5px;
@@ -485,10 +485,8 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .btn-toolbar .btn-group {
   display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
+  display: inline;
+  zoom: 1;
 }
 .btn-group .btn {
   position: relative;
@@ -547,11 +545,11 @@ button.btn.small, input[type="submit"].btn.small {
   -webkit-box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  *padding-top: 5px;
-  *padding-bottom: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .btn-group.open {
-  *z-index: 1000;
+  z-index: 1000;
 }
 .btn-group.open .dropdown-menu {
   display: block;
