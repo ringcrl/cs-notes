@@ -1,0 +1,3 @@
+```sh
+parcel index.html
+```
