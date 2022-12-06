@@ -151,7 +151,7 @@ cd /usr/share/fonts/
 mkfontscale && mkfontdir && fc-cache
 ```
 
-# shell 命令
+# shell
 
 ## centos 使用 ubuntu 命令
 
@@ -708,7 +708,7 @@ filepath=$(cd "$(dirname "$0")"; pwd)
 ls $PWD/工具/Linux\&Shell/Linux\&Shell.md
 ```
 
-# Shell 脚本
+## Shell 开头
 
 ```sh
 #!/bin/bash
@@ -1140,14 +1140,12 @@ fi
 [ -f $filepath ] && echo "短路写法"
 ```
 
-# shell 脚本应用
-
 ## CURRENT_DIR 脚本目录
 
 ```sh
 CURRENT_DIR=$(cd $(dirname $0); pwd)
-cd ${CURRENT_DIR}
-cd ../
+cd ~
+cd $CURRENT_DIR
 ```
 
 ## git lint 限制提交
