@@ -5,11 +5,8 @@ interface ITodo {
   description: string
   completed: boolean
 }
-type ITodoPick<T, K extends keyof T> = {
-  [P in K]: T[P]
-}
-type TodoPreview = ITodoPick<ITodo, 'title' | 'completed'>
-const todoPreview: TodoPreview = {
+type ITodoPreview = Pick<ITodo, 'title' | 'completed'>
+const todoPreview: ITodoPreview = {
   title: 'Clean room',
   completed: false
 }
