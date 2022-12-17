@@ -12,7 +12,7 @@ app.use(bodyParser());
 
 (async () => {
   const db = await open({
-    filename: '/Users/ringcrl/Documents/saga/chenng/local.db',
+    filename: '/Users/ringcrl/Documents/saga/chenng/tools/local.db',
     driver: sqlite3.Database
   })
 
