@@ -2,7 +2,7 @@ const { chromium } = require('playwright')
 const { saveVideo } = require('playwright-video')
 
 const url = 'https://www.idcd.com/tool/time/62'
-const duration = 5
+const duration = 11
 const outputPath = 'output.mp4'
 const framerate = 60 // 设置录制帧率
 const backgroundColor = 'rgb(0, 255, 0)'
