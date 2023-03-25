@@ -9,33 +9,34 @@ const container = new PIXI.Container()
 container.addChild(background)
 app.stage.addChild(container)
 
-// Stop application wait for load to finish
-app.stop()
+const filter = new PIXI.Filter(null, `
+  precision mediump float;
 
-fetch('https://pixijs.io/examples/examples/assets/pixi-filters/shader.frag')
-  .then((res) => res.text())
-  .then(onLoaded)
+  varying vec2 vTextureCoord;
+  varying vec4 vColor;
 
-let filter
+  uniform sampler2D uSampler;
+  uniform float customUniform;
 
-// Handle the load completed
-function onLoaded (data) {
-  // Create the new filter, arguments: (vertexShader, framentSource)
-  filter = new PIXI.Filter(null, data, {
-    customUniform: 0.0
-  })
+  void main(void)
+  {
+    vec2 uvs = vTextureCoord.xy;
 
-  // === WARNING ===
-  // specify uniforms in filter constructor
-  // or set them BEFORE first use
-  // filter.uniforms.customUniform = 0.0
+    vec4 fg = texture2D(uSampler, vTextureCoord);
 
-  // Add the filter
-  container.filters = [filter]
 
-  // Resume application update
-  app.start()
-}
+    fg.r = uvs.y + sin(customUniform);
+
+    //fg.r = clamp(fg.r,0.0,0.9);
+
+    gl_FragColor = fg;
+
+  }  
+`, {
+  customUniform: 0.0
+})
+
+container.filters = [filter]
 
 // Animate the filter
 app.ticker.add((delta) => {
