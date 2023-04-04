@@ -7,6 +7,8 @@
 		<dict>
 			<key>AppleScript File</key>
 			<string>Bob.applescript</string>
+			<key>Image File</key>
+			<string>symbol:text.magnifyingglass</string>
 			<key>Title</key>
 			<string>Bob</string>
 		</dict>
