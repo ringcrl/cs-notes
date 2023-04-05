@@ -1,0 +1,21 @@
+{
+  "name": "bob-plugin-chatgpt",
+  "version": "0.0.1",
+  "description": "使用 chatGPT API 进行对话",
+  "main": "index.js",
+  "scripts": {
+    "build": "node ./scripts/build.cjs"
+  },
+  "keywords": [],
+  "author": "chenng",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@release-it/conventional-changelog": "^5.1.1",
+    "adm-zip": "^0.5.10",
+    "fs-extra": "^11.1.0",
+    "husky": "^8.0.3",
+    "release-it": "^15.7.0"
+  }
+}
