@@ -1,0 +1,1 @@
+lama-cleaner==0.33.0
