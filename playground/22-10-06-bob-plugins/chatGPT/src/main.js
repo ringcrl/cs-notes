@@ -4,7 +4,7 @@ function supportLanguages () {
 }
 
 function translate (query, completion) {
-  const userPrompt = '用中文解释下面内容，如果内容是英文句子，同时分析句子成分：'
+  const userPrompt = require('./user-prompt.js').userPrompt
 
   const ChatGPTModels = [
     'gpt-3.5-turbo',
@@ -13,8 +13,7 @@ function translate (query, completion) {
     'gpt-4-32k',
     'gpt-4-32k-0314'
   ]
-  const api_keys = $option.api_keys.split(',').map((key) => key.trim())
-  const api_key = api_keys[Math.floor(Math.random() * api_keys.length)]
+  const api_key = $option.api_key.trim()
   const isChatGPTModel = ChatGPTModels.indexOf($option.model) > -1
   const apiUrlPath = isChatGPTModel ? '/v1/chat/completions' : '/v1/completions'
 

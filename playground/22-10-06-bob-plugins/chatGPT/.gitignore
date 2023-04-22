@@ -25,3 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 临时文件
+src/user-prompt.js
+src/info.json

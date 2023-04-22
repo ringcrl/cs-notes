@@ -1,8 +1,8 @@
 {
   "identifier": "ringcrl.openai.chatgpt",
+  "name": "OpenAI chatGPT",
   "version": "0.0.1",
   "category": "translate",
-  "name": "OpenAI chatGPT",
   "summary": "GPT",
   "icon": "",
   "author": "",
@@ -18,10 +18,10 @@
       "desc": "如果您的网络环境需要代理才能访问 OpenAI API, 可在这里修改为反代 API 的地址，默认为 https://api.openai.com"
     },
     {
-      "identifier": "api_keys",
+      "identifier": "api_key",
       "type": "text",
       "title": "API KEY",
-      "desc": "可以用英文逗号分割多个 API KEY 以实现额度加倍及负载均衡"
+      "desc": "获取API KEY：https://platform.openai.com/account/api-keys"
     },
     {
       "identifier": "model",
@@ -32,22 +32,6 @@
         {
           "title": "gpt-3.5-turbo (recommended)",
           "value": "gpt-3.5-turbo"
-        },
-        {
-          "title": "gpt-4",
-          "value": "gpt-4"
-        },
-        {
-          "title": "gpt-4-0314",
-          "value": "gpt-4-0314"
-        },
-        {
-          "title": "gpt-4-32k",
-          "value": "gpt-4-32k"
-        },
-        {
-          "title": "gpt-4-32k-0314",
-          "value": "gpt-4-32k-0314"
         }
       ]
     }
