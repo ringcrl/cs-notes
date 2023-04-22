@@ -6,7 +6,7 @@
   "scripts": {
     "build:chat": "node ./scripts/build.cjs --name='chat'",
     "build:word": "node ./scripts/build.cjs --name='word' --prompt='你是一本中英文字典，请给出这个词的翻译、音标或拼音、同义词和近义词、并提供相关例句、记忆技巧：'",
-    "build:sentence": "node ./scripts/build.cjs --name='sentence' --prompt='用中文分析分析句子成分，每种成分单独一行：'",
+    "build:sentence": "node ./scripts/build.cjs --name='sentence' --prompt='用中文分析句子成分，每种成分单独一行：'",
     "build:explanation": "node ./scripts/build.cjs --name='explanation' --prompt='下面我给你一个名词或者一个句子，你能告诉我一些关于它的事情吗？你能给我一些关于它的链接吗？'"
   },
   "keywords": [],
