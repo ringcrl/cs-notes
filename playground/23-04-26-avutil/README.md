@@ -6,5 +6,7 @@ brew list ffmpeg
 clang -g -o ff_log.out ff_log.c -I/opt/homebrew/Cellar/ffmpeg/5.1/include/ -L/opt/homebrew/Cellar/ffmpeg/5.1/lib/ -lavutil
 
 # 编译方法2：
+# pkg-config --cflags --libs libavutil 命令行运行的结果：
+# -I/opt/homebrew/Cellar/ffmpeg/5.1/include -L/opt/homebrew/Cellar/ffmpeg/5.1/lib -lavutil
 clang -g -o ff_log.out ff_log.c `pkg-config --cflags --libs libavutil`
 ```
