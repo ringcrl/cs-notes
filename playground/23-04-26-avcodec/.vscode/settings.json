@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "*.excalidraw": "json",
+    "*.excalidrawlib": "json",
+    "avcodec.h": "c",
+    "avformat.h": "c",
+    "log.h": "c"
+  }
+}
