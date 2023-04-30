@@ -23,7 +23,5 @@ def get_ticker_info(name):
     response = requests.get(f'https://api.polygon.io/v2/aggs/ticker/{name}/range/1/hour/2023-04-28/2023-04-30?apiKey={POLYGON_API}')
     return response
 
-webhook_url = DISCORD_WEBHOOK_URL
-
 ticker_info = get_ticker_info('SOXS').text
-send_to_discord(webhook_url, ticker_info)
+send_to_discord(DISCORD_WEBHOOK_URL, ticker_info)
