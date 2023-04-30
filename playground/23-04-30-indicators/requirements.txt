@@ -1,0 +1,5 @@
+numpy==1.21.0
+python-dotenv==1.0.0
+Requests==2.29.0
+schedule==1.2.0
+TA_Lib==0.4.21
