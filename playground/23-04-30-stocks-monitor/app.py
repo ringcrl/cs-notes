@@ -2,11 +2,11 @@ import os
 import requests
 import json
 import schedule
-import time
 # import talib as ta # linux 上运行不起来，先不用了
 import numpy as np
 from dotenv import load_dotenv
-from datetime import datetime, timedelta
+from time import sleep
+from datetime import datetime, timedelta, time
 
 load_dotenv()
 
@@ -183,10 +183,43 @@ SMI红线: {LATEST_SMI_AVG}
 
 # endregion
 
+# region 时间判断
+
+
+def is_time_between(start, end, check_time=None):
+    if start < end:
+        return start <= check_time <= end
+    else:  # 跨越午夜
+        return check_time >= start or check_time <= end
+
+
+def is_opening():
+    # 获取当前时间和星期
+    now = datetime.now()
+    current_time = now.time()
+    current_weekday = now.weekday()  # 周一为 0，周二为 1，...，周日为 6
+
+    # 设置时间范围
+    start_time = time(16, 0)  # 16:00
+    end_time = time(8, 0)    # 8:00 (第二天)
+
+    # 判断当前时间是否在指定范围内
+    if (0 <= current_weekday <= 4 and is_time_between(start_time, end_time, current_time)) or (current_weekday == 5 and current_time < end_time):
+        return True
+    else:
+        return False
+
+
+# endregion
+
 # region 主程序
 
 
 def stock_monitor():
+    if (is_opening() is False):
+        print('is_opening() is False')
+        return
+
     for stock in stock_list:
         ticker_data = get_ticker_data(stock)
         ticker_res = handle_ticker_data(ticker_data)
@@ -207,6 +240,6 @@ stock_monitor()
 schedule.every().hour.at(':00').do(stock_monitor)
 while True:
     schedule.run_pending()
-    time.sleep(60)  # 等待 60 秒再次检查
+    sleep(60)  # 等待 60 秒再次检查
 
 # endregion
