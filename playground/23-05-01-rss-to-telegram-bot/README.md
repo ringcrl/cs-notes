@@ -8,8 +8,6 @@ sudo docker container ls
 sudo docker stop CONTAINER_ID
 sudo docker rm  CONTAINER_ID
 
-# 
-
 # 安装部署
 mkdir rsstt
 cd rsstt
