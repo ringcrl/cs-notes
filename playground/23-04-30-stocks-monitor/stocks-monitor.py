@@ -216,20 +216,24 @@ def is_opening():
 
 
 def stock_monitor():
-    if (is_opening() is False):
-        print('is_opening() is False')
-        return
 
-    for stock in stock_list:
-        ticker_data = get_ticker_data(stock)
-        ticker_res = handle_ticker_data(ticker_data)
+    try:
+        if (is_opening() is False):
+            print('is_opening() is False')
+            return
 
-        print('ticker_res', ticker_res)
+        for stock in stock_list:
+            ticker_data = get_ticker_data(stock)
+            ticker_res = handle_ticker_data(ticker_data)
 
-        if ticker_res is None:
-            continue
+            print('ticker_res', ticker_res)
 
-        send_to_discord(DISCORD_WEBHOOK_URL, ticker_res)
+            if ticker_res is None:
+                continue
+
+            send_to_discord(DISCORD_WEBHOOK_URL, ticker_res)
+    except Exception as e:
+        print(f"函数执行失败，错误信息：{e}")
 
 
 stock_monitor()
