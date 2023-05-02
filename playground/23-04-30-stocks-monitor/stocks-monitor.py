@@ -9,20 +9,12 @@ from dotenv import load_dotenv
 from time import sleep
 from datetime import datetime, timedelta, time
 
-# Ubuntu20.04 安装 TA_Lib 失败
-# https://sharegpt.com/c/h48JVMF
-
-# echarts 展示数据
-# https://echarts.apache.org/examples/zh/editor.html?c=line-simple
-
 load_dotenv()
 
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 POLYGON_API = os.environ.get("POLYGON_API")
 
 eastern_tz = pytz.timezone('US/Eastern')
-
-stock_list = ['SOXS', 'TSLQ', 'AMGN', 'FNGD', 'QQQ', 'SPY']
 
 # region 指标
 
@@ -73,6 +65,12 @@ def send_to_discord(webhook_url, content):
 # endregion
 
 # region 获取数据
+
+def get_ticker_list():
+    with open('list.txt', 'r') as f:
+        lines = f.readlines()
+        data = [line.strip() for line in lines if line.strip()]
+        return data
 
 
 def get_ticker_data(name):
@@ -198,6 +196,8 @@ def stock_monitor():
         if (is_opening() is False):
             print('is_opening() is False')
             return
+        
+        stock_list = get_ticker_list()
 
         for stock in stock_list:
             ticker_data = get_ticker_data(stock)
