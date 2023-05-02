@@ -8,7 +8,7 @@
 python stocks-monitor.py
 
 # 后台运行
-nohup python stocks-monitor.py > output.log &
+nohup python -u stocks-monitor.py > output.log &
 
 # 关闭后台运行
 ps aux | grep stocks-monitor
