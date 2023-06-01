@@ -1,16 +1,25 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
-const path = require('path')
+// const path = require('path')
 
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    // fullscreenable: true, // 启用全屏模式
+    // titleBarStyle: 'hidden', // 隐藏标题栏
+    // backgroundColor: '#00000001', // 设置背景透明度
+    // skipTaskbar: true, // 隐藏任务栏图标
+    // alwaysOnTop: true, // 窗口始终在顶部
+    // type: 'toolbar', // 设置窗口类型为工具栏
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration: true
     }
   })
+
+  // mainWindow.setFullScreen(true) // 进入全屏模式
+  // mainWindow.setVisibleOnAllWorkspaces(true) // 在所有桌面空间中显示
+  // mainWindow.setFullScreenable(false) // 禁用退出全屏模式
+  // mainWindow.setWindowButtonVisibility(false) // 隐藏窗口按钮
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
