@@ -1,24 +1,60 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <script src="./hls.min.js"></script>
-  <style>
-    body{
-      background-color:black;
-    }
-    #video{
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      left: 0px;
-      margin: auto;
-      max-height: 100%;
-      max-width: 100%;
-    }
-  </style>
-</head>
-<body>
-  <script src="./player.js"></script>
-</body>
+  <head>
+    <script src="https://cdn.bootcdn.net/ajax/libs/hls.js/0.14.16/hls.js"></script>
+    <style>
+      body {
+        background-color: black;
+      }
+      #video {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        margin: auto;
+        max-height: 100%;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <video id="video" style="width: 100%; height: 100%" controls=""></video>
+    <script>
+      function playM3u8(url) {
+        if (Hls.isSupported()) {
+          var video = document.getElementById("video");
+          video.volume = 1.0;
+          var hls = new Hls();
+          var m3u8Url = decodeURIComponent(url);
+          hls.loadSource(m3u8Url);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            video.play();
+          });
+          hls.on(Hls.Events.ERROR, function (event, data) {
+            if (data.fatal) {
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  // 网络错误处理
+                  console.log("network error");
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  // 媒体错误处理
+                  console.log("media error");
+                  break;
+                default:
+                  // 其他错误处理
+                  console.log("other error");
+                  break;
+              }
+            }
+          });
+          document.title = url;
+        }
+      }
+
+      playM3u8(window.location.href.split("#")[1]);
+    </script>
+  </body>
 </html>
