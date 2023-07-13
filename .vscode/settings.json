@@ -1,4 +1,8 @@
 {
   "standard.autoFixOnSave": true,
   "standard.nodePath": "/Users/ringcrl/.nvm/versions/node/v16.15.1/bin/node",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none",
 }
