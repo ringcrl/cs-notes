@@ -87,6 +87,7 @@ class ChatCompletionResponse(BaseModel):
     choices: List[Union[ChatCompletionResponseChoice,
                         ChatCompletionResponseStreamChoice]]
     created: Optional[int] = Field(default_factory=lambda: int(time.time()))
+    usage: Optional[int] = 0  # 不加这行 langchain 调用会失败
 
 
 @app.get("/v1/models", response_model=ModelList)
