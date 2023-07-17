@@ -1,5 +1,5 @@
 from os import path
-# import asyncio
+import asyncio
 
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import (
@@ -34,8 +34,8 @@ prompt_template = """
 
 embeddings = OpenAIEmbeddings()  # model="text-embedding-ada-002"
 doc_directory = path.join(path.dirname(__file__), "vectordb/docs_500_100")
-trtc_doc_db = Chroma(persist_directory=doc_directory,
-                     embedding_function=embeddings)
+vectordb = Chroma(persist_directory=doc_directory,
+                  embedding_function=embeddings)
 
 
 async def run(input, gpt_model):
@@ -50,7 +50,7 @@ async def run(input, gpt_model):
     chain = load_qa_chain(llm, chain_type="stuff",
                           prompt=prompt, memory=memory, verbose=False)
 
-    docs_score = trtc_doc_db.similarity_search_with_score(
+    docs_score = vectordb.similarity_search_with_score(
         input, include_metadata=True, k=3)
     docs = []
     for doc_score in docs_score:
@@ -96,4 +96,4 @@ async def run(input, gpt_model):
 
     return result
 
-# asyncio.run(run("能不能压缩视频？", "gpt-3.5-turbo"))
+asyncio.run(run("支持什么格式？", "gpt-3.5-turbo"))
