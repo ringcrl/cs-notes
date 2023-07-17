@@ -14,7 +14,6 @@ db_name = path.join(path.dirname(__file__), "./vectordb/docs_{chunk_size}_{chunk
 
 docs_path = path.join(path.dirname(__file__), "../00-assets/docs.json")
 with open(docs_path, 'r') as f:
-    # 将 JSON 文件解析为 Python 对象
     docs = json.load(f)
 
 text_splitter = RecursiveCharacterTextSplitter(
