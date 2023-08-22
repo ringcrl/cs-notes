@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    123
+    <script>
+      (async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/chatapi`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: "Hello, my name is Chenng.",
+            }),
+          });
+          console.log(response);
+        } catch (err) {
+          console.log(err);
+        }
+      })();
+    </script>
+  </body>
+</html>
