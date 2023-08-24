@@ -1,20 +1,35 @@
 const express = require('express')
 const { pipeline } = require('node:stream/promises')
 const dotenv = require('dotenv')
+const path = require('path')
 const axios = require('axios')
 
 dotenv.config()
 
 const app = express()
-const port = 3000
+const port = 8888
 
-app.use(express.static('public'))
+app.use(express.static(path.resolve(__dirname, 'public')))
 
 app.use(express.json()) // for the body of the request
 
 app.post('/chatapi', async (req, res) => {
+  const body = JSON.stringify({
+    model: 'gpt-3.5-turbo',
+    messages: [
+      {
+        role: 'user',
+        content: `${req.body.message || 'Say hello.'}`
+      }
+    ],
+    temperature: 0,
+    max_tokens: 25,
+    n: 1,
+    stream: true
+  })
+
   try {
-    const response = axios(
+    const response = await axios(
       'https://api.openai.com/v1/chat/completions',
       {
         method: 'POST',
@@ -22,27 +37,14 @@ app.post('/chatapi', async (req, res) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
         },
-        // We need to send the body as a string, so we use JSON.stringify.
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'user',
-              // The message will be 'Say hello.' unless you provide a message in the request body.
-              content: ` ${req.body.message || 'Say hello.'}`
-            }
-          ],
-          temperature: 0,
-          max_tokens: 25,
-          n: 1,
-          stream: true
-        })
+        data: body,
+        responseType: 'stream'
       }
     )
 
-    await pipeline(response.body, res)
+    await pipeline(response.data, res)
   } catch (err) {
-    console.error(err)
+    console.error(err?.response?.data || err)
   }
 })
 

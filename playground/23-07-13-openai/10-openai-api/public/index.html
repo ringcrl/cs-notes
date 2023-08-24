@@ -6,11 +6,11 @@
     <title>Document</title>
   </head>
   <body>
-    123
+    <div id="app"></div>
     <script>
       (async () => {
         try {
-          const response = await fetch(`http://localhost:3000/chatapi`, {
+          const response = await fetch(`http://localhost:8888/chatapi`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -19,7 +19,40 @@
               message: "Hello, my name is Chenng.",
             }),
           });
+
           console.log(response);
+
+          function appendContentToApp(content) {
+            const app = document.getElementById("app");
+            const p = document.createElement("span");
+            p.innerText = content;
+            app.appendChild(p);
+          }
+
+          async function streamToString(body, cb) {
+            const reader = body
+              ?.pipeThrough(new TextDecoderStream())
+              .getReader();
+            while (reader) {
+              let stream = await reader.read();
+              console.log("the stream", stream);
+              if (stream.done) break;
+              const chunks = stream.value
+                .replaceAll(/^data: /gm, "")
+                .split("\n")
+                .filter((c) => Boolean(c.length) && c !== "[DONE]")
+                .map((c) => JSON.parse(c));
+              if (chunks) {
+                for (let chunk of chunks) {
+                  const content = chunk.choices[0].delta.content;
+                  if (!content) continue;
+                  cb(content)
+                }
+              }
+            }
+          }
+
+          streamToString(response.body, appendContentToApp);
         } catch (err) {
           console.log(err);
         }
