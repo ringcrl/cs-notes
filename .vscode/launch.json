@@ -29,7 +29,7 @@
       "request": "launch",
       "runtimeArgs": ["-r", "ts-node/register/transpile-only"],
       "args": ["${file}"],
-      "runtimeExecutable": "/Users/ringcrl/.nvm/versions/node/v18.9.0/bin/node"
+      "runtimeExecutable": "/Users/ringcrl/.nvm/versions/node/v18.17.1/bin/node"
     },
     {
       "name": "Python",
