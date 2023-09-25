@@ -13,7 +13,7 @@ const paragraphs = [
 
 function splitParagraph (paragraph) {
   // 使用正则表达式匹配句子
-  const sentences = paragraph.match(/[^。!?.\d]+[。！.!?]/g)
+  const sentences = paragraph.match(/[^。！?]+[。！?]|[^\d.!?]+[.!?]/g)
   // sentences可能为null，需要转化为[]
   return sentences || []
 }
