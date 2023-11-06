@@ -1,0 +1,15 @@
+{
+  "name": "23-11-06-ws-bench",
+  "version": "1.0.0",
+  "description": "```sh # Node.js node server.node.mjs node client.mjs ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.14.2"
+  }
+}
