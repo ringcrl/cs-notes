@@ -46,6 +46,7 @@ const DELAY = 10;
   const clients = []
   for (let i = 0; i < CLIENTS_TO_WAIT_FOR; i++) {
     clients[i] = new WebSocket(`${SERVER}?name=${NAMES[i]}`)
+    clients[i].name = NAMES[i]
     promises.push(
       new Promise((resolve, reject) => {
         clients[i].onmessage = event => {
@@ -58,11 +59,18 @@ const DELAY = 10;
   await Promise.all(promises)
   console.timeEnd(`All ${CLIENTS_TO_WAIT_FOR} clients connected`)
 
-  let msgCount = 0
-  for (const clinet of clients) {
-    clinet.onmessage = event => {
-      // console.log('client receive', JSON.parse(event.data))
-      msgCount++
+  const msgCount = 0
+  for (const client of clients) {
+    client.costs = []
+    client.onmessage = event => {
+      if (!client.prevTime) {
+        client.prevTime = Date.now()
+        client.costs.push(0)
+        return
+      }
+      const cost = Date.now() - client.prevTime
+      client.costs.push(cost)
+      client.prevTime = Date.now()
     }
   }
 
@@ -77,7 +85,13 @@ const DELAY = 10;
   }, DELAY)
 
   setInterval(() => {
-    console.log('每秒消息量：', msgCount)
-    msgCount = 0
+    for (const client of clients) {
+      const avg = Math.floor(client.costs.reduce((a, b) => a + b, 0) / client.costs.length)
+      const max = Math.floor(Math.max(...client.costs))
+      const min = Math.floor(Math.min(...client.costs))
+      console.log(`${client.name}：接受包体数: ${client.costs.length}, avg: ${avg}ms, max: ${max}ms, min: ${min}ms`)
+      client.costs.length = 0
+    }
+    console.log('-------------------')
   }, 1000)
 })()
