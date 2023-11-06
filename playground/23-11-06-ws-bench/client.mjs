@@ -35,6 +35,19 @@ const DELAY = 10;
     ReceiptTimeStamp: 1699005455802
   })
 
+  // const MESSAGES_TO_SEND = JSON.stringify({
+  //   $from: '108115540105701324622',
+  //   type: 'MOVEMENT',
+  //   argv: [-2.812, -0.005, 74.497, 0, -0.668, 0, 0.743, -4.147, 0.001, -0.137, 0, 0, 0],
+  //   clientTime: 1699005455734,
+  //   $topic: 'socket',
+  //   $uuid: '0d566',
+  //   ReceiptTimeStamp: 1699005455802
+  // })
+
+  // 原始长度 445, 压缩后长度 218
+  console.log('msg length: ', MESSAGES_TO_SEND.length)
+
   const NAMES = Array.from({ length: CLIENTS_TO_WAIT_FOR }).fill(0).map((_, i) => `player-${i}`)
 
   console.log(`Connecting ${CLIENTS_TO_WAIT_FOR} WebSocket clients...`)
