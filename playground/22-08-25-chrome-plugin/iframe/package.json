@@ -12,10 +12,10 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.3.0",
     "antd": "^3.13.1",
-    "css-loader": "^2.1.1",
+    "css-loader": "^6.8.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
-    "postcss-loader": "^3.0.0",
+    "postcss-loader": "^7.3.3",
     "ppfish": "^1.6.7",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
