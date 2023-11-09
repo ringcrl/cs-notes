@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.33.0"
   }
 }
