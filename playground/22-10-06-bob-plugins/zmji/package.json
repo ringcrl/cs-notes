@@ -12,7 +12,7 @@
     "@bob-plug/core": "^0.1.6",
     "@koa/router": "^12.0.0",
     "adm-zip": "^0.5.9",
-    "axios": "^1.0.0",
+    "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "crypto-js": "^4.2.0",
     "debug": "^4.3.4",
