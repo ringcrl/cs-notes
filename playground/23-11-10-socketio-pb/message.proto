@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package example;
+
+// 定义一个简单的消息格式
+message MyMessage {
+  string text = 1;
+}
