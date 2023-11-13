@@ -1,8 +1,11 @@
+// message.proto
 syntax = "proto3";
 
-package example;
+package demo;
 
-// 定义一个简单的消息格式
-message MyMessage {
-  string text = 1;
+// 定义一个简单的消息结构
+message Message {
+  string id = 1; // 唯一标识符
+  string content = 2; // 消息内容
+  int64 timestamp = 3; // 时间戳
 }
