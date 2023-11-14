@@ -1,13 +1,19 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { InstancedSkinnedMesh } from './InstancedSkinnedMesh.js'
+import whaleGltf from '../whale.gltf'
+
+import Stats from 'stats.js'
+const stats = new Stats()
+stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild(stats.dom)
 
 let camera, scene, renderer, mixer
 
 let mesh
 const amount = 4
 const count = 3 * Math.pow(amount, 3)
-let dummy
+let dummy // 指的是一个占位符或者是一个没有实际功能或数据的对象
 const variance = []
 const duration = 3.25
 
@@ -26,23 +32,22 @@ function init () {
 
   scene = new THREE.Scene()
 
-  scene.fog = new THREE.FogExp2(0x000111, 0.02)
-
-  const ambient = new THREE.AmbientLight(0x000111, 3)
+  const ambient = new THREE.AmbientLight(0x000011, 3)
 
   scene.add(ambient)
 
-  const light = new THREE.DirectionalLight(0x22aaff)
+  const light = new THREE.DirectionalLight(0xffffff)
 
   light.position.set(10, 100, 10)
 
   scene.add(light)
 
-  scene.background = new THREE.Color(0x000111)
+  scene.background = new THREE.Color(0x000011)
 
   const loader = new GLTFLoader()
 
-  loader.load(new URL('../whale.gltf', import.meta.url), function (object) {
+  loader.load(whaleGltf, function (object) {
+    // 是一个 SkinnedMesh
     const m = object.scene.getObjectByName('poly_whale')
 
     dummy = m
@@ -53,14 +58,18 @@ function init () {
     mesh.bind(m.skeleton, m.bindMatrix)
 
     const meshMaterial = mesh.material
+
     const pointsMaterial = new THREE.PointsMaterial({
       transparent: true,
       opacity: 0.1
     })
 
-    mesh.material = pointsMaterial
-    mesh.isPoints = true
-    mesh.isMesh = false
+    mesh.isPoints = false
+    mesh.isMesh = true
+
+    // mesh.material = pointsMaterial
+    // mesh.isPoints = true
+    // mesh.isMesh = false
 
     window.addEventListener('click', () => {
       if (mesh.material === pointsMaterial) {
@@ -109,18 +118,12 @@ function init () {
     g.add(object.scene)
 
     g.add(mesh)
-
-    //
   })
-
-  //
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
   document.body.appendChild(renderer.domElement)
-
-  //
 
   window.addEventListener('resize', onWindowResize)
 }
@@ -132,12 +135,12 @@ function onWindowResize () {
   renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
-//
-
 function animate () {
-  requestAnimationFrame(animate)
-
+  stats.begin()
   render()
+  stats.end()
+
+  window.requestAnimationFrame(animate)
 }
 
 function render (time) {
