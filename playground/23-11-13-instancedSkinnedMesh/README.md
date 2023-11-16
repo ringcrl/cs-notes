@@ -1,0 +1,5 @@
+## instancedSkinnedMesh
+
+```
+parcel index.html
+```
