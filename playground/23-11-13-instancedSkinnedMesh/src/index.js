@@ -19,7 +19,7 @@ let camera, scene, renderer, mixer
 
 let mesh
 const amount = 4
-const count = 3 * Math.pow(amount, 3)
+const count = Math.pow(amount, 3)
 let dummy // 指的是一个占位符或者是一个没有实际功能或数据的对象
 const variance = []
 const duration = 3.25
@@ -93,6 +93,7 @@ async function init () {
   // m 是 SkinnedMesh
   // const m = object.scene.getObjectByName('Avatar_Down_Body')
   const m = object.scene.getObjectByName('Avatar_Down_Body003')
+  // const m = object.scene.getObjectByName('Avatar_Down_Body003_1')
 
   dummy = m
 
@@ -200,7 +201,7 @@ function render (time) {
 
     for (let x = 0; x < amount; x++) {
       for (let y = 0; y < amount; y++) {
-        for (let z = 0; z < 3 * amount; z++) {
+        for (let z = 0; z < amount; z++) {
           const v = variance[i++]
 
           const t = (v.w + time) % duration

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+      const list = [
+        "tztPwdaPEQE",
+        "tztPwdaPEQE",
+        "tztPwdaPEQE",
+        "tztPwdaPEQE",
+        "tztPwdaPEQE",
+        "tztPwdaPEQE",
+        "zaMqbkxafz8",
+        "zaMqbkxafz8",
+      ];
+
+      function onYouTubeIframeAPIReady() {
+        for (let i = 0; i < list.length; i++) {
+          const div = document.createElement("div");
+          div.setAttribute("id", `player${i}`);
+          document.body.appendChild(div);
+
+          const player = new YT.Player(`player${i}`, {
+            height: "390",
+            width: "640",
+            videoId: list[i],
+            events: {
+              onReady: onPlayerReady,
+            },
+          });
+        }
+      }
+
+      function onPlayerReady(event) {
+        const player = event.target;
+        player.mute(); // 自动播放，默认静音
+        player.playVideo();
+      }
+
+      const div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.top = "0";
+      div.style.right = "0";
+      document.body.appendChild(div);
+
+      let frameTimes = [];
+      function pollFramesPerSecond(now) {
+        frameTimes = [...frameTimes.filter((t) => t > now - 1000), now];
+        requestAnimationFrame(pollFramesPerSecond);
+        console.log("Frames per second:", frameTimes.length);
+        div.innerHTML = "Frames per second:" + frameTimes.length;
+      }
+      requestAnimationFrame(pollFramesPerSecond);
+    </script>
+  </body>
+</html>

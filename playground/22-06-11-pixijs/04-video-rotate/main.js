@@ -39,15 +39,23 @@ async function onPlayVideo () {
   button.destroy()
 
   // create a video texture from a path
-  const texture = PIXI.Texture.from('./withrotate-video.mp4')
-  const videoDimensions = await getVideoDimensionsOf('./withrotate-video.mp4')
+  const { width, height, video } = await getVideoDimensionsOf('./withrotate-video.mp4')
+  // const resource = new PIXI.resources.VideoResource(video, { autoPlay: false })
+  // const baseTexture = new PIXI.BaseTexture(resource)
+  // const texture = new PIXI.Texture(baseTexture)
+
+  const texture = PIXI.Texture.from(video)
+
+  setInterval(() => {
+    console.log('video.currentTime', video.currentTime)
+  }, 300)
 
   // create a new Sprite using the video texture (yes it's that easy)
   const videoSprite = new PIXI.Sprite(texture)
   // const videoSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
 
   videoSprite.height = app.screen.height
-  videoSprite.width = videoSprite.height * (videoDimensions.width / videoDimensions.height)
+  videoSprite.width = videoSprite.height * (width / height)
   videoSprite.tint = 0x00ff00
 
   app.stage.addChild(videoSprite)
@@ -64,7 +72,7 @@ function getVideoDimensionsOf (url) {
       const height = this.videoHeight
       const width = this.videoWidth
       // send back result
-      resolve({ height, width })
+      resolve({ height, width, video })
     }, false)
 
     // start download meta-datas
