@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +12,7 @@
     "three": "^0.145.0"
   },
   "devDependencies": {
-    "@types/three": "^0.144.0"
+    "@types/three": "^0.144.0",
+    "three-perf": "^1.0.10"
   }
 }

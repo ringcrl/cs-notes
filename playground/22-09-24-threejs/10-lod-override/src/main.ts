@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { ThreePerf } from "three-perf";
 
 import image1Path from "./usecases/3629x2041.png";
 import image2Path from "./usecases/2667x1500.png";
@@ -16,6 +17,14 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 const renderer = new THREE.WebGLRenderer();
+
+const perf = new ThreePerf({
+  anchorX: "left",
+  anchorY: "top",
+  domElement: document.body, // or other canvas rendering wrapper
+  renderer: renderer, // three js renderer instance you use for rendering
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -74,6 +83,8 @@ lod.update = function (camera) {
       console.log(`Texture disposed for object: ${object.name}`);
       object.material.map = null;
       object.material.needsUpdate = true;
+
+      console.log("ccc this.levels", this.levels);
     }
   }
 };
@@ -106,8 +117,12 @@ function animate() {
   // 更新控制器
   controls.update();
 
+  perf.begin();
+
   // 渲染场景
   renderer.render(scene, camera);
+
+  perf.end();
 }
 
 // 启动动画循环
