@@ -15,6 +15,11 @@ const mimeTypes = {
 };
 
 http.createServer({}, (request, response) => {
+    if (path.normalize(decodeURI(request.url)) !== decodeURI(request.url)) {
+        response.statusCode = 403;
+        response.end();
+        return;
+    }
   const uri = url.parse(request.url).pathname;
   let filename = path.join(process.cwd(), uri);
 
